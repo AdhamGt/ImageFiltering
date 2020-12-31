@@ -17,6 +17,7 @@ namespace ImageFilters
         Filter blur;
         Filter sobelh;
         Filter sobelv;
+        double enlargmentscale = 5f;
         bool isColorised = true;
         PreviewImage img;
         string filterchosen = "";
@@ -130,7 +131,10 @@ namespace ImageFilters
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            pictureBox1.Image =   ImageProcessor.NearestNeighborInterpolation(img.OriginalImage, new Size(img.OriginalImage.Width * 2, img.OriginalImage.Height * 2));
+            //ImageProcessor.interpolatePixel(Color.FromArgb(200, 200, 200), Color.FromArgb(120, 120, 120), Color.FromArgb(55, 55, 55), Color.FromArgb(28, 28, 28), 0.3, 1.3, 0, 1, 1, 2);
+            pictureBox2.Image = ImageProcessor.NearestNeighborInterpolation(img.OriginalImage, new Size((int)(img.OriginalImage.Width * enlargmentscale), (int)(img.OriginalImage.Height * enlargmentscale)));
+          pictureBox1.Image = ImageProcessor.BilinearInterpolation(img.ViewedImage, new Size((int)(img.OriginalImage.Width * enlargmentscale), (int)(img.OriginalImage.Height * enlargmentscale)));
+          
         }
     }
 }
