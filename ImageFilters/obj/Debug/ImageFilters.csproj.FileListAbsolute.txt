@@ -7,3 +7,12 @@ C:\Users\Adham\documents\visual studio 2015\Projects\ImageFilters\ImageFilters\o
 C:\Users\Adham\documents\visual studio 2015\Projects\ImageFilters\ImageFilters\obj\Debug\ImageFilters.csproj.GenerateResource.Cache
 C:\Users\Adham\documents\visual studio 2015\Projects\ImageFilters\ImageFilters\obj\Debug\ImageFilters.exe
 C:\Users\Adham\documents\visual studio 2015\Projects\ImageFilters\ImageFilters\obj\Debug\ImageFilters.pdb
+C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\bin\Debug\ImageFilters.exe.config
+C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.exe
+C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.pdb
+C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\bin\Debug\ImageFilters.exe
+C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\bin\Debug\ImageFilters.pdb
+C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.csprojResolveAssemblyReference.cache
+C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.Form1.resources
+C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.Properties.Resources.resources
+C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.csproj.GenerateResource.Cache

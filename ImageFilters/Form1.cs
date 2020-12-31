@@ -127,5 +127,10 @@ namespace ImageFilters
         {
 
         }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            pictureBox1.Image =   ImageProcessor.NearestNeighborInterpolation(img.OriginalImage, new Size(img.OriginalImage.Width * 2, img.OriginalImage.Height * 2));
+        }
     }
 }

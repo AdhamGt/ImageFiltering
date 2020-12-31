@@ -42,6 +42,7 @@ namespace ImageFilters
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.FiltersPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -51,10 +52,10 @@ namespace ImageFilters
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(994, 103);
+            this.pictureBox1.Location = new System.Drawing.Point(518, 40);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(301, 250);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.Size = new System.Drawing.Size(100, 100);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
@@ -80,7 +81,7 @@ namespace ImageFilters
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1168, 370);
+            this.button2.Location = new System.Drawing.Point(423, 185);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(118, 23);
             this.button2.TabIndex = 5;
@@ -91,7 +92,10 @@ namespace ImageFilters
             // FiltersPanel
             // 
             this.FiltersPanel.Controls.Add(this.button4);
+            this.FiltersPanel.Controls.Add(this.button2);
+            this.FiltersPanel.Controls.Add(this.pictureBox2);
             this.FiltersPanel.Controls.Add(this.label1);
+            this.FiltersPanel.Controls.Add(this.pictureBox1);
             this.FiltersPanel.Controls.Add(this.button1);
             this.FiltersPanel.Controls.Add(this.FiltersListBox);
             this.FiltersPanel.Location = new System.Drawing.Point(411, 25);
@@ -149,27 +153,35 @@ namespace ImageFilters
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
             this.pictureBox2.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.InitialImage")));
-            this.pictureBox2.Location = new System.Drawing.Point(687, 103);
+            this.pictureBox2.Location = new System.Drawing.Point(335, 40);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(301, 250);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.Size = new System.Drawing.Size(100, 100);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 10;
             this.pictureBox2.TabStop = false;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(66, 259);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(139, 29);
+            this.button3.TabIndex = 10;
+            this.button3.Text = "Interpolate";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1364, 699);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.FiltersPanel);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "+";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.FiltersPanel.ResumeLayout(false);
             this.FiltersPanel.PerformLayout();
@@ -192,6 +204,7 @@ namespace ImageFilters
         private Label label4;
         private PictureBox pictureBox2;
         private Button button4;
+        private Button button3;
     }
 }
 

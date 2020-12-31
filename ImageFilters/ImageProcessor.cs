@@ -83,6 +83,20 @@ namespace ImageFilters
             }
             return (int)Total;
         }
+     public   static Bitmap NearestNeighborInterpolation(Bitmap image , Size size)
+        {
+            Bitmap enlargedImage = new Bitmap(size.Width,size.Height);
+            for(int i = 0; i < size.Width; i++)
+            {
+                for(int j = 0; j < size.Height; j++)
+                {
+                    int x = (image.Width * i) / size.Width;
+                    int y = (image.Height * j) / size.Height;
+                    enlargedImage.SetPixel(i, j, image.GetPixel(x,y));
+                }
+            }
+            return enlargedImage;
+        }
         static Bitmap CopyImage(Bitmap image)
         {
             Bitmap temp = new Bitmap(image.Width, image.Height);
