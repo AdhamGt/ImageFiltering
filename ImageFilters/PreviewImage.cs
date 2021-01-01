@@ -20,7 +20,16 @@ namespace ImageFilters
         public List<PreviewState> previewStages = new List<PreviewState>();
         public int[,] equalizedMat;
         public Bitmap equalizedImage;
+        public void SetOriginalImage(Bitmap img)
+        {
+            OriginalImage = img;
+            ViewedImage = img;
+            
+            ConvertToGrayscale();
+            GetViewedImage();
+            previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised));
 
+        }
         public static PreviewImage operator +(PreviewImage a, PreviewImage b)
         {
             PreviewImage img = new PreviewImage(a.OriginalImage);
@@ -51,9 +60,10 @@ namespace ImageFilters
         {
             OriginalImage = img;
             ViewedImage = img;
+            this.isColorised = colorised;
             ConvertToGrayscale();
             GetViewedImage();
-            previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised));
+            previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised));
         }
 
         public PreviewImage(Bitmap img)
@@ -62,13 +72,15 @@ namespace ImageFilters
             ViewedImage = img;
             ConvertToGrayscale();
             GetViewedImage();
-            previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised));
+            previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised));
         }
 
         public void UndoState()
         {
             if (previewStages.Count > 1)
             {
+                OriginalImage = previewStages[previewStages.Count - 2].OriginalImage;
+                ConvertToGrayscale();
                 ViewedImage = previewStages[previewStages.Count - 2].ResultImage;
                 ImageProcessor.CopyMat(ref Mat, ref previewStages[previewStages.Count - 2].Mat);
                 isColorised = previewStages[previewStages.Count - 2].isColorised;
@@ -331,7 +343,7 @@ namespace ImageFilters
             Mat = ImageProcessor.ApplyFilter(Mat, f);
 
             GetViewedImage();
-            previewStages.Add(new PreviewState(stages, f, ViewedImage,ColorisedImage,GrayscaleImage, CopyMat(), isColorised));
+            previewStages.Add(new PreviewState(stages, f, OriginalImage ,ViewedImage,ColorisedImage,GrayscaleImage, CopyMat(), isColorised));
         }
     }
 }

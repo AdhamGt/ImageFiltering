@@ -13,14 +13,16 @@ namespace ImageFilters
         public Filter filter;
         public bool isColorised;
         public Bitmap ResultImage;
+        public Bitmap OriginalImage;
         public Bitmap ColorisedImage;
         public Bitmap GrayImage;
         public int[,] Mat;
-        public PreviewState(int s , Filter f , Bitmap bmp , Bitmap color , Bitmap gry, int[,] mat , bool iscol)
+        public PreviewState(int s , Filter f , Bitmap OriginalImage,Bitmap bmp , Bitmap color , Bitmap gry, int[,] mat , bool iscol)
         {
             state = s;
             filter = f;
             ResultImage = bmp;
+            this.OriginalImage = OriginalImage;
             ColorisedImage = color;
             Mat = mat;
             GrayImage = gry;

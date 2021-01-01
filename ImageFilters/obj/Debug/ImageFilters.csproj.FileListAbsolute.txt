@@ -16,3 +16,4 @@ C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering
 C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.Form1.resources
 C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.Properties.Resources.resources
 C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.csproj.GenerateResource.Cache
+C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.DisplayImage.resources
