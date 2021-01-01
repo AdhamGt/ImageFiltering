@@ -142,7 +142,7 @@ namespace ImageFilters
         private void button3_Click_1(object sender, EventArgs e)
         {
             //ImageProcessor.interpolatePixel(Color.FromArgb(200, 200, 200), Color.FromArgb(120, 120, 120), Color.FromArgb(55, 55, 55), Color.FromArgb(28, 28, 28), 0.3, 1.3, 0, 1, 1, 2);
-           img2.ViewedImage = ImageProcessor.BilinearInterpolation(img.ViewedImage, new Size((int)(img.OriginalImage.Width * enlargmentscale), (int)(img.OriginalImage.Height * enlargmentscale)));
+           img2.ViewedImage = ImageProcessor.BilinearInterpolation(img2.ViewedImage, new Size((int)(img.OriginalImage.Width * enlargmentscale), (int)(img.OriginalImage.Height * enlargmentscale)));
             ViewImages();
         }
 
@@ -184,11 +184,11 @@ namespace ImageFilters
            switch(interpolationMode)
             {
                 case 0:
-                 img.SetOriginalImage(ImageProcessor.BilinearInterpolation(img.OriginalImage, new Size((int)(img.ViewedImage.Width * enlargmentscale), (int)(img.ViewedImage.Height * enlargmentscale))));
+                 img.SetOriginalImage(ImageProcessor.BilinearInterpolation(img.ViewedImage, new Size((int)(img.ViewedImage.Width * enlargmentscale), (int)(img.ViewedImage.Height * enlargmentscale))));
                     ViewImages();
                     break;
                 case 1:
-                    img.SetOriginalImage(ImageProcessor.NearestNeighborInterpolation(img.OriginalImage, new Size((int)(img.ViewedImage.Width * enlargmentscale), (int)(img.ViewedImage.Height * enlargmentscale))));
+                    img.SetOriginalImage(ImageProcessor.NearestNeighborInterpolation(img.ViewedImage, new Size((int)(img.ViewedImage.Width * enlargmentscale), (int)(img.ViewedImage.Height * enlargmentscale))));
                     ViewImages();
                     break;
                 case 2:
@@ -220,7 +220,7 @@ namespace ImageFilters
         private void button5_Click(object sender, EventArgs e)
         {
             img.equalizeImage();
-            pictureBox2.Image = img.equalizedImage;
+            ViewImages();
         }
 
         private void label3_Click(object sender, EventArgs e)

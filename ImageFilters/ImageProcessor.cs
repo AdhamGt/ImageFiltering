@@ -71,7 +71,6 @@ namespace ImageFilters
             int width = Mat.GetLength(0);
             int height = Mat.GetLength(1);
 
-            // Apply Any Spatial Filter
             int[,] mat2 = new int[Mat.GetLength(0), Mat.GetLength(1)];
 
             for (int i = 0; i < width; i++)
@@ -202,6 +201,7 @@ namespace ImageFilters
             RangeColors(ref r2, ref b2, ref g2);
             // interplolate Y
             double dy1;
+
             double dy2;
             double rf;
             double gf;

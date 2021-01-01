@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ImageFilters
 {
-    public class PreviewImage
+    public class PreviewImage 
     {
         public int stages;
         public Bitmap OriginalImage;
@@ -328,10 +328,20 @@ namespace ImageFilters
             if (isColorised)
             {
                 equalizedImage = returntoColor(equalizedMat, Mat, ColorisedImage);
+                ViewedImage = equalizedImage;
+                ColorisedImage = equalizedImage;
+                Mat = equalizedMat;
+                previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised));
+
             }
             else
             {
                 equalizedImage = returnGraytoImage(equalizedMat);
+                Mat = equalizedMat;
+                GrayscaleImage = equalizedImage;
+                ViewedImage = equalizedImage;
+                previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised));
+
             }
 
             return equalizedImage;

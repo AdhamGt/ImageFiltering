@@ -44,12 +44,12 @@ namespace ImageFilters
             this.label5 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.label9 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.FiltersPanel.SuspendLayout();
@@ -174,7 +174,7 @@ namespace ImageFilters
             this.pictureBox2.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.InitialImage")));
             this.pictureBox2.Location = new System.Drawing.Point(493, 16);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(256, 256);
+            this.pictureBox2.Size = new System.Drawing.Size(100, 100);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 10;
             this.pictureBox2.TabStop = false;
@@ -191,6 +191,44 @@ namespace ImageFilters
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(284, 534);
             this.panel1.TabIndex = 10;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(100, 125);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(51, 13);
+            this.label9.TabIndex = 12;
+            this.label9.Text = "Multiplyer";
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(-5, 162);
+            this.trackBar1.Maximum = 5;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(267, 45);
+            this.trackBar1.TabIndex = 5;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(19, 41);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(103, 13);
+            this.label8.TabIndex = 11;
+            this.label8.Text = "Bicubic Interpolation";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(19, 67);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(151, 13);
+            this.label7.TabIndex = 10;
+            this.label7.Text = "Nearest Neighbor Interpolation";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // label6
             // 
@@ -213,58 +251,20 @@ namespace ImageFilters
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(19, 67);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(151, 13);
-            this.label7.TabIndex = 10;
-            this.label7.Text = "Nearest Neighbor Interpolation";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(19, 41);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(103, 13);
-            this.label8.TabIndex = 11;
-            this.label8.Text = "Bicubic Interpolation";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
-            // 
-            // trackBar1
-            // 
-            this.trackBar1.Location = new System.Drawing.Point(-5, 162);
-            this.trackBar1.Maximum = 5;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(267, 45);
-            this.trackBar1.TabIndex = 5;
-            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(100, 125);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(51, 13);
-            this.label9.TabIndex = 12;
-            this.label9.Text = "Multiplyer";
-            // 
             // button5
             // 
             this.button5.Location = new System.Drawing.Point(82, 60);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(112, 23);
             this.button5.TabIndex = 12;
-            this.button5.Text = "Interpolate Image";
+            this.button5.Text = "Apply Histogram";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.button5);
-            this.panel2.Location = new System.Drawing.Point(151, 16);
+            this.panel2.Location = new System.Drawing.Point(151, 12);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(284, 534);
             this.panel2.TabIndex = 13;
