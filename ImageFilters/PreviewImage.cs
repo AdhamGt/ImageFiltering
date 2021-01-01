@@ -20,6 +20,8 @@ namespace ImageFilters
         public List<PreviewState> previewStages = new List<PreviewState>();
         public int[,] equalizedMat;
         public Bitmap equalizedImage;
+        int contrast = 0, brightness = 0;
+
         public void SetOriginalImage(Bitmap img)
         {
             OriginalImage = img;
@@ -28,8 +30,8 @@ namespace ImageFilters
             ConvertToGrayscale();
             GetViewedImage();
             previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised));
-
         }
+
         public static PreviewImage operator +(PreviewImage a, PreviewImage b)
         {
             PreviewImage img = new PreviewImage(a.OriginalImage);
@@ -105,9 +107,9 @@ namespace ImageFilters
             {
                 for (int j = 0; j < OriginalImage.Height; j++)
                 {
-                    int r = 0;
-                    int g = 0;
-                    int b = 0;
+                    double r = 0;
+                    double g = 0;
+                    double b = 0;
                     Color c = OriginalImage.GetPixel(i, j);
 
                     if (MatOrigin[i, j] != 0)
@@ -123,32 +125,8 @@ namespace ImageFilters
                         b = c.B * Mat[i, j];
                     }
 
-                    if (r < 0)
-                    {
-                        r = 0;
-                    }
-                    if (g < 0)
-                    {
-                        g = 0;
-                    }
-                    if (b < 0)
-                    {
-                        b = 0;
-                    }
-                    if (r > 255)
-                    {
-                        r = 255;
-                    }
-                    if (g > 255)
-                    {
-                        g = 255;
-                    }
-                    if (b > 255)
-                    {
-                        b = 255;
-                    }
-
-                    ColorisedImage.SetPixel(i, j, Color.FromArgb(r, g, b));
+                    ImageProcessor.RangeColors(ref r, ref g, ref b);
+                    ColorisedImage.SetPixel(i, j, Color.FromArgb((int)r, (int)g, (int)b));
                 }
             }
         }
@@ -161,9 +139,9 @@ namespace ImageFilters
             {
                 for (int j = 0; j < Mat.GetLength(1); j++)
                 {
-                    int r = 0;
-                    int g = 0;
-                    int b = 0;
+                    double r = 0;
+                    double g = 0;
+                    double b = 0;
                     Color c = OriginalImage.GetPixel(i, j);
 
                     if (MatOrigin[i, j] != 0)
@@ -179,32 +157,8 @@ namespace ImageFilters
                         b = c.B * Mat[i, j];
                     }
 
-                    if (r < 0)
-                    {
-                        r = 0;
-                    }
-                    if (g < 0)
-                    {
-                        g = 0;
-                    }
-                    if (b < 0)
-                    {
-                        b = 0;
-                    }
-                    if (r > 255)
-                    {
-                        r = 255;
-                    }
-                    if (g > 255)
-                    {
-                        g = 255;
-                    }
-                    if (b > 255)
-                    {
-                        b = 255;
-                    }
-
-                    ColorisedImage.SetPixel(i, j, Color.FromArgb(r, g, b));
+                    ImageProcessor.RangeColors(ref r, ref g, ref b);
+                    ColorisedImage.SetPixel(i, j, Color.FromArgb((int)r, (int)g, (int)b));
                 }
             }
 
@@ -219,7 +173,6 @@ namespace ImageFilters
             {
                 for (int j = 0; j < OriginalImage.Height; j++)
                 {
-                    Color c = OriginalImage.GetPixel(i, j);
                     MatOrigin[i, j] = Mat[i, j];
                 }
             }
@@ -319,6 +272,92 @@ namespace ImageFilters
                 returnGrayImage();
                 ViewedImage = GrayscaleImage;
             }
+        }
+
+        public Bitmap invertImage()
+        {
+            int[,] invertedMat = new int[Mat.GetLength(0), Mat.GetLength(1)];
+            ImageProcessor.CopyMat(ref invertedMat, ref Mat);
+
+            for (int r = 0; r < invertedMat.GetLength(0); r++)
+            {
+                for (int c = 0; c < invertedMat.GetLength(1); c++)
+                {
+                    invertedMat[r, c] = 255 - invertedMat[r, c];
+                }
+            }
+
+            Bitmap invertedImage = ImageProcessor.CopyImage(ViewedImage);
+
+            if (isColorised)
+            {
+                invertedImage = returntoColor(invertedMat, Mat, ColorisedImage);
+            }
+            else
+            {
+                invertedImage = returnGraytoImage(invertedMat);
+            }
+
+            return invertedImage;
+        }
+
+        public Bitmap updateImageContrast(int contrastValue)
+        {
+            this.contrast = contrastValue;
+            Bitmap contrastedImage = ImageProcessor.CopyImage(ColorisedImage);
+            double factor = (double)(259 * (contrastValue + 255)) / (double)(255 * (259 - contrastValue));
+
+            for (int r = 0; r < contrastedImage.Width; r++)
+            {
+                for (int c = 0; c < contrastedImage.Height; c++)
+                {
+                    double red = contrastedImage.GetPixel(r, c).R;
+                    double green = contrastedImage.GetPixel(r, c).G;
+                    double blue = contrastedImage.GetPixel(r, c).B;
+                    red = (int)(factor * (red - 128) + 128);
+                    green = (int)(factor * (green - 128) + 128);
+                    blue = (int)(factor * (blue - 128) + 128);
+                    ImageProcessor.RangeColors(ref red, ref green, ref blue);
+                    contrastedImage.SetPixel(r, c, Color.FromArgb(contrastedImage.GetPixel(r, c).A, (int)red, (int)green, (int)blue));
+                }
+            }
+
+            if (!isColorised)
+            {
+                PreviewImage contrast = new PreviewImage(contrastedImage, false);
+                contrastedImage = contrast.GrayscaleImage;
+            }
+
+            return contrastedImage;
+        }
+
+        public Bitmap updateImageBrightness(int brightness)
+        {
+            this.brightness = brightness;
+            double brightnessFactor = 1 + ((double)brightness / (double)100.0);
+            int[,] brightenedMat = new int[Mat.GetLength(0), Mat.GetLength(1)];
+            ImageProcessor.CopyMat(ref brightenedMat, ref Mat);
+
+            for (int r = 0; r < brightenedMat.GetLength(0); r++)
+            {
+                for (int c = 0; c < brightenedMat.GetLength(1); c++)
+                {
+                    brightenedMat[r, c] = (int)Math.Min(255, brightenedMat[r, c] * brightnessFactor);
+                }
+            }
+
+            Bitmap brightenedImage = ImageProcessor.CopyImage(ViewedImage);
+
+            if (isColorised)
+            {
+                brightenedImage = returntoColor(brightenedMat, Mat, ColorisedImage);
+            }
+            else
+            {
+                brightenedImage = returnGraytoImage(brightenedMat);
+            }
+
+            return brightenedImage;
         }
 
         public Bitmap equalizeImage()

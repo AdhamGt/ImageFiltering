@@ -66,6 +66,7 @@ namespace ImageFilters
                    (a20 + a21 * y + a22 * y2 + a23 * y3) * x2 +
                    (a30 + a31 * y + a32 * y2 + a33 * y3) * x3;
         }
+
         public static int[,] ApplyFilter(int[,] Mat, Filter f)
         {
             int width = Mat.GetLength(0);
@@ -90,9 +91,11 @@ namespace ImageFilters
 
             return Mat;
         }
+
         public static Bitmap NearestNeighborInterpolation(Bitmap image, Size size)
         {
             Bitmap enlargedImage = new Bitmap(size.Width, size.Height);
+
             for (int i = 0; i < size.Width; i++)
             {
                 for (int j = 0; j < size.Height; j++)
@@ -102,11 +105,14 @@ namespace ImageFilters
                     enlargedImage.SetPixel(i, j, image.GetPixel(x, y));
                 }
             }
+
             return enlargedImage;
         }
+
         public static Bitmap BilinearInterpolation(Bitmap image, Size size)
         {
             Bitmap enlargedImage = new Bitmap(size.Width, size.Height);
+
             for (int i = 0; i < size.Width; i++)
             {
                 for (int j = 0; j < size.Height; j++)
@@ -117,6 +123,7 @@ namespace ImageFilters
                     int x2 = (int)x1+1;
                     int y1 = (int)Math.Floor(y);
                     int y2 = (int)y1+1;
+
                     if (x2 == x1 && y2 == y1)
                     {
                         enlargedImage.SetPixel(i, j, image.GetPixel((int)x, (int)y));
@@ -130,17 +137,18 @@ namespace ImageFilters
                     {
                         x2 = image.Width - 1;
                     }
+
                     Color c11 = image.GetPixel(x1, y1);
                     Color c21 = image.GetPixel(x2, y1);
                     Color c12 = image.GetPixel(x1, y2);
                     Color c22 = image.GetPixel(x2, y2);
                     enlargedImage.SetPixel(i, j, interpolatePixel(c11, c21, c12, c22, x, y, x1, x2, y1, y2));
-
                 }
             }
             return enlargedImage;
         }
-        static void RangeColors(ref double r1, ref double g1, ref double b1)
+
+        public static void RangeColors(ref double r1, ref double g1, ref double b1)
         {
             if (r1 > 255)
             {
@@ -167,6 +175,7 @@ namespace ImageFilters
                 g1 = 0;
             }
         }
+
         public static Color interpolatePixel(Color f11, Color f21, Color f12, Color f22, double x, double y, double x1, double x2, double y1, double y2)
         {
             // interpolate X
@@ -178,6 +187,7 @@ namespace ImageFilters
             double r2;
             double g2;
             double b2;
+
             if (x1 != x2)
             {
                 r1 = (int)(dx1 * f11.R + dx2 * f21.R);
@@ -197,15 +207,16 @@ namespace ImageFilters
                 g2 = (int)(f12.G);
                 b2 = (int)(f12.B);
             }
+
             RangeColors(ref r1, ref b1, ref g1);
             RangeColors(ref r2, ref b2, ref g2);
             // interplolate Y
             double dy1;
-
             double dy2;
             double rf;
             double gf;
             double bf;
+
             if (y1 == y2)
             {
 
@@ -221,14 +232,15 @@ namespace ImageFilters
                 gf = (int)(dx1 * g1 + dx2 * g2);
                 bf = (int)(dx1 * b1 + dx2 * b2);
             }
+
             RangeColors(ref rf, ref gf, ref bf);
 
             return Color.FromArgb((int)rf, (int)gf, (int)bf);
         }
+
         static int ComputeMatrix(Filter f, int[,] Mat, int ip, int jp)
          {
             double Total = 0;
-           
             double tr = 0, tg = 0, tb = 0;
             int i2 = 0, j2 = 0;
             int width = Mat.GetLength(0);
@@ -265,9 +277,7 @@ namespace ImageFilters
             return (int)Total;
         }
 
-      
-
-        static Bitmap CopyImage(Bitmap image)
+        public static Bitmap CopyImage(Bitmap image)
         {
             Bitmap temp = new Bitmap(image.Width, image.Height);
 
