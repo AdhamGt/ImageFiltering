@@ -20,7 +20,7 @@ namespace ImageFilters
         public List<PreviewState> previewStages = new List<PreviewState>();
         public int[,] equalizedMat;
         public Bitmap equalizedImage;
-        int contrast = 0, brightness = 0;
+        public int contrast = 0, brightness = 0;
 
         public void SetOriginalImage(Bitmap img)
         {
@@ -29,7 +29,7 @@ namespace ImageFilters
             
             ConvertToGrayscale();
             GetViewedImage();
-            previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised));
+            previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
         }
 
         public static PreviewImage operator +(PreviewImage a, PreviewImage b)
@@ -65,7 +65,7 @@ namespace ImageFilters
             this.isColorised = colorised;
             ConvertToGrayscale();
             GetViewedImage();
-            previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised));
+            previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
         }
 
         public PreviewImage(Bitmap img)
@@ -74,7 +74,7 @@ namespace ImageFilters
             ViewedImage = img;
             ConvertToGrayscale();
             GetViewedImage();
-            previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised));
+            previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
         }
 
         public void UndoState()
@@ -88,6 +88,8 @@ namespace ImageFilters
                 isColorised = previewStages[previewStages.Count - 2].isColorised;
                 GrayscaleImage = previewStages[previewStages.Count - 2].GrayImage;
                 ColorisedImage = previewStages[previewStages.Count - 2].ColorisedImage;
+                brightness = previewStages[previewStages.Count - 2].brightness;
+                contrast = previewStages[previewStages.Count - 2].contrast;
                 previewStages.Remove(previewStages[previewStages.Count - 1]);
                 stages--;
             }
@@ -292,10 +294,18 @@ namespace ImageFilters
             if (isColorised)
             {
                 invertedImage = returntoColor(invertedMat, Mat, ColorisedImage);
+                ViewedImage = invertedImage;
+                ColorisedImage = invertedImage;
+                Mat = invertedMat;
+                previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
             }
             else
             {
                 invertedImage = returnGraytoImage(invertedMat);
+                Mat = invertedMat;
+                GrayscaleImage = invertedImage;
+                ViewedImage = invertedImage;
+                previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
             }
 
             return invertedImage;
@@ -303,7 +313,7 @@ namespace ImageFilters
 
         public Bitmap updateImageContrast(int contrastValue)
         {
-            this.contrast = contrastValue;
+            contrast = contrastValue;
             Bitmap contrastedImage = ImageProcessor.CopyImage(ColorisedImage);
             double factor = (double)(259 * (contrastValue + 255)) / (double)(255 * (259 - contrastValue));
 
@@ -322,10 +332,23 @@ namespace ImageFilters
                 }
             }
 
-            if (!isColorised)
+            PreviewImage contrastedColoredImage = new PreviewImage(contrastedImage, true);
+            PreviewImage contrastedGreyImage = new PreviewImage(contrastedImage, false);
+
+            if (isColorised)
             {
-                PreviewImage contrast = new PreviewImage(contrastedImage, false);
-                contrastedImage = contrast.GrayscaleImage;
+                ViewedImage = contrastedImage;
+                ColorisedImage = contrastedImage;
+                Mat = contrastedColoredImage.Mat;
+                previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
+            }
+            else
+            {
+                contrastedImage = contrastedGreyImage.GrayscaleImage;
+                Mat = contrastedGreyImage.Mat;
+                GrayscaleImage = contrastedImage;
+                ViewedImage = contrastedImage;
+                previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
             }
 
             return contrastedImage;
@@ -351,10 +374,18 @@ namespace ImageFilters
             if (isColorised)
             {
                 brightenedImage = returntoColor(brightenedMat, Mat, ColorisedImage);
+                ViewedImage = brightenedImage;
+                ColorisedImage = brightenedImage;
+                Mat = brightenedMat;
+                previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
             }
             else
             {
                 brightenedImage = returnGraytoImage(brightenedMat);
+                Mat = brightenedMat;
+                GrayscaleImage = brightenedImage;
+                ViewedImage = brightenedImage;
+                previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
             }
 
             return brightenedImage;
@@ -370,8 +401,7 @@ namespace ImageFilters
                 ViewedImage = equalizedImage;
                 ColorisedImage = equalizedImage;
                 Mat = equalizedMat;
-                previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised));
-
+                previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
             }
             else
             {
@@ -379,20 +409,19 @@ namespace ImageFilters
                 Mat = equalizedMat;
                 GrayscaleImage = equalizedImage;
                 ViewedImage = equalizedImage;
-                previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised));
-
+                previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
             }
 
             return equalizedImage;
         }
 
-        public void FilterImage(Filter f)
+        public void filterImage(Filter f)
         {
             stages++;
             Mat = ImageProcessor.ApplyFilter(Mat, f);
 
             GetViewedImage();
-            previewStages.Add(new PreviewState(stages, f, OriginalImage ,ViewedImage,ColorisedImage,GrayscaleImage, CopyMat(), isColorised));
+            previewStages.Add(new PreviewState(stages, f, OriginalImage ,ViewedImage,ColorisedImage,GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
         }
     }
 }

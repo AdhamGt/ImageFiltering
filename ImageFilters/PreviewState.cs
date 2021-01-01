@@ -17,7 +17,10 @@ namespace ImageFilters
         public Bitmap ColorisedImage;
         public Bitmap GrayImage;
         public int[,] Mat;
-        public PreviewState(int s , Filter f , Bitmap OriginalImage,Bitmap bmp , Bitmap color , Bitmap gry, int[,] mat , bool iscol)
+        public int brightness;
+        public int contrast;
+
+        public PreviewState(int s , Filter f , Bitmap OriginalImage,Bitmap bmp , Bitmap color , Bitmap gry, int[,] mat , bool iscol, int brightness, int contrast)
         {
             state = s;
             filter = f;
@@ -27,6 +30,8 @@ namespace ImageFilters
             Mat = mat;
             GrayImage = gry;
             isColorised = iscol;
+            this.brightness = brightness;
+            this.contrast = contrast;
         }
     }
 }

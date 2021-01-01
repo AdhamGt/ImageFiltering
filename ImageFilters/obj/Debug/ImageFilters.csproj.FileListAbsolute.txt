@@ -17,3 +17,14 @@ C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering
 C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.Properties.Resources.resources
 C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.csproj.GenerateResource.Cache
 C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.DisplayImage.resources
+Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\bin\Debug\ImageFilters.exe.config
+Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\bin\Debug\ImageFilters.exe
+Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\bin\Debug\ImageFilters.pdb
+Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.csprojAssemblyReference.cache
+Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.DisplayImage.resources
+Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.Form1.resources
+Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.Properties.Resources.resources
+Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.csproj.GenerateResource.cache
+Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.csproj.CoreCompileInputs.cache
+Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.exe
+Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.pdb

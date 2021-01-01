@@ -20,10 +20,12 @@ namespace ImageFilters
         private double a10, a11, a12, a13;
         private double a20, a21, a22, a23;
         private double a30, a31, a32, a33;
-        public static Bitmap BicubicInterpolation(int[,] Mat ,double factor )
+
+        public static Bitmap BicubicInterpolation(int[,] Mat, double factor)
         {
             Bitmap enlargedImage = new Bitmap(Mat.GetLength(0), Mat.GetLength(1));
             double ivf = 1 / factor;
+
             for (int i = 0; i < Mat.GetLength(0); i++)
             {
                 for (int j = 0; j < Mat.GetLength(1); j++)
@@ -34,6 +36,7 @@ namespace ImageFilters
             }
             return enlargedImage;
         }
+
         public void computePolonomyalCoff(double[,] Mat, int x, int y)
         {
             a00 = Mat[x + 1, 1 + y];
