@@ -57,7 +57,31 @@ namespace ImageFilters
             img.returntoColor();
             return img;
         }
+        public Bitmap ApplyBicubic(double ratio)
+        {
+            Bitmap bmp;
+            if (isColorised)
+            {
 
+
+                int[,] r = new int[1, 1];
+                int[,] g = new int[1, 1];
+                int[,] b = new int[1, 1]; ;
+                ImageProcessor.CreateMatrixfromImage(ColorisedImage, ref r, ref g, ref b);
+                r = ImageProcessor.BiCubicInterpolation(r, ratio);
+                g = ImageProcessor.BiCubicInterpolation(g, ratio);
+                b = ImageProcessor.BiCubicInterpolation(b, ratio);
+                bmp = ImageProcessor.CreateImageFromMatrix(r, g, b);
+                SetOriginalImage(bmp);
+            }
+            else
+            {
+               Mat = ImageProcessor.BiCubicInterpolation(Mat, ratio);
+             bmp = returnGraytoImage(Mat);
+                SetOriginalImage(bmp);
+            }
+            return bmp;
+        }
         public PreviewImage(Bitmap img, bool colorised)
         {
             OriginalImage = img;
@@ -76,6 +100,8 @@ namespace ImageFilters
             GetViewedImage();
             previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast));
         }
+
+        
 
         public void UndoState()
         {
@@ -232,6 +258,7 @@ namespace ImageFilters
             return temp;
         }
 
+
         public Bitmap returnGraytoImage(int[,] Mat)
         {
             Bitmap temp = new Bitmap(Mat.GetLength(0), Mat.GetLength(1));
@@ -331,7 +358,7 @@ namespace ImageFilters
                     contrastedImage.SetPixel(r, c, Color.FromArgb(contrastedImage.GetPixel(r, c).A, (int)red, (int)green, (int)blue));
                 }
             }
-
+                
             PreviewImage contrastedColoredImage = new PreviewImage(contrastedImage, true);
             PreviewImage contrastedGreyImage = new PreviewImage(contrastedImage, false);
 

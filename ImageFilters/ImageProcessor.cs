@@ -10,66 +10,17 @@ namespace ImageFilters
     public class ImageProcessor
     {
         private List<Filter> predefinedFilters = new List<Filter>();
-        public static double[,] edge = new double[3, 3] { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } };
-        //public static double[,] edge = new double[3, 3] { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } };
+        public static double[,] laplacianedge = new double[3, 3] { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } };
+
         public static double[,] sharpen = new double[3, 3] { { 0, -1, 0 }, { -1,5, -1 }, { 0, -1, 0 } };
         public static double[,] gaussianBlur = { {0.0625, 0.125, 0.0625 }, { 0.125, 0.25, 0.125 }, { 0.0625, 0.125, 0.0625} };
         public static double[,] sobelHorizontal = new double[3, 3] { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
         public static double[,] sobelVertical = new double[3, 3] { {1, 0, -1}, {2, 0, -2}, {1, 0, -1} };
-        private double a00, a01, a02, a03;
-        private double a10, a11, a12, a13;
-        private double a20, a21, a22, a23;
-        private double a30, a31, a32, a33;
 
-        public static Bitmap BicubicInterpolation(int[,] Mat, double factor)
-        {
-            Bitmap enlargedImage = new Bitmap(Mat.GetLength(0), Mat.GetLength(1));
-            double ivf = 1 / factor;
 
-            for (int i = 0; i < Mat.GetLength(0); i++)
-            {
-                for (int j = 0; j < Mat.GetLength(1); j++)
-                {
+       
 
-                   
-                }
-            }
-            return enlargedImage;
-        }
-
-        public void computePolonomyalCoff(double[,] Mat, int x, int y)
-        {
-            a00 = Mat[x + 1, 1 + y];
-            a01 = -.5 * Mat[x + 1, 0 + y] + .5 * Mat[x + 1, 2 + y];
-            a02 = Mat[x + 1, 0 + y] - 2.5 * Mat[x + 1, 1 + y] + 2 * Mat[x + 1, 2 + y] - .5 * Mat[x + 1, 3 + y];
-            a03 = -.5 * Mat[x + 1, 0 + y] + 1.5 * Mat[x + 1, 1 + y] - 1.5 * Mat[x + 1, 2 + y] + .5 * Mat[x + 1, 3 + y];
-            a10 = -.5 * Mat[x + 0, 1 + y] + .5 * Mat[x + 2, 1 + y];
-            a11 = .25 * Mat[x + 0, 0 + y] - .25 * Mat[x + 0, 2 + y] - .25 * Mat[x + 2, 0 + y] + .25 * Mat[x + 2, 2 + y];
-            a12 = -.5 * Mat[x + 0, 0 + y] + 1.25 * Mat[x + 0, 1 + y] - Mat[x + 0, 2 + y] + .25 * Mat[x + 0, 3 + y] + .5 * Mat[x + 2, 0 + y] - 1.25 * Mat[x + 2, 1 + y] + Mat[x + 2, 2 + y] - .25 * Mat[x + 2, 3 + y];
-            a13 = .25 * Mat[x + 0, 0 + y] - .75 * Mat[x + 0, 1 + y] + .75 * Mat[x + 0, 2 + y] - .25 * Mat[x + 0, 3 + y] - .25 * Mat[x + 2, 0 + y] + .75 * Mat[x + 2, 1 + y] - .75 * Mat[x + 2, 2 + y] + .25 * Mat[x + 2, 3 + y];
-            a20 = Mat[x + 0, 1 + y] - 2.5 * Mat[x + 1, 1 + y] + 2 * Mat[x + 2, 1 + y] - .5 * Mat[x + 3, 1 + y];
-            a21 = -.5 * Mat[x + 0, 0 + y] + .5 * Mat[x + 0, 2 + y] + 1.25 * Mat[x + 1, 0 + y] - 1.25 * Mat[x + 1, 2 + y] - Mat[x + 2, 0 + y] + Mat[x + 2, 2 + y] + .25 * Mat[x + 3, 0 + y] - .25 * Mat[x + 3, 2 + y];
-            a22 = Mat[x + 0, 0 + y] - 2.5 * Mat[x + 0, 1 + y] + 2 * Mat[x + 0, 2 + y] - .5 * Mat[x + 0, 3 + y] - 2.5 * Mat[x + 1, 0 + y] + 6.25 * Mat[x + 1, 1 + y] - 5 * Mat[x + 1, 2 + y] + 1.25 * Mat[x + 1, 3 + y] + 2 * Mat[x + 2, 0 + y] - 5 * Mat[x + 2, 1 + y] + 4 * Mat[x + 2, 2 + y] - Mat[x + 2, 3 + y] - .5 * Mat[x + 3, 0 + y] + 1.25 * Mat[x + 3, 1 + y] - Mat[x + 3, 2 + y] + .25 * Mat[x + 3, 3 + y];
-            a23 = -.5 * Mat[x + 0, 0 + y] + 1.5 * Mat[x + 0, 1 + y] - 1.5 * Mat[x + 0, 2 + y] + .5 * Mat[x + 0, 3 + y] + 1.25 * Mat[x + 1, 0 + y] - 3.75 * Mat[x + 1, 1 + y] + 3.75 * Mat[x + 1, 2 + y] - 1.25 * Mat[x + 1, 3 + y] - Mat[x + 2, 0 + y] + 3 * Mat[x + 2, 1 + y] - 3 * Mat[x + 2, 2 + y] + Mat[x + 2, 3 + y] + .25 * Mat[x + 3, 0 + y] - .75 * Mat[x + 3, 1 + y] + .75 * Mat[x + 3, 2 + y] - .25 * Mat[x + 3, 3 + y];
-            a30 = -.5 * Mat[x + 0, 1 + y] + 1.5 * Mat[x + 1, 1 + y] - 1.5 * Mat[x + 2, 1 + y] + .5 * Mat[x + 3, 1 + y];
-            a31 = .25 * Mat[x + 0, 0 + y] - .25 * Mat[x + 0, 2 + y] - .75 * Mat[x + 1, 0 + y] + .75 * Mat[x + 1, 2 + y] + .75 * Mat[x + 2, 0 + y] - .75 * Mat[x + 2, 2 + y] - .25 * Mat[x + 3, 0 + y] + .25 * Mat[x + 3, 2 + y];
-            a32 = -.5 * Mat[x + 0, 0 + y] + 1.25 * Mat[x + 0, 1 + y] - Mat[x + 0, 2 + y] + .25 * Mat[x + 0, 3 + y] + 1.5 * Mat[x + 1, 0 + y] - 3.75 * Mat[x + 1, 1 + y] + 3 * Mat[x + 1, 2 + y] - .75 * Mat[x + 1, 3 + y] - 1.5 * Mat[x + 2, 0 + y] + 3.75 * Mat[x + 2, 1 + y] - 3 * Mat[x + 2, 2 + y] + .75 * Mat[x + 2, 3 + y] + .5 * Mat[x + 3, 0 + y] - 1.25 * Mat[x + 3, 1 + y] + Mat[x + 3, 2 + y] - .25 * Mat[x + 3, 3 + y];
-            a33 = .25 * Mat[x + 0, 0 + y] - .75 * Mat[x + 0, 1 + y] + .75 * Mat[x + 0, 2 + y] - .25 * Mat[x + 0, 3 + y] - .75 * Mat[x + 1, 0 + y] + 2.25 * Mat[x + 1, 1 + y] - 2.25 * Mat[x + 1, 2 + y] + .75 * Mat[x + 1, 3 + y] + .75 * Mat[x + 2, 0 + y] - 2.25 * Mat[x + 2, 1 + y] + 2.25 * Mat[x + 2, 2 + y] - .75 * Mat[x + 2, 3 + y] - .25 * Mat[x + 3, 0 + y] + .75 * Mat[x + 3, 1 + y] - .75 * Mat[x + 3, 2 + y] + .25 * Mat[x + 3, 3 + y];
-        }
-
-        public double getpixelValue(double x, double y)
-        {
-            double x2 = x * x;
-            double x3 = x2 * x;
-            double y2 = y * y;
-            double y3 = y2 * y;
-
-            return (a00 + a01 * y + a02 * y2 + a03 * y3) +
-                   (a10 + a11 * y + a12 * y2 + a13 * y3) * x +
-                   (a20 + a21 * y + a22 * y2 + a23 * y3) * x2 +
-                   (a30 + a31 * y + a32 * y2 + a33 * y3) * x3;
-        }
-
+      
         public static int[,] ApplyFilter(int[,] Mat, Filter f)
         {
             int width = Mat.GetLength(0);
@@ -94,7 +45,143 @@ namespace ImageFilters
 
             return Mat;
         }
+      public static double[,] PadImage(int [,] Mat)
+        {
+            double[,] Matpad = new double[Mat.GetLength(0) + 4, Mat.GetLength(1) + 4];
+            for (int i = 0; i < Matpad.GetLength(0) ; i++)
+            {
+                for (int j = 0; j < Matpad.GetLength(1) ; j++)
+                {
 
+                    Matpad[i, j] = 0;
+                }
+
+            }
+            for (int i = 1; i < Mat.GetLength(0)+1; i++)
+            {
+                for (int j = 1; j < Mat.GetLength(1) + 1; j++)
+                {
+
+                    Matpad[i, j] = Mat[i-1, j-1];
+                }
+
+            }
+            return Matpad;
+        }
+        public static int[,] imgRevered(int[,] Mat)
+        {
+            int[,] Matpad = new int[Mat.GetLength(1), Mat.GetLength(0)];
+            for (int i = 0; i < Matpad.GetLength(0); i++)
+            {
+                for (int j = 0; j < Matpad.GetLength(1); j++)
+                {
+
+                    Matpad[i, j] = Mat[j,i];
+                }
+
+            }
+           
+            return Matpad;
+        }
+
+
+        public static int[,] BiCubicInterpolation(int[,]Mat,double ratio)
+        {
+            int rn = (int)Math.Floor((double)(Mat.GetLength(0) * ratio));
+            int cn = (int)Math.Floor((double)(Mat.GetLength(1) * ratio));
+      
+            int[,] MatImage = new int[rn, cn];
+           double[,] matpad = PadImage(Mat);
+            for (int i = 0; i < rn  ; i++)
+            {
+                double  x1 = Math.Ceiling((double)i / (double)ratio);
+                
+                double x2 = x1 + 1;
+                double x3 = x2 + 1;
+                int p = (int)x1;
+         
+                double m1 = Math.Ceiling(ratio * ((double)x1 - 1));
+              double  m2 = Math.Ceiling(ratio * ((double)x1));
+              double   m3 = Math.Ceiling(ratio * ((double)x2));
+                double m4 = Math.Ceiling(ratio * ((double)x3));
+
+                double u1 = ((i - m2) * (i - m3) * (i - m4) / ((m1 - m2) * (m1 - m3) * (m1 - m4)));
+                double u2 = (i - m1) * (i - m3) * (i - m4) / ((m2 - m1) * (m2 - m3) * (m2 - m4));
+                double u3 = (i - m1) * (i - m2) * (i - m4) / ((m3 - m1) * (m3 - m2) * (m3 - m4));
+                double u4 = (i - m1) * (i - m2) * (i - m3) / ((m4 - m1) * (m4 - m2) * (m4 - m3));
+               double[,] X = new double[1,4] {  { u1  ,  u2 , u3  , u4 }  };
+
+                for (int j = 0; j < cn  ; j++)
+                {
+
+                   double y1 = (double)Math.Ceiling((double)j / ratio);
+            
+                    double y2 = y1 + 1;
+                    double y3 = y2 + 1;
+                    int q = (int)y1;
+
+                    double n1 = Math.Ceiling(ratio * ((double)y1 - 1));
+                    double n2 = Math.Ceiling(ratio * ((double)y1));
+                    double n3 = Math.Ceiling(ratio * ((double)y2));
+                    double n4 = Math.Ceiling(ratio * ((double)y3));
+                    double b1 = ((j - n2) * (j - n3) * (j - n4)) / ((n1 - n2) * (n1 - n3) * (n1 - n4));
+                    double b2 = ((j - n1) * (j - n3) * (j - n4)) / ((n2 - n1) * (n2 - n3) * (n2 - n4));
+                    double b3 = ((j - n1) * (j - n2) * (j - n4)) / ((n3 - n1) * (n3 - n2) * (n3 - n4));
+                    double b4 = ((j - n1) * (j - n2) * (j - n3)) / ((n4 - n1) * (n4 - n2) * (n4 - n3));
+                    double[,] Y = new double[4, 1] { { b1 }, { b2 }, { b3 }, { b4 } };
+             
+
+                    double[,] neighbors = new double[4,4];
+                        CopyMat(ref neighbors, ref matpad ,  p ,  p+3 ,q ,q+3 );
+                    double[,] mat = matrixMultiplication(X,neighbors);
+
+                      mat = matrixMultiplication(mat , Y);
+
+                     
+                    MatImage[i, j] = (int)(mat[0, 0]);
+                  if(MatImage[i,j] > 255)
+                    {
+                        MatImage[i, j] = 255;
+                    }
+                    if (MatImage[i, j] < 0)
+                    {
+                        MatImage[i, j] = 0;
+                    }
+                }
+            }
+
+    
+            return MatImage;
+        }
+      
+    
+        public static double[,] matrixMultiplication(double[,] matrix1, double[,] matrix2)
+        {
+            // (1,2)(2,3)
+            if (matrix1.GetLength(1) == matrix2.GetLength(0))
+            {
+                double[,] resultMatrix = new double [matrix1.GetLength(0), matrix2.GetLength(1)];
+
+                for (int r = 0; r < resultMatrix.GetLength(0); r++)
+                {
+                    for (int c = 0; c < resultMatrix.GetLength(1); c++)
+                    {
+                        resultMatrix[r, c] = 0;
+
+                        for (int i = 0; i < matrix1.GetLength(1); i++)
+                        {
+                            resultMatrix[r, c] += matrix1[r, i] * matrix2[i, c];
+                        }
+                    }
+                }
+
+                return resultMatrix;
+            }
+            else
+            {
+                return null;
+            }
+        }
         public static Bitmap NearestNeighborInterpolation(Bitmap image, Size size)
         {
             Bitmap enlargedImage = new Bitmap(size.Width, size.Height);
@@ -103,8 +190,9 @@ namespace ImageFilters
             {
                 for (int j = 0; j < size.Height; j++)
                 {
-                    int x = (image.Width * i) / size.Width;
-                    int y = (image.Height * j) / size.Height;
+                    int x = (int)Math.Floor(((double)(image.Width) * (double)i) / (double)size.Width);
+                    int y = (int)Math.Floor(((double)(image.Height) * (double)j) / (double)size.Height);
+                
                     enlargedImage.SetPixel(i, j, image.GetPixel(x, y));
                 }
             }
@@ -120,38 +208,34 @@ namespace ImageFilters
             {
                 for (int j = 0; j < size.Height; j++)
                 {
-                    double x = ((double)(image.Width - 1) * (double)i) / (double)size.Width;
-                    double y = ((double)(image.Height - 1) * (double)j) / (double)size.Height;
-                    int x1 = (int)Math.Floor(x);
-                    int x2 = (int)x1+1;
-                    int y1 = (int)Math.Floor(y);
-                    int y2 = (int)y1+1;
+                  
+                    float gx = ((float)i)* (image.Width-1  )  / (size.Width-1) ;
+                    float gy = ((float)j) * (image.Height-1) / (size.Height-1) ;
+                    int x1 = (int)Math.Floor(gx);
+                    int y1 = (int)Math.Floor(gy);
+              
+                    int x2 = (int)Math.Ceiling(gx);
+                   
+                    int y2 = (int)Math.Ceiling(gy);
 
-                    if (x2 == x1 && y2 == y1)
-                    {
-                        enlargedImage.SetPixel(i, j, image.GetPixel((int)x, (int)y));
-                    }
+                   
+               
+                        
 
-                    if (y2 >= image.Height)
-                    {
-                        y2 = image.Height - 1;
-                    }
-                    if (x2 >= image.Width)
-                    {
-                        x2 = image.Width - 1;
-                    }
+                        Color c11 = image.GetPixel(x1, y1);
+                        Color c21 = image.GetPixel(x2, y1);
+                        Color c12 = image.GetPixel(x1, y2);
+                        Color c22 = image.GetPixel(x2, y2);
+                     enlargedImage.SetPixel(i, j, interpolatePixel(c11, c21, c12, c22, gx, gy, x1, x2, y1, y2));
 
-                    Color c11 = image.GetPixel(x1, y1);
-                    Color c21 = image.GetPixel(x2, y1);
-                    Color c12 = image.GetPixel(x1, y2);
-                    Color c22 = image.GetPixel(x2, y2);
-                    enlargedImage.SetPixel(i, j, interpolatePixel(c11, c21, c12, c22, x, y, x1, x2, y1, y2));
+             
                 }
             }
             return enlargedImage;
         }
+     
 
-        public static void RangeColors(ref double r1, ref double g1, ref double b1)
+         public static void RangeColors(ref double r1, ref double g1, ref double b1)
         {
             if (r1 > 255)
             {
@@ -182,8 +266,7 @@ namespace ImageFilters
         public static Color interpolatePixel(Color f11, Color f21, Color f12, Color f22, double x, double y, double x1, double x2, double y1, double y2)
         {
             // interpolate X
-            double dx1 = (x2 - x) / (x2 - x1);
-            double dx2 = (x - x1) / (x2 - x1);
+    
             double r1;
             double g1;
             double b1;
@@ -193,12 +276,14 @@ namespace ImageFilters
 
             if (x1 != x2)
             {
-                r1 = (int)(dx1 * f11.R + dx2 * f21.R);
-                g1 = (int)(dx1 * f11.G + dx2 * f21.G);
-                b1 = (int)(dx1 * f11.B + dx2 * f21.B);
-                r2 = (int)(dx1 * f12.R + dx2 * f22.R);
-                g2 = (int)(dx1 * f12.G + dx2 * f22.G);
-                b2 = (int)(dx1 * f12.B + dx2 * f22.B);
+                double dx1 = (x2 - x) / (x2 - x1);
+                double dx2 = (x - x1) / (x2 - x1);
+                r1 = (int)((dx1 * f11.R) + (dx2 * f21.R));
+                g1 = (int)((dx1 * f11.G) + (dx2 * f21.G));
+                b1 = (int)((dx1 * f11.B) + (dx2 * f21.B));
+                r2 = (int)((dx1 * f12.R) + (dx2 * f22.R));
+                g2 = (int)((dx1 * f12.G) + (dx2 * f22.G));
+                b2 = (int)((dx1 * f12.B) + (dx2 * f22.B));
 
             }
             else
@@ -211,8 +296,8 @@ namespace ImageFilters
                 b2 = (int)(f12.B);
             }
 
-            RangeColors(ref r1, ref b1, ref g1);
-            RangeColors(ref r2, ref b2, ref g2);
+            //RangeColors(ref r1, ref b1, ref g1);
+           // RangeColors(ref r2, ref b2, ref g2);
             // interplolate Y
             double dy1;
             double dy2;
@@ -222,18 +307,28 @@ namespace ImageFilters
 
             if (y1 == y2)
             {
-
+                
                 rf = (int)(r1);
                 gf = (int)(g1);
                 bf = (int)(b1);
             }
             else
             {
-                dy1 = (y2 - y) / (y2 - y1);
+              dy1 = (y2 - y) / (y2 - y1);
                 dy2 = (y - y1) / (y2 - y1);
-                rf = (int)(dx1 * r1 + dx2 * r2);
-                gf = (int)(dx1 * g1 + dx2 * g2);
-                bf = (int)(dx1 * b1 + dx2 * b2);
+                if (x1 != x2)
+                {
+           
+                    rf = (int)((dy1 * r1) + (dy2 * r2));
+                    gf = (int)((dy1 * g1) + (dy2 * g2));
+                    bf = (int)((dy1 * b1) + (dy2 * b2));
+                }
+                else
+                {
+                    rf = (int)((dy1 * r1) + (dy2 * r2));
+                    gf = (int)((dy1 * g1) + (dy2 * g2));
+                    bf = (int)((dy1 * b1) + (dy2 * b2));
+                }
             }
 
             RangeColors(ref rf, ref gf, ref bf);
@@ -244,11 +339,18 @@ namespace ImageFilters
         static int ComputeMatrix(Filter f, int[,] Mat, int ip, int jp)
          {
             double Total = 0;
-            double tr = 0, tg = 0, tb = 0;
+            double tr = 0   , tg = 0, tb = 0;
             int i2 = 0, j2 = 0;
             int width = Mat.GetLength(0);
             int height = Mat.GetLength(1);
-
+            if(f.kY % 2 == 0 )
+            {
+                ip--;
+            }
+            if (f.kY % 2 == 0)
+            {
+                jp--;
+            }
             for (int i = ip - (f.kX / 2); i < ip + (f.kX / 2) + 1; i++, i2++)
             {
                 j2 = 0;
@@ -279,7 +381,64 @@ namespace ImageFilters
 
             return (int)Total;
         }
+        public static void CreateMatrixfromImage(Bitmap img , ref int[,] r , ref int[,] g , ref int[,] b)
+        {
+            r= new int[img.Width, img.Height];
+           g = new int[img.Width, img.Height];
+            b = new int[img.Width, img.Height];
+            for (int i = 0; i < img.Width; i++)
+            {
+                for (int j = 0; j < img.Height; j++)
+                {
+                    r[i, j] = img.GetPixel(i, j).R;
+                    g[i, j] = img.GetPixel(i, j).G;
+                    b[i, j] = img.GetPixel(i, j).B;
+                }
 
+            }
+        
+        }
+        public static Bitmap CreateImageFromMatrix(int[,] r , int[,] g , int[,] b)
+        {
+            Bitmap img = new Bitmap(r.GetLength(0), r.GetLength(1));
+            for (int i = 0; i < img.Width; i++)
+            {
+                for (int j = 0; j < img.Height; j++)
+                {
+                    img.SetPixel(i, j, Color.FromArgb(r[i, j], g[i, j],b[i, j]));
+                }
+
+            }
+            return img;
+        }
+        public static int[,,] CreateMatrixfromImage(Bitmap img)
+        {
+            int[,,] ImgMat = new int[img.Width, img.Height, 3]; 
+            for(int i = 0; i < img.Width; i++)
+            {
+                for(int j = 0; j < img.Height; j++)
+                {
+                    ImgMat[i, j, 0] = img.GetPixel(i, j).R;
+                    ImgMat[i, j, 1] = img.GetPixel(i, j).G;
+                    ImgMat[i, j, 2] = img.GetPixel(i, j).B;
+                }
+
+            }
+            return ImgMat;
+        }
+        public static Bitmap CreateImageFromMatrix(int[,,] ImgMat )
+        {
+            Bitmap img = new Bitmap(ImgMat.GetLength(0), ImgMat.GetLength(1));
+            for (int i = 0; i < img.Width; i++)
+            {
+                for (int j = 0; j < img.Height; j++)
+                {
+                    img.SetPixel(i, j, Color.FromArgb(ImgMat[i, j, 0], ImgMat[i, j, 1], ImgMat[i, j, 2])); 
+                }
+
+            }
+            return img;
+        }
         public static Bitmap CopyImage(Bitmap image)
         {
             Bitmap temp = new Bitmap(image.Width, image.Height);
@@ -304,6 +463,33 @@ namespace ImageFilters
                 for (int j = 0; j < MatOrigin.GetLength(1); j++)
                 {
                     Mat[i, j] = MatOrigin[i, j];
+                }
+            }
+        }
+        public static void CopyMat(ref double[,] Mat, ref int[,] MatOrigin)
+        {
+            Mat = new double[MatOrigin.GetLength(0), MatOrigin.GetLength(1)];
+
+            for (int i = 0; i < MatOrigin.GetLength(0); i++)
+            {
+                for (int j = 0; j < MatOrigin.GetLength(1); j++)
+                {
+                    Mat[i, j] = (double)MatOrigin[i, j];
+                }
+            }
+        }
+        public static void CopyMat(ref double[,] Mat, ref double[,] MatOrigin , int xr , int xe , int yr ,int ye)
+        {
+          
+
+            int i2 = 0;
+            int j2 = 0;
+            for (int i = xr; i < xe+ 1; i++ ,i2++)
+            {
+                j2 = 0;
+                for (int j = yr; j < ye+1; j++, j2++)
+                {
+                    Mat[i2, j2] = (double)MatOrigin[i, j];
                 }
             }
         }

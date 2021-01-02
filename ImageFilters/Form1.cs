@@ -29,26 +29,27 @@ namespace ImageFilters
         DisplayImage di2;
         int brightness = 0;
         int contrast = 0;
-
+        bool NoImage = true;
         public Form1()
         {
             InitializeComponent();
             interpolationPanel.Hide();
             sharpen = new Filter(ImageProcessor.sharpen, "sharpening");
-            edge = new Filter(ImageProcessor.edge, "edge");
+            edge = new Filter(ImageProcessor.laplacianedge, "edge");
             //blur = new Filter(ImageProcessor.gaussianBlur, "blur");
             blur = new Filter(3, 0.1111f, "blur");
             sobelh = new Filter(ImageProcessor.sobelHorizontal, " hor ");
             sobelv = new Filter(ImageProcessor.sobelVertical, " hor ");
-            img2 = new PreviewImage((Bitmap)pictureBox2.Image);
-            img = new PreviewImage((Bitmap)pictureBox2.Image);
+      
             Filters.Add(edge.name,edge);
             Filters.Add(blur.name, blur);
             Filters.Add(sharpen.name, sharpen);
-            pictureBox2.Image = img2.OriginalImage;
-            
+       
+
             PopulateListbox();
         }
+
+      
 
         void PopulateListbox()
         {
@@ -74,36 +75,42 @@ namespace ImageFilters
 
         void ViewImages()
         {
-            di2.UpdateImage(img2.ViewedImage, new Point((Width + Location.X)));
+            di2.UpdateImage(img2.ViewedImage, new Point((Width + Location.X), Location.Y));
             di.UpdateImage(img.ViewedImage, new Point(Width + Location.X, Location.Y + di2.Height));
         }
 
         void ViewImages( string name )
         {
-            di2.UpdateImage(img2.ViewedImage, new Point((Width + Location.X)));
+            di2.UpdateImage(img2.ViewedImage, new Point((Width + Location.X), Location.Y));
             di.UpdateImage(img.ViewedImage, new Point(Width + Location.X, Location.Y + di2.Height));
             di.Text = name;
         }
 
         void updateButton()
         {
-            if (!isColorised)
+            if (!NoImage)
             {
-                grayScaleButton.Text = "Convert to Color";
-            }
-            else
-            {
-                grayScaleButton.Text = "Convert to GrayScale";
+                if (!isColorised)
+                {
+                    grayScaleButton.Text = "Convert to Color";
+                }
+                else
+                {
+                    grayScaleButton.Text = "Convert to GrayScale";
+                }
             }
         }
 
         private void grayScaleButton_Click(object sender, EventArgs e)
         {
-            isColorised = !isColorised;
-            updateButton();
-            img.UpdateImage(isColorised);
-            img2.UpdateImage(isColorised);
-            ViewImages();
+            if (!NoImage)
+            {
+                isColorised = !isColorised;
+                updateButton();
+                img.UpdateImage(isColorised);
+                img2.UpdateImage(isColorised);
+                ViewImages();
+            }
         }
 
         private void FiltersListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -121,11 +128,14 @@ namespace ImageFilters
 
         private void undoButton_Click(object sender, EventArgs e)
         {
-            img.UndoState();
-            img.UpdateImage(isColorised);
-            img2.UpdateImage(isColorised);
-            ViewImages();
-            updateTrackBars();
+            if (!NoImage)
+            {
+                img.UndoState();
+                img.UpdateImage(isColorised);
+                img2.UpdateImage(isColorised);
+                ViewImages();
+                updateTrackBars();
+            }
         }
 
         private void updateTrackBars()
@@ -140,26 +150,51 @@ namespace ImageFilters
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            //ImageProcessor.interpolatePixel(Color.FromArgb(200, 200, 200), Color.FromArgb(120, 120, 120), Color.FromArgb(55, 55, 55), Color.FromArgb(28, 28, 28), 0.3, 1.3, 0, 1, 1, 2);
-           img2.ViewedImage = ImageProcessor.BilinearInterpolation(img2.ViewedImage, new Size((int)(img.OriginalImage.Width * enlargmentscale), (int)(img.OriginalImage.Height * enlargmentscale)));
-            ViewImages();
+            OpenFileDialog dialog = openFileDialog1;
+            dialog.Title = "Open Image";
+            dialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+               Bitmap img3 = (Bitmap)Image.FromFile(dialog.FileName);
+                img2 = new PreviewImage((Bitmap)img3);
+                img = new PreviewImage((Bitmap)img3);
+                if (di != null)
+                {
+                    di.Close();
+                    di2.Close();
+                }
+                    di2 = new DisplayImage(img2.ViewedImage, new Point((Width + Location.X), Location.Y), "Main Image");
+
+
+               di = new DisplayImage(img.ViewedImage, new Point(Width + Location.X, Location.Y + di2.Height), "Filtered Image");
+  
+                NoImage = false;
+            }
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            di2 = new DisplayImage(img2.ViewedImage, new Point((Width + Location.X)  , Location.Y), "Main Image");
-            di = new DisplayImage(img.ViewedImage, new Point(Width + Location.X, Location.Y + di2.Height ), "Filtered Image");
+           
         }
 
         private void histogramButton_Click(object sender, EventArgs e)
         {
-            img.equalizeImage();
-            ViewImages();
+            if (!NoImage)
+            {
+                img.equalizeImage();
+                ViewImages();
+            }
+
         }
 
         private void interpolationButton_Click(object sender, EventArgs e)
         {
-            ApplyInterpolation();
+            if (!NoImage)
+            {
+                ApplyInterpolation();
+            }
         }
 
         private void bilinearLabel_Click(object sender, EventArgs e)
@@ -188,25 +223,29 @@ namespace ImageFilters
 
         void ApplyInterpolation()
         {
-            switch(interpolationMode)
+            if (!NoImage)
             {
-                case 0:
-                    img.SetOriginalImage(ImageProcessor.BilinearInterpolation(img.ViewedImage, new Size((int)(img.ViewedImage.Width * enlargmentscale), (int)(img.ViewedImage.Height * enlargmentscale))));
-                    ViewImages();
+                switch (interpolationMode)
+                {
+                    case 0:
+                           img.SetOriginalImage(ImageProcessor.BilinearInterpolation(img.ViewedImage, new Size((int)(img.ViewedImage.Width * enlargmentscale), (int)(img.ViewedImage.Height * enlargmentscale))));
+                        //img.SetOriginalImage(ImageProcessor.Scale(img.ViewedImage, 3, 3));
+                        ViewImages();
 
-                    break;
+                        break;
 
-                case 1:
-                    img.SetOriginalImage(ImageProcessor.NearestNeighborInterpolation(img.ViewedImage, new Size((int)(img.ViewedImage.Width * enlargmentscale), (int)(img.ViewedImage.Height * enlargmentscale))));
-                    ViewImages();
+                    case 1:
+                        img.SetOriginalImage(ImageProcessor.NearestNeighborInterpolation(img.ViewedImage, new Size((int)(img.ViewedImage.Width * enlargmentscale), (int)(img.ViewedImage.Height * enlargmentscale))));
+                        ViewImages();
 
-                    break;
+                        break;
 
-                case 2:
-                    img.SetOriginalImage(ImageProcessor.NearestNeighborInterpolation(img.ViewedImage, new Size((int)(img.ViewedImage.Width * enlargmentscale), (int)(img.ViewedImage.Height * enlargmentscale))));
-                    ViewImages();
+                    case 2:
+                        img.ViewedImage = img.ApplyBicubic(enlargmentscale);
+                        ViewImages();
 
-                    break;
+                        break;
+                }
             }
         }
 
@@ -249,8 +288,11 @@ namespace ImageFilters
 
         private void colorInvertingButton_Click(object sender, EventArgs e)
         {
-            img.invertImage();
-            ViewImages();
+            if (!NoImage)
+            {
+                img.invertImage();
+                ViewImages();
+            }
         }
 
         private void contrastTrackBar_Scroll(object sender, EventArgs e)
@@ -267,16 +309,19 @@ namespace ImageFilters
 
         private void applyEditButton_Click(object sender, EventArgs e)
         {
-            if (img.brightness != brightness)
+            if (!NoImage)
             {
-                img.updateImageBrightness(brightness);
-            }
-            if (img.contrast != contrast)
-            {
-                img.updateImageContrast(contrast);
-            }
+                if (img.brightness != brightness)
+                {
+                    img.updateImageBrightness(brightness);
+                }
+                if (img.contrast != contrast)
+                {
+                    img.updateImageContrast(contrast);
+                }
 
-            ViewImages();
+                ViewImages();
+            }
         }
     }
 }

@@ -30,19 +30,17 @@ namespace ImageFilters
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.filtersListBox = new System.Windows.Forms.ListBox();
             this.applyFilterButton = new System.Windows.Forms.Button();
             this.grayScaleButton = new System.Windows.Forms.Button();
             this.filtersPanel = new System.Windows.Forms.Panel();
-            this.undoButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.undoButton = new System.Windows.Forms.Button();
             this.filtersLabel = new System.Windows.Forms.Label();
             this.histogramLabel = new System.Windows.Forms.Label();
             this.editingLabel = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.interpolationLabel = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.interpolationPanel = new System.Windows.Forms.Panel();
             this.label9 = new System.Windows.Forms.Label();
             this.interpolationTrackBar = new System.Windows.Forms.TrackBar();
@@ -53,16 +51,16 @@ namespace ImageFilters
             this.histogramButton = new System.Windows.Forms.Button();
             this.histogramPanel = new System.Windows.Forms.Panel();
             this.imageEditingPanel = new System.Windows.Forms.Panel();
+            this.applyEditButton = new System.Windows.Forms.Button();
+            this.brightnessValue = new System.Windows.Forms.Label();
+            this.contrastValue = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.BrightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.contrastTrackBar = new System.Windows.Forms.TrackBar();
             this.colorInvertingButton = new System.Windows.Forms.Button();
-            this.contrastValue = new System.Windows.Forms.Label();
-            this.brightnessValue = new System.Windows.Forms.Label();
-            this.applyEditButton = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.filtersPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.interpolationPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.interpolationTrackBar)).BeginInit();
             this.histogramPanel.SuspendLayout();
@@ -76,7 +74,7 @@ namespace ImageFilters
             this.filtersListBox.FormattingEnabled = true;
             this.filtersListBox.Location = new System.Drawing.Point(6, 22);
             this.filtersListBox.Name = "filtersListBox";
-            this.filtersListBox.Size = new System.Drawing.Size(120, 485);
+            this.filtersListBox.Size = new System.Drawing.Size(120, 316);
             this.filtersListBox.TabIndex = 3;
             this.filtersListBox.SelectedIndexChanged += new System.EventHandler(this.FiltersListBox_SelectedIndexChanged);
             // 
@@ -108,18 +106,8 @@ namespace ImageFilters
             this.filtersPanel.Controls.Add(this.filtersListBox);
             this.filtersPanel.Location = new System.Drawing.Point(167, 16);
             this.filtersPanel.Name = "filtersPanel";
-            this.filtersPanel.Size = new System.Drawing.Size(284, 534);
+            this.filtersPanel.Size = new System.Drawing.Size(284, 355);
             this.filtersPanel.TabIndex = 6;
-            // 
-            // undoButton
-            // 
-            this.undoButton.Location = new System.Drawing.Point(12, 226);
-            this.undoButton.Name = "undoButton";
-            this.undoButton.Size = new System.Drawing.Size(139, 26);
-            this.undoButton.TabIndex = 9;
-            this.undoButton.Text = "Undo";
-            this.undoButton.UseVisualStyleBackColor = true;
-            this.undoButton.Click += new System.EventHandler(this.undoButton_Click);
             // 
             // label1
             // 
@@ -129,6 +117,16 @@ namespace ImageFilters
             this.label1.Size = new System.Drawing.Size(74, 13);
             this.label1.TabIndex = 8;
             this.label1.Text = "Selected Filter";
+            // 
+            // undoButton
+            // 
+            this.undoButton.Location = new System.Drawing.Point(3, 182);
+            this.undoButton.Name = "undoButton";
+            this.undoButton.Size = new System.Drawing.Size(139, 26);
+            this.undoButton.TabIndex = 9;
+            this.undoButton.Text = "Undo";
+            this.undoButton.UseVisualStyleBackColor = true;
+            this.undoButton.Click += new System.EventHandler(this.undoButton_Click);
             // 
             // filtersLabel
             // 
@@ -162,11 +160,11 @@ namespace ImageFilters
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(12, 586);
+            this.button3.Location = new System.Drawing.Point(3, 222);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(139, 29);
             this.button3.TabIndex = 10;
-            this.button3.Text = "Interpolate";
+            this.button3.Text = "Browse Image";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
@@ -180,17 +178,6 @@ namespace ImageFilters
             this.interpolationLabel.Text = "Interpolation";
             this.interpolationLabel.Click += new System.EventHandler(this.interpolationLabel_Click);
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.InitialImage")));
-            this.pictureBox2.Location = new System.Drawing.Point(493, 16);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(100, 100);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox2.TabIndex = 10;
-            this.pictureBox2.TabStop = false;
-            // 
             // interpolationPanel
             // 
             this.interpolationPanel.Controls.Add(this.label9);
@@ -199,9 +186,9 @@ namespace ImageFilters
             this.interpolationPanel.Controls.Add(this.nearestNeighborLabel);
             this.interpolationPanel.Controls.Add(this.bilinearLabel);
             this.interpolationPanel.Controls.Add(this.interpolationButton);
-            this.interpolationPanel.Location = new System.Drawing.Point(161, 19);
+            this.interpolationPanel.Location = new System.Drawing.Point(148, 12);
             this.interpolationPanel.Name = "interpolationPanel";
-            this.interpolationPanel.Size = new System.Drawing.Size(290, 534);
+            this.interpolationPanel.Size = new System.Drawing.Size(290, 351);
             this.interpolationPanel.TabIndex = 10;
             // 
             // label9
@@ -276,9 +263,9 @@ namespace ImageFilters
             // histogramPanel
             // 
             this.histogramPanel.Controls.Add(this.histogramButton);
-            this.histogramPanel.Location = new System.Drawing.Point(170, 12);
+            this.histogramPanel.Location = new System.Drawing.Point(160, 12);
             this.histogramPanel.Name = "histogramPanel";
-            this.histogramPanel.Size = new System.Drawing.Size(284, 534);
+            this.histogramPanel.Size = new System.Drawing.Size(284, 270);
             this.histogramPanel.TabIndex = 13;
             // 
             // imageEditingPanel
@@ -291,10 +278,38 @@ namespace ImageFilters
             this.imageEditingPanel.Controls.Add(this.BrightnessTrackBar);
             this.imageEditingPanel.Controls.Add(this.contrastTrackBar);
             this.imageEditingPanel.Controls.Add(this.colorInvertingButton);
-            this.imageEditingPanel.Location = new System.Drawing.Point(164, 19);
+            this.imageEditingPanel.Location = new System.Drawing.Point(143, 8);
             this.imageEditingPanel.Name = "imageEditingPanel";
-            this.imageEditingPanel.Size = new System.Drawing.Size(284, 545);
+            this.imageEditingPanel.Size = new System.Drawing.Size(284, 355);
             this.imageEditingPanel.TabIndex = 14;
+            // 
+            // applyEditButton
+            // 
+            this.applyEditButton.Location = new System.Drawing.Point(82, 284);
+            this.applyEditButton.Name = "applyEditButton";
+            this.applyEditButton.Size = new System.Drawing.Size(112, 23);
+            this.applyEditButton.TabIndex = 19;
+            this.applyEditButton.Text = "Edit Image";
+            this.applyEditButton.UseVisualStyleBackColor = true;
+            this.applyEditButton.Click += new System.EventHandler(this.applyEditButton_Click);
+            // 
+            // brightnessValue
+            // 
+            this.brightnessValue.AutoSize = true;
+            this.brightnessValue.Location = new System.Drawing.Point(228, 207);
+            this.brightnessValue.Name = "brightnessValue";
+            this.brightnessValue.Size = new System.Drawing.Size(13, 13);
+            this.brightnessValue.TabIndex = 18;
+            this.brightnessValue.Text = "0";
+            // 
+            // contrastValue
+            // 
+            this.contrastValue.AutoSize = true;
+            this.contrastValue.Location = new System.Drawing.Point(228, 116);
+            this.contrastValue.Name = "contrastValue";
+            this.contrastValue.Size = new System.Drawing.Size(13, 13);
+            this.contrastValue.TabIndex = 17;
+            this.contrastValue.Text = "0";
             // 
             // label11
             // 
@@ -344,44 +359,19 @@ namespace ImageFilters
             this.colorInvertingButton.UseVisualStyleBackColor = true;
             this.colorInvertingButton.Click += new System.EventHandler(this.colorInvertingButton_Click);
             // 
-            // contrastValue
+            // openFileDialog1
             // 
-            this.contrastValue.AutoSize = true;
-            this.contrastValue.Location = new System.Drawing.Point(228, 116);
-            this.contrastValue.Name = "contrastValue";
-            this.contrastValue.Size = new System.Drawing.Size(13, 13);
-            this.contrastValue.TabIndex = 17;
-            this.contrastValue.Text = "0";
-            // 
-            // brightnessValue
-            // 
-            this.brightnessValue.AutoSize = true;
-            this.brightnessValue.Location = new System.Drawing.Point(228, 207);
-            this.brightnessValue.Name = "brightnessValue";
-            this.brightnessValue.Size = new System.Drawing.Size(13, 13);
-            this.brightnessValue.TabIndex = 18;
-            this.brightnessValue.Text = "0";
-            // 
-            // applyEditButton
-            // 
-            this.applyEditButton.Location = new System.Drawing.Point(82, 284);
-            this.applyEditButton.Name = "applyEditButton";
-            this.applyEditButton.Size = new System.Drawing.Size(112, 23);
-            this.applyEditButton.TabIndex = 19;
-            this.applyEditButton.Text = "Edit Image";
-            this.applyEditButton.UseVisualStyleBackColor = true;
-            this.applyEditButton.Click += new System.EventHandler(this.applyEditButton_Click);
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(609, 749);
+            this.ClientSize = new System.Drawing.Size(460, 392);
             this.Controls.Add(this.undoButton);
             this.Controls.Add(this.histogramPanel);
-            this.Controls.Add(this.imageEditingPanel);
             this.Controls.Add(this.interpolationPanel);
-            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.imageEditingPanel);
             this.Controls.Add(this.interpolationLabel);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.editingLabel);
@@ -393,7 +383,6 @@ namespace ImageFilters
             this.Load += new System.EventHandler(this.Form1_Load);
             this.filtersPanel.ResumeLayout(false);
             this.filtersPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.interpolationPanel.ResumeLayout(false);
             this.interpolationPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.interpolationTrackBar)).EndInit();
@@ -419,7 +408,6 @@ namespace ImageFilters
         private Button undoButton;
         private Button button3;
         private Label interpolationLabel;
-        private PictureBox pictureBox2;
         private Panel interpolationPanel;
         private Label bilinearLabel;
         private Button interpolationButton;
@@ -438,6 +426,7 @@ namespace ImageFilters
         private Button applyEditButton;
         private Label brightnessValue;
         private Label contrastValue;
+        private OpenFileDialog openFileDialog1;
     }
 }
 
