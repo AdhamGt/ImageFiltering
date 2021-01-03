@@ -493,6 +493,72 @@ namespace ImageFilters
                 }
             }
         }
+                h = 0;
+            }
+
+            return new double[3] { h, s, max };
+        }
+
+        public static Color HSVToRGB(double[] hsv)
+        {
+            double r = 0;
+            double g = 0;
+            double b = 0;
+            double h = hsv[0];
+            double s = hsv[1];
+            double v = hsv[2];
+
+            if (s == 0)
+            {
+                r = v;
+                g = v;
+                b = v;
+            }
+
+            double c = v * s;
+            double x = c * (1 - Math.Abs((h / 60) % (2 - 1)));
+            double m = v - c;
+
+            if (h >= 0 && h < 60)
+            {
+                r = c;
+                g = x;
+                b = 0;
+            }
+            if (h >= 60 && h < 120)
+            {
+                r = x;
+                g = c;
+                b = 0;
+            }
+            if (h >= 120 && h < 180)
+            {
+                r = 0;
+                g = c;
+                b = x;
+            }
+            if (h >= 180 && h < 240)
+            {
+                r = 0;
+                g = x;
+                b = c;
+            }
+            if (h >= 240 && h < 300)
+            {
+                r = x;
+                g = 0;
+                b = c;
+            }
+            if (h >= 300 && h < 360)
+            {
+                r = c;
+                g = 0;
+                b = x;
+            }
+
+            return Color.FromArgb((int)((r + m) * 255), (int)((g + m) * 255), (int)((b + m) * 255));
+
+        }
     }
  }
     
