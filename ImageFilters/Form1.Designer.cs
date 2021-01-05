@@ -94,7 +94,7 @@ namespace ImageFilters
             // 
             // grayScaleButton
             // 
-            this.grayScaleButton.Location = new System.Drawing.Point(3, 265);
+            this.grayScaleButton.Location = new System.Drawing.Point(16, 266);
             this.grayScaleButton.Name = "grayScaleButton";
             this.grayScaleButton.Size = new System.Drawing.Size(139, 29);
             this.grayScaleButton.TabIndex = 5;
@@ -107,7 +107,7 @@ namespace ImageFilters
             this.filtersPanel.Controls.Add(this.label1);
             this.filtersPanel.Controls.Add(this.applyFilterButton);
             this.filtersPanel.Controls.Add(this.filtersListBox);
-            this.filtersPanel.Location = new System.Drawing.Point(167, 16);
+            this.filtersPanel.Location = new System.Drawing.Point(180, 17);
             this.filtersPanel.Name = "filtersPanel";
             this.filtersPanel.Size = new System.Drawing.Size(284, 355);
             this.filtersPanel.TabIndex = 6;
@@ -123,7 +123,7 @@ namespace ImageFilters
             // 
             // undoButton
             // 
-            this.undoButton.Location = new System.Drawing.Point(3, 182);
+            this.undoButton.Location = new System.Drawing.Point(16, 183);
             this.undoButton.Name = "undoButton";
             this.undoButton.Size = new System.Drawing.Size(139, 26);
             this.undoButton.TabIndex = 9;
@@ -134,7 +134,7 @@ namespace ImageFilters
             // filtersLabel
             // 
             this.filtersLabel.AutoSize = true;
-            this.filtersLabel.Location = new System.Drawing.Point(12, 42);
+            this.filtersLabel.Location = new System.Drawing.Point(25, 43);
             this.filtersLabel.Name = "filtersLabel";
             this.filtersLabel.Size = new System.Drawing.Size(34, 13);
             this.filtersLabel.TabIndex = 7;
@@ -144,7 +144,7 @@ namespace ImageFilters
             // histogramLabel
             // 
             this.histogramLabel.AutoSize = true;
-            this.histogramLabel.Location = new System.Drawing.Point(12, 74);
+            this.histogramLabel.Location = new System.Drawing.Point(25, 75);
             this.histogramLabel.Name = "histogramLabel";
             this.histogramLabel.Size = new System.Drawing.Size(54, 13);
             this.histogramLabel.TabIndex = 8;
@@ -154,7 +154,7 @@ namespace ImageFilters
             // editingLabel
             // 
             this.editingLabel.AutoSize = true;
-            this.editingLabel.Location = new System.Drawing.Point(12, 104);
+            this.editingLabel.Location = new System.Drawing.Point(25, 105);
             this.editingLabel.Name = "editingLabel";
             this.editingLabel.Size = new System.Drawing.Size(39, 13);
             this.editingLabel.TabIndex = 9;
@@ -163,7 +163,7 @@ namespace ImageFilters
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(3, 222);
+            this.button3.Location = new System.Drawing.Point(16, 223);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(139, 29);
             this.button3.TabIndex = 10;
@@ -174,7 +174,7 @@ namespace ImageFilters
             // interpolationLabel
             // 
             this.interpolationLabel.AutoSize = true;
-            this.interpolationLabel.Location = new System.Drawing.Point(12, 133);
+            this.interpolationLabel.Location = new System.Drawing.Point(25, 134);
             this.interpolationLabel.Name = "interpolationLabel";
             this.interpolationLabel.Size = new System.Drawing.Size(65, 13);
             this.interpolationLabel.TabIndex = 11;
@@ -189,7 +189,7 @@ namespace ImageFilters
             this.interpolationPanel.Controls.Add(this.nearestNeighborLabel);
             this.interpolationPanel.Controls.Add(this.bilinearLabel);
             this.interpolationPanel.Controls.Add(this.interpolationButton);
-            this.interpolationPanel.Location = new System.Drawing.Point(158, 13);
+            this.interpolationPanel.Location = new System.Drawing.Point(171, 14);
             this.interpolationPanel.Name = "interpolationPanel";
             this.interpolationPanel.Size = new System.Drawing.Size(290, 351);
             this.interpolationPanel.TabIndex = 10;
@@ -266,7 +266,7 @@ namespace ImageFilters
             // histogramPanel
             // 
             this.histogramPanel.Controls.Add(this.histogramButton);
-            this.histogramPanel.Location = new System.Drawing.Point(170, 6);
+            this.histogramPanel.Location = new System.Drawing.Point(183, 7);
             this.histogramPanel.Name = "histogramPanel";
             this.histogramPanel.Size = new System.Drawing.Size(284, 374);
             this.histogramPanel.TabIndex = 13;
@@ -284,7 +284,7 @@ namespace ImageFilters
             this.imageEditingPanel.Controls.Add(this.brightnessTrackBar);
             this.imageEditingPanel.Controls.Add(this.contrastTrackBar);
             this.imageEditingPanel.Controls.Add(this.colorInvertingButton);
-            this.imageEditingPanel.Location = new System.Drawing.Point(170, 12);
+            this.imageEditingPanel.Location = new System.Drawing.Point(183, 13);
             this.imageEditingPanel.Name = "imageEditingPanel";
             this.imageEditingPanel.Size = new System.Drawing.Size(284, 355);
             this.imageEditingPanel.TabIndex = 14;
@@ -401,7 +401,7 @@ namespace ImageFilters
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 392);
+            this.ClientSize = new System.Drawing.Size(483, 392);
             this.Controls.Add(this.grayScaleButton);
             this.Controls.Add(this.undoButton);
             this.Controls.Add(this.histogramPanel);
@@ -414,7 +414,7 @@ namespace ImageFilters
             this.Controls.Add(this.filtersLabel);
             this.Controls.Add(this.filtersPanel);
             this.Name = "Form1";
-            this.Text = "ImageFilter";
+            this.Text = "Image Processing";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.filtersPanel.ResumeLayout(false);
             this.filtersPanel.PerformLayout();
