@@ -16,8 +16,33 @@ namespace ImageFilters
         public static double[,] sobelHorizontal = new double[3, 3] { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
         public static double[,] sobelVertical = new double[3, 3] { { 1, 0, -1 }, { 2, 0, -2 }, { 1, 0, -1 } };
 
+        static int[,] applySaltAndPepper(int[,] mat, double[,] kernel)
+        {
+            for (int r = 0; r < mat.GetLength(0); r++)
+            {
+                for (int c = 0; c < mat.GetLength(1); c++)
+                {
+                    if (kernel[r, c] >= 240)
+                    {
+                        mat[r, c] = 255;
+                    }
+                    else if (kernel[r, c] <= 15)
+                    {
+                        mat[r, c] = 0;
+                    }
+                }
+            }
+
+            return mat;
+        }
+
         public static int[,] ApplyFilter(int[,] Mat, Filter f)
         {
+            if (f.name == "Salt and Pepper")
+            {
+                return applySaltAndPepper(Mat, f.KernelMatrix);
+            }
+            
             int width = Mat.GetLength(0);
             int height = Mat.GetLength(1);
 
@@ -363,7 +388,7 @@ namespace ImageFilters
                 {
                     if (i < 0 || i >= width || j < 0 || j >= height)
                     {
-                        Total += f.OutofBoudValue * f.KernelMatrix[i2, j2];
+                        Total += f.OutofBoundValue * f.KernelMatrix[i2, j2];
                     }
                     else
                     {

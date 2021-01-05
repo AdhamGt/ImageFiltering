@@ -17,6 +17,7 @@ namespace ImageFilters
         Filter blur;
         Filter sobelh;
         Filter sobelv;
+        Filter saltAndPepper;
         bool equalize = false;
         int interpolationMode = 0;
         double enlargmentscale = 2f;
@@ -36,17 +37,18 @@ namespace ImageFilters
         {
             InitializeComponent();
             interpolationPanel.Hide();
-            sharpen = new Filter(ImageProcessor.sharpen, "sharpening");
-            edge = new Filter(ImageProcessor.laplacianedge, "edge");
+            sharpen = new Filter(ImageProcessor.sharpen, "Sharpening");
+            edge = new Filter(ImageProcessor.laplacianedge, "Edge");
             //blur = new Filter(ImageProcessor.gaussianBlur, "blur");
-            blur = new Filter(3, 0.1111f, "blur");
-            sobelh = new Filter(ImageProcessor.sobelHorizontal, " hor ");
-            sobelv = new Filter(ImageProcessor.sobelVertical, " hor ");
+            blur = new Filter(3, 0.1111f, "Blur");
+            sobelh = new Filter(ImageProcessor.sobelHorizontal, "Hor");
+            sobelv = new Filter(ImageProcessor.sobelVertical, "Ver");
+            saltAndPepper = new Filter("Salt and Pepper");
       
             Filters.Add(edge.name,edge);
             Filters.Add(blur.name, blur);
             Filters.Add(sharpen.name, sharpen);
-       
+            Filters.Add(saltAndPepper.name, saltAndPepper);
 
             PopulateListbox();
         }
@@ -66,7 +68,7 @@ namespace ImageFilters
             //PreviewImage nw = img2 + img;
             //pictureBox1.Image = nw.returnGraytoImage();
 
-            if (filterchosen != "")
+            if (filterchosen != "" && !NoImage)
             {
                 img.filterImage(Filters[filterchosen]);
                 ViewImages();
@@ -173,8 +175,8 @@ namespace ImageFilters
 
                 di2 = new DisplayImage(img2.ViewedImage, new Point((Width + Location.X), Location.Y), "Main Image");
                 di = new DisplayImage(img.ViewedImage, new Point(Width + Location.X, Location.Y + di2.Height), "Filtered Image");
-
                 NoImage = false;
+                saltAndPepper.updateFilter(img.ViewedImage.Width, img.ViewedImage.Height, 0, 256);
 
                 updateTrackBars();
             }
