@@ -29,7 +29,9 @@ namespace ImageFilters
         DisplayImage di2;
         int brightness = 0;
         int contrast = 0;
+        int saturation = 0;
         bool NoImage = true;
+
         public Form1()
         {
             InitializeComponent();
@@ -48,8 +50,6 @@ namespace ImageFilters
 
             PopulateListbox();
         }
-
-      
 
         void PopulateListbox()
         {
@@ -79,7 +79,7 @@ namespace ImageFilters
             di.UpdateImage(img.ViewedImage, new Point(Width + Location.X, Location.Y + di2.Height));
         }
 
-        void ViewImages( string name )
+        void ViewImages(string name)
         {
             di2.UpdateImage(img2.ViewedImage, new Point((Width + Location.X), Location.Y));
             di.UpdateImage(img.ViewedImage, new Point(Width + Location.X, Location.Y + di2.Height));
@@ -142,10 +142,15 @@ namespace ImageFilters
         {
             brightness = img.brightness;
             contrast = img.contrast;
+            saturation = img.saturation;
+
             brightnessValue.Text = "" + brightness;
             contrastValue.Text = "" + contrast;
-            BrightnessTrackBar.Value = brightness;
+            saturationValue.Text = "" + saturation;
+
+            brightnessTrackBar.Value = brightness;
             contrastTrackBar.Value = contrast;
+            saturationTrackBar.Value = saturation;
         }
 
         private void button3_Click_1(object sender, EventArgs e)
@@ -156,22 +161,23 @@ namespace ImageFilters
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-               Bitmap img3 = (Bitmap)Image.FromFile(dialog.FileName);
+                Bitmap img3 = (Bitmap)Image.FromFile(dialog.FileName);
                 img2 = new PreviewImage((Bitmap)img3);
                 img = new PreviewImage((Bitmap)img3);
+
                 if (di != null)
                 {
                     di.Close();
                     di2.Close();
                 }
-                    di2 = new DisplayImage(img2.ViewedImage, new Point((Width + Location.X), Location.Y), "Main Image");
 
+                di2 = new DisplayImage(img2.ViewedImage, new Point((Width + Location.X), Location.Y), "Main Image");
+                di = new DisplayImage(img.ViewedImage, new Point(Width + Location.X, Location.Y + di2.Height), "Filtered Image");
 
-               di = new DisplayImage(img.ViewedImage, new Point(Width + Location.X, Location.Y + di2.Height), "Filtered Image");
-  
                 NoImage = false;
-            }
 
+                updateTrackBars();
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -228,7 +234,7 @@ namespace ImageFilters
                 switch (interpolationMode)
                 {
                     case 0:
-                           img.SetOriginalImage(ImageProcessor.BilinearInterpolation(img.ViewedImage, new Size((int)(img.ViewedImage.Width * enlargmentscale), (int)(img.ViewedImage.Height * enlargmentscale))));
+                        img.SetOriginalImage(ImageProcessor.BilinearInterpolation(img.ViewedImage, new Size((int)(img.ViewedImage.Width * enlargmentscale), (int)(img.ViewedImage.Height * enlargmentscale))));
                         //img.SetOriginalImage(ImageProcessor.Scale(img.ViewedImage, 3, 3));
                         ViewImages();
 
@@ -303,8 +309,8 @@ namespace ImageFilters
 
         private void BrightnessTrackBar_Scroll(object sender, EventArgs e)
         {
-            brightnessValue.Text = "" + BrightnessTrackBar.Value;
-            brightness = BrightnessTrackBar.Value;
+            brightnessValue.Text = "" + brightnessTrackBar.Value;
+            brightness = brightnessTrackBar.Value;
         }
 
         private void applyEditButton_Click(object sender, EventArgs e)
@@ -319,9 +325,19 @@ namespace ImageFilters
                 {
                     img.updateImageContrast(contrast);
                 }
+                if (img.saturation != saturation)
+                {
+                    img.updateImageSaturation(saturation);
+                }
 
                 ViewImages();
             }
+        }
+
+        private void saturationTrackBar_Scroll(object sender, EventArgs e)
+        {
+            saturationValue.Text = "" + saturationTrackBar.Value;
+            saturation = saturationTrackBar.Value;
         }
     }
 }

@@ -56,17 +56,21 @@ namespace ImageFilters
             this.contrastValue = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.BrightnessTrackBar = new System.Windows.Forms.TrackBar();
+            this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.contrastTrackBar = new System.Windows.Forms.TrackBar();
             this.colorInvertingButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saturationValue = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.saturationTrackBar = new System.Windows.Forms.TrackBar();
             this.filtersPanel.SuspendLayout();
             this.interpolationPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.interpolationTrackBar)).BeginInit();
             this.histogramPanel.SuspendLayout();
             this.imageEditingPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BrightnessTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.contrastTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.saturationTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // filtersListBox
@@ -90,9 +94,9 @@ namespace ImageFilters
             // 
             // grayScaleButton
             // 
-            this.grayScaleButton.Location = new System.Drawing.Point(142, 107);
+            this.grayScaleButton.Location = new System.Drawing.Point(3, 265);
             this.grayScaleButton.Name = "grayScaleButton";
-            this.grayScaleButton.Size = new System.Drawing.Size(118, 23);
+            this.grayScaleButton.Size = new System.Drawing.Size(139, 29);
             this.grayScaleButton.TabIndex = 5;
             this.grayScaleButton.Text = "ConvertGrayScale";
             this.grayScaleButton.UseVisualStyleBackColor = true;
@@ -100,7 +104,6 @@ namespace ImageFilters
             // 
             // filtersPanel
             // 
-            this.filtersPanel.Controls.Add(this.grayScaleButton);
             this.filtersPanel.Controls.Add(this.label1);
             this.filtersPanel.Controls.Add(this.applyFilterButton);
             this.filtersPanel.Controls.Add(this.filtersListBox);
@@ -186,7 +189,7 @@ namespace ImageFilters
             this.interpolationPanel.Controls.Add(this.nearestNeighborLabel);
             this.interpolationPanel.Controls.Add(this.bilinearLabel);
             this.interpolationPanel.Controls.Add(this.interpolationButton);
-            this.interpolationPanel.Location = new System.Drawing.Point(148, 12);
+            this.interpolationPanel.Location = new System.Drawing.Point(158, 13);
             this.interpolationPanel.Name = "interpolationPanel";
             this.interpolationPanel.Size = new System.Drawing.Size(290, 351);
             this.interpolationPanel.TabIndex = 10;
@@ -263,29 +266,32 @@ namespace ImageFilters
             // histogramPanel
             // 
             this.histogramPanel.Controls.Add(this.histogramButton);
-            this.histogramPanel.Location = new System.Drawing.Point(160, 12);
+            this.histogramPanel.Location = new System.Drawing.Point(170, 6);
             this.histogramPanel.Name = "histogramPanel";
-            this.histogramPanel.Size = new System.Drawing.Size(284, 270);
+            this.histogramPanel.Size = new System.Drawing.Size(284, 374);
             this.histogramPanel.TabIndex = 13;
             // 
             // imageEditingPanel
             // 
+            this.imageEditingPanel.Controls.Add(this.saturationValue);
+            this.imageEditingPanel.Controls.Add(this.label3);
+            this.imageEditingPanel.Controls.Add(this.saturationTrackBar);
             this.imageEditingPanel.Controls.Add(this.applyEditButton);
             this.imageEditingPanel.Controls.Add(this.brightnessValue);
             this.imageEditingPanel.Controls.Add(this.contrastValue);
             this.imageEditingPanel.Controls.Add(this.label11);
             this.imageEditingPanel.Controls.Add(this.label10);
-            this.imageEditingPanel.Controls.Add(this.BrightnessTrackBar);
+            this.imageEditingPanel.Controls.Add(this.brightnessTrackBar);
             this.imageEditingPanel.Controls.Add(this.contrastTrackBar);
             this.imageEditingPanel.Controls.Add(this.colorInvertingButton);
-            this.imageEditingPanel.Location = new System.Drawing.Point(143, 8);
+            this.imageEditingPanel.Location = new System.Drawing.Point(170, 12);
             this.imageEditingPanel.Name = "imageEditingPanel";
             this.imageEditingPanel.Size = new System.Drawing.Size(284, 355);
             this.imageEditingPanel.TabIndex = 14;
             // 
             // applyEditButton
             // 
-            this.applyEditButton.Location = new System.Drawing.Point(82, 284);
+            this.applyEditButton.Location = new System.Drawing.Point(82, 323);
             this.applyEditButton.Name = "applyEditButton";
             this.applyEditButton.Size = new System.Drawing.Size(112, 23);
             this.applyEditButton.TabIndex = 19;
@@ -296,7 +302,7 @@ namespace ImageFilters
             // brightnessValue
             // 
             this.brightnessValue.AutoSize = true;
-            this.brightnessValue.Location = new System.Drawing.Point(228, 207);
+            this.brightnessValue.Location = new System.Drawing.Point(228, 146);
             this.brightnessValue.Name = "brightnessValue";
             this.brightnessValue.Size = new System.Drawing.Size(13, 13);
             this.brightnessValue.TabIndex = 18;
@@ -305,7 +311,7 @@ namespace ImageFilters
             // contrastValue
             // 
             this.contrastValue.AutoSize = true;
-            this.contrastValue.Location = new System.Drawing.Point(228, 116);
+            this.contrastValue.Location = new System.Drawing.Point(228, 71);
             this.contrastValue.Name = "contrastValue";
             this.contrastValue.Size = new System.Drawing.Size(13, 13);
             this.contrastValue.TabIndex = 17;
@@ -314,7 +320,7 @@ namespace ImageFilters
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(24, 116);
+            this.label11.Location = new System.Drawing.Point(24, 71);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(46, 13);
             this.label11.TabIndex = 16;
@@ -323,25 +329,25 @@ namespace ImageFilters
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(24, 207);
+            this.label10.Location = new System.Drawing.Point(24, 146);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(56, 13);
             this.label10.TabIndex = 15;
             this.label10.Text = "Brightness";
             // 
-            // BrightnessTrackBar
+            // brightnessTrackBar
             // 
-            this.BrightnessTrackBar.Location = new System.Drawing.Point(18, 233);
-            this.BrightnessTrackBar.Maximum = 100;
-            this.BrightnessTrackBar.Minimum = -100;
-            this.BrightnessTrackBar.Name = "BrightnessTrackBar";
-            this.BrightnessTrackBar.Size = new System.Drawing.Size(247, 45);
-            this.BrightnessTrackBar.TabIndex = 14;
-            this.BrightnessTrackBar.Scroll += new System.EventHandler(this.BrightnessTrackBar_Scroll);
+            this.brightnessTrackBar.Location = new System.Drawing.Point(18, 172);
+            this.brightnessTrackBar.Maximum = 100;
+            this.brightnessTrackBar.Minimum = -100;
+            this.brightnessTrackBar.Name = "brightnessTrackBar";
+            this.brightnessTrackBar.Size = new System.Drawing.Size(247, 45);
+            this.brightnessTrackBar.TabIndex = 14;
+            this.brightnessTrackBar.Scroll += new System.EventHandler(this.BrightnessTrackBar_Scroll);
             // 
             // contrastTrackBar
             // 
-            this.contrastTrackBar.Location = new System.Drawing.Point(18, 147);
+            this.contrastTrackBar.Location = new System.Drawing.Point(18, 102);
             this.contrastTrackBar.Maximum = 255;
             this.contrastTrackBar.Minimum = -255;
             this.contrastTrackBar.Name = "contrastTrackBar";
@@ -351,7 +357,7 @@ namespace ImageFilters
             // 
             // colorInvertingButton
             // 
-            this.colorInvertingButton.Location = new System.Drawing.Point(82, 60);
+            this.colorInvertingButton.Location = new System.Drawing.Point(82, 25);
             this.colorInvertingButton.Name = "colorInvertingButton";
             this.colorInvertingButton.Size = new System.Drawing.Size(112, 23);
             this.colorInvertingButton.TabIndex = 12;
@@ -363,11 +369,40 @@ namespace ImageFilters
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // saturationValue
+            // 
+            this.saturationValue.AutoSize = true;
+            this.saturationValue.Location = new System.Drawing.Point(228, 220);
+            this.saturationValue.Name = "saturationValue";
+            this.saturationValue.Size = new System.Drawing.Size(13, 13);
+            this.saturationValue.TabIndex = 22;
+            this.saturationValue.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(24, 220);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(55, 13);
+            this.label3.TabIndex = 21;
+            this.label3.Text = "Saturation";
+            // 
+            // saturationTrackBar
+            // 
+            this.saturationTrackBar.Location = new System.Drawing.Point(18, 246);
+            this.saturationTrackBar.Maximum = 100;
+            this.saturationTrackBar.Minimum = -100;
+            this.saturationTrackBar.Name = "saturationTrackBar";
+            this.saturationTrackBar.Size = new System.Drawing.Size(247, 45);
+            this.saturationTrackBar.TabIndex = 20;
+            this.saturationTrackBar.Scroll += new System.EventHandler(this.saturationTrackBar_Scroll);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(460, 392);
+            this.ClientSize = new System.Drawing.Size(467, 392);
+            this.Controls.Add(this.grayScaleButton);
             this.Controls.Add(this.undoButton);
             this.Controls.Add(this.histogramPanel);
             this.Controls.Add(this.interpolationPanel);
@@ -389,8 +424,9 @@ namespace ImageFilters
             this.histogramPanel.ResumeLayout(false);
             this.imageEditingPanel.ResumeLayout(false);
             this.imageEditingPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BrightnessTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.contrastTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.saturationTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -420,13 +456,16 @@ namespace ImageFilters
         private Panel imageEditingPanel;
         private Label label11;
         private Label label10;
-        private TrackBar BrightnessTrackBar;
+        private TrackBar brightnessTrackBar;
         private TrackBar contrastTrackBar;
         private Button colorInvertingButton;
         private Button applyEditButton;
         private Label brightnessValue;
         private Label contrastValue;
         private OpenFileDialog openFileDialog1;
+        private Label saturationValue;
+        private Label label3;
+        private TrackBar saturationTrackBar;
     }
 }
 
