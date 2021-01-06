@@ -13,14 +13,17 @@ namespace ImageFilters
     public partial class Form1 : Form
     {
         Filter sharpen;
+        Filter Harmonic;
         Filter edge;
-        Filter blur;
+        Filter blur,blur2;
         Filter sobelh;
         Filter sobelv;
         Filter saltAndPepper;
+        Filter Median;
         bool equalize = false;
         int interpolationMode = 0;
         double enlargmentscale = 2f;
+        PreviewImage comparedImage;
         bool isColorised = true;
         PreviewImage img;
         string filterchosen = "";
@@ -28,28 +31,41 @@ namespace ImageFilters
         Dictionary<string, Filter> Filters = new Dictionary<string, ImageFilters.Filter>();
         DisplayImage di;
         DisplayImage di2;
+        Filter Unsharpen2;
+        Filter RobertCrossV, RobertCrossH;
         int brightness = 0;
         int contrast = 0;
         int saturation = 0;
         bool NoImage = true;
-
+        Filter Unsharpen;
         public Form1()
         {
             InitializeComponent();
             interpolationPanel.Hide();
-            sharpen = new Filter(ImageProcessor.sharpen, "Sharpening");
-            edge = new Filter(ImageProcessor.laplacianedge, "Edge");
-            //blur = new Filter(ImageProcessor.gaussianBlur, "blur");
-            blur = new Filter(3, 0.1111f, "Blur");
-            sobelh = new Filter(ImageProcessor.sobelHorizontal, "Hor");
-            sobelv = new Filter(ImageProcessor.sobelVertical, "Ver");
+            sharpen = new Filter(ImageProcessor.laplaciansharpendiagonal, "Laplace Diagonal Sharpening");
+            edge = new Filter(ImageProcessor.laplacianedgediagonal, "Laplace Diagonal Edge");
+            blur2 = new Filter(ImageProcessor.gaussianBlur, "Gaussian Blur");
+            Median = new Filter(3, 1,"median order");
+            Harmonic = new Filter(5,1, "harmonic");
+            Unsharpen = new Filter(3, 1, "UnSharpen");
+            Unsharpen2 = new Filter(3, 1, "UnSharpen HighBoost");
+            blur = new Filter(5, 0.04f, "Mean Filter");
+            sobelh = new Filter(ImageProcessor.sobelHorizontal, "SobelH");
+            sobelv = new Filter(ImageProcessor.sobelVertical, "SobelV");
             saltAndPepper = new Filter("Salt and Pepper");
-      
+            RobertCrossH = new Filter(ImageProcessor.RobertCrossHorizontal,"RobertCrossH");
+            RobertCrossV = new Filter(ImageProcessor.RobertCrossVertical, "RobertCrossV");
+            Filters.Add("Sobel", sobelh);
+            Filters.Add(blur2.name, blur2);
             Filters.Add(edge.name,edge);
             Filters.Add(blur.name, blur);
+            Filters.Add("ContraHarmonic Mean",Harmonic);
+            Filters.Add("RoberCross", RobertCrossH);
             Filters.Add(sharpen.name, sharpen);
+            Filters.Add("UnSharpen", Unsharpen);
+            Filters.Add("UnSharpen HighBoost", Unsharpen);
             Filters.Add(saltAndPepper.name, saltAndPepper);
-
+            Filters.Add("Median Filter", Median);
             PopulateListbox();
         }
 
@@ -63,16 +79,56 @@ namespace ImageFilters
 
         private void applyFilterButton_Click(object sender, EventArgs e)
         {
-            //img.FilterImage(sobelh);
-            //img2.FilterImage(sobelv);
-            //PreviewImage nw = img2 + img;
+        
             //pictureBox1.Image = nw.returnGraytoImage();
-
-            if (filterchosen != "" && !NoImage)
+         
+            if (filterchosen != "" && !NoImage )
             {
-                img.filterImage(Filters[filterchosen]);
-                ViewImages();
-            }
+                if (filterchosen == "Sobel")
+                {
+                    Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
+                    PreviewImage tmp = new PreviewImage(imgtmp);
+
+                    img.filterImage(sobelh);
+                    tmp.filterImage(sobelv);
+                    img = img + tmp;
+                    ViewImages();
+
+                }
+                else if (filterchosen == "RobertCross")
+                {
+                    Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
+                    PreviewImage tmp = new PreviewImage(imgtmp);
+                    img.filterImage(RobertCrossH);
+                    tmp.filterImage(RobertCrossV);
+                    img = img + tmp;
+                    ViewImages();
+                }
+                else if (filterchosen.Contains ("UnSharpen"))
+                {
+                    Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
+                    PreviewImage tmp = new PreviewImage(imgtmp);
+                    Bitmap imgtmp2 = ImageProcessor.CopyImage(img.ViewedImage);
+                    PreviewImage tmp2 = new PreviewImage(imgtmp);
+                    tmp.filterImage(blur);
+                    tmp2 = tmp2 - tmp;
+                    int k = 5;
+                    if(!filterchosen.Contains("HighBoost"))
+                    {
+                        k = 1;
+                    }
+                    for (int i = 0; i < k; i++)
+                    {
+                        img = img + tmp2;
+                    }
+                        ViewImages();
+                }
+                else
+                {
+                    img.filterImage(Filters[filterchosen]);
+                    ViewImages();
+                }
+               }
         }
 
         void ViewImages()
@@ -159,7 +215,7 @@ namespace ImageFilters
         {
             OpenFileDialog dialog = openFileDialog1;
             dialog.Title = "Open Image";
-            dialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+            dialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png, *.gif) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png; *.gif;";
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -237,7 +293,6 @@ namespace ImageFilters
                 {
                     case 0:
                         img.SetOriginalImage(ImageProcessor.BilinearInterpolation(img.ViewedImage, new Size((int)(img.ViewedImage.Width * enlargmentscale), (int)(img.ViewedImage.Height * enlargmentscale))));
-                        //img.SetOriginalImage(ImageProcessor.Scale(img.ViewedImage, 3, 3));
                         ViewImages();
 
                         break;
@@ -340,6 +395,31 @@ namespace ImageFilters
         {
             saturationValue.Text = "" + saturationTrackBar.Value;
             saturation = saturationTrackBar.Value;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = openFileDialog1;
+            dialog.Title = "Open Image";
+            dialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap img3 = (Bitmap)Image.FromFile(dialog.FileName);
+                comparedImage = new PreviewImage((Bitmap)img3);
+                if( img3.Width == img.ViewedImage.Width  && img3.Height == img.ViewedImage.Height)
+                {
+                    img.Difference = true;
+                   img = img - comparedImage;
+                    img.RangeDifference();
+                    img.Difference = false;
+                    ViewImages();
+                }
+
+
+
+
+            }
         }
     }
 }

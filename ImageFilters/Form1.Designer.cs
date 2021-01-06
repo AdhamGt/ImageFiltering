@@ -51,6 +51,9 @@ namespace ImageFilters
             this.histogramButton = new System.Windows.Forms.Button();
             this.histogramPanel = new System.Windows.Forms.Panel();
             this.imageEditingPanel = new System.Windows.Forms.Panel();
+            this.saturationValue = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.saturationTrackBar = new System.Windows.Forms.TrackBar();
             this.applyEditButton = new System.Windows.Forms.Button();
             this.brightnessValue = new System.Windows.Forms.Label();
             this.contrastValue = new System.Windows.Forms.Label();
@@ -60,17 +63,15 @@ namespace ImageFilters
             this.contrastTrackBar = new System.Windows.Forms.TrackBar();
             this.colorInvertingButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.saturationValue = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.saturationTrackBar = new System.Windows.Forms.TrackBar();
+            this.button1 = new System.Windows.Forms.Button();
             this.filtersPanel.SuspendLayout();
             this.interpolationPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.interpolationTrackBar)).BeginInit();
             this.histogramPanel.SuspendLayout();
             this.imageEditingPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.saturationTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.contrastTrackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.saturationTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // filtersListBox
@@ -78,13 +79,13 @@ namespace ImageFilters
             this.filtersListBox.FormattingEnabled = true;
             this.filtersListBox.Location = new System.Drawing.Point(6, 22);
             this.filtersListBox.Name = "filtersListBox";
-            this.filtersListBox.Size = new System.Drawing.Size(120, 316);
+            this.filtersListBox.Size = new System.Drawing.Size(142, 316);
             this.filtersListBox.TabIndex = 3;
             this.filtersListBox.SelectedIndexChanged += new System.EventHandler(this.FiltersListBox_SelectedIndexChanged);
             // 
             // applyFilterButton
             // 
-            this.applyFilterButton.Location = new System.Drawing.Point(142, 58);
+            this.applyFilterButton.Location = new System.Drawing.Point(154, 58);
             this.applyFilterButton.Name = "applyFilterButton";
             this.applyFilterButton.Size = new System.Drawing.Size(118, 23);
             this.applyFilterButton.TabIndex = 4;
@@ -115,7 +116,7 @@ namespace ImageFilters
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(158, 22);
+            this.label1.Location = new System.Drawing.Point(170, 22);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 13);
             this.label1.TabIndex = 8;
@@ -289,6 +290,34 @@ namespace ImageFilters
             this.imageEditingPanel.Size = new System.Drawing.Size(284, 355);
             this.imageEditingPanel.TabIndex = 14;
             // 
+            // saturationValue
+            // 
+            this.saturationValue.AutoSize = true;
+            this.saturationValue.Location = new System.Drawing.Point(228, 220);
+            this.saturationValue.Name = "saturationValue";
+            this.saturationValue.Size = new System.Drawing.Size(13, 13);
+            this.saturationValue.TabIndex = 22;
+            this.saturationValue.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(24, 220);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(55, 13);
+            this.label3.TabIndex = 21;
+            this.label3.Text = "Saturation";
+            // 
+            // saturationTrackBar
+            // 
+            this.saturationTrackBar.Location = new System.Drawing.Point(18, 246);
+            this.saturationTrackBar.Maximum = 100;
+            this.saturationTrackBar.Minimum = -100;
+            this.saturationTrackBar.Name = "saturationTrackBar";
+            this.saturationTrackBar.Size = new System.Drawing.Size(247, 45);
+            this.saturationTrackBar.TabIndex = 20;
+            this.saturationTrackBar.Scroll += new System.EventHandler(this.saturationTrackBar_Scroll);
+            // 
             // applyEditButton
             // 
             this.applyEditButton.Location = new System.Drawing.Point(82, 323);
@@ -369,50 +398,33 @@ namespace ImageFilters
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // saturationValue
+            // button1
             // 
-            this.saturationValue.AutoSize = true;
-            this.saturationValue.Location = new System.Drawing.Point(228, 220);
-            this.saturationValue.Name = "saturationValue";
-            this.saturationValue.Size = new System.Drawing.Size(13, 13);
-            this.saturationValue.TabIndex = 22;
-            this.saturationValue.Text = "0";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(24, 220);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 13);
-            this.label3.TabIndex = 21;
-            this.label3.Text = "Saturation";
-            // 
-            // saturationTrackBar
-            // 
-            this.saturationTrackBar.Location = new System.Drawing.Point(18, 246);
-            this.saturationTrackBar.Maximum = 100;
-            this.saturationTrackBar.Minimum = -100;
-            this.saturationTrackBar.Name = "saturationTrackBar";
-            this.saturationTrackBar.Size = new System.Drawing.Size(247, 45);
-            this.saturationTrackBar.TabIndex = 20;
-            this.saturationTrackBar.Scroll += new System.EventHandler(this.saturationTrackBar_Scroll);
+            this.button1.Location = new System.Drawing.Point(16, 301);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(139, 29);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "Compare";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(483, 392);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.grayScaleButton);
             this.Controls.Add(this.undoButton);
-            this.Controls.Add(this.histogramPanel);
-            this.Controls.Add(this.interpolationPanel);
-            this.Controls.Add(this.imageEditingPanel);
             this.Controls.Add(this.interpolationLabel);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.editingLabel);
             this.Controls.Add(this.histogramLabel);
             this.Controls.Add(this.filtersLabel);
             this.Controls.Add(this.filtersPanel);
+            this.Controls.Add(this.interpolationPanel);
+            this.Controls.Add(this.histogramPanel);
+            this.Controls.Add(this.imageEditingPanel);
             this.Name = "Form1";
             this.Text = "Image Processing";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -424,9 +436,9 @@ namespace ImageFilters
             this.histogramPanel.ResumeLayout(false);
             this.imageEditingPanel.ResumeLayout(false);
             this.imageEditingPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.saturationTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.contrastTrackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.saturationTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -466,6 +478,7 @@ namespace ImageFilters
         private Label saturationValue;
         private Label label3;
         private TrackBar saturationTrackBar;
+        private Button button1;
     }
 }
 

@@ -11,6 +11,7 @@ namespace ImageFilters
     {
         public int stages;
         public Bitmap OriginalImage;
+        public bool Difference = false;
         public bool isColorised = true;
         public int[,] Mat;
         private int[,] MatOrigin;
@@ -34,56 +35,79 @@ namespace ImageFilters
 
         public static PreviewImage operator +(PreviewImage a, PreviewImage b)
         {
-            PreviewImage img = new PreviewImage(a.OriginalImage);
-
             for(int i = 0; i < a.ViewedImage.Width; i++)
             {
                 for (int j = 0; j < a.ViewedImage.Height; j++)
                 {
-                    img.Mat[i, j] = a.Mat[i, j] + b.Mat[i, j];
+                    a.Mat[i, j] = a.Mat[i, j] + b.Mat[i, j];
 
-                    if (img.Mat[i, j] < 0)
+                    if (a.Mat[i, j] < 0)
                     {
-                        img.Mat[i, j] = 0;
+                       a.Mat[i, j] = 0;
                     }
-                    if (img.Mat[i, j] > 255)
+                    if (a.Mat[i, j] > 255)
                     {
-                        img.Mat[i, j] = 255;
+                       a.Mat[i, j] = 255;
                     }
                 }
             }
-
-            img.returnGraytoImage();
-            img.returntoColor();
-            return img;
+            a.returntoColor();
+            a.GetViewedImage();
+            
+      a.previewStages.Add(new PreviewState(a.stages, null, a.OriginalImage, a.OriginalImage, a.OriginalImage, a.GrayscaleImage, a.CopyMat(), a.isColorised, a.brightness, a.contrast, a.saturation));
+      
+            return a;
         }
 
         public static PreviewImage operator -(PreviewImage a, PreviewImage b)
         {
-            PreviewImage img = new PreviewImage(a.OriginalImage);
-
             for (int i = 0; i < a.ViewedImage.Width; i++)
             {
                 for (int j = 0; j < a.ViewedImage.Height; j++)
                 {
-                    img.Mat[i, j] = a.Mat[i, j] - b.Mat[i, j];
+                    a.Mat[i, j] = a.Mat[i, j] - b.Mat[i, j];
 
-                    if (img.Mat[i, j] < 0)
+                    if (a.Difference)
                     {
-                        img.Mat[i, j] = 0;
+                        if (a.Mat[i, j] < 0)
+                        {
+                            a.Mat[i, j] *= -1;
+                        }
                     }
-                    if (img.Mat[i, j] > 255)
+                    else
                     {
-                        img.Mat[i, j] = 255;
+                        if (a.Mat[i, j] < 0)
+                        {
+                            a.Mat[i, j] = 0;
+                        }
+                    }
+                    if (a.Mat[i, j] > 255)
+                    {
+                        a.Mat[i, j] = 255;
                     }
                 }
             }
+            a.returntoColor();
+            a.GetViewedImage();
+            a.previewStages.Add(new PreviewState(a.stages, null, a.OriginalImage, a.OriginalImage, a.OriginalImage, a.GrayscaleImage, a.CopyMat(), a.isColorised, a.brightness, a.contrast, a.saturation));
 
-            img.returnGraytoImage();
-            img.returntoColor();
-            return img;
+            return a;
         }
-
+       public void RangeDifference()
+        {
+            for (int i = 0; i < Mat.GetLength(0); i++)
+            {
+                for (int j = 0; j < Mat.GetLength(1); j++)
+                {
+                   if(Mat[i,j] != 0 )
+                    {
+                        Mat[i, j] = 255;
+                    }
+                }
+            }
+            isColorised = false;
+            GetViewedImage();
+        }
         public Bitmap ApplyBicubic(double ratio)
         {
             Bitmap bmp;
@@ -513,8 +537,16 @@ namespace ImageFilters
         public void filterImage(Filter f)
         {
             stages++;
-            Mat = ImageProcessor.ApplyFilter(Mat, f);
+            
 
+
+                Mat = ImageProcessor.ApplyFilter(Mat, f);
+            if (f.name == "harmonic")
+            {
+           //     f.Order *= -1;
+             //   Mat = ImageProcessor.ApplyFilter(Mat, f);
+            }
+          
             GetViewedImage();
             previewStages.Add(new PreviewState(stages, f, OriginalImage ,ViewedImage,ColorisedImage,GrayscaleImage, CopyMat(), isColorised, brightness, contrast, saturation));
         }

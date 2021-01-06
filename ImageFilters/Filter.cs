@@ -11,6 +11,7 @@ namespace ImageFilters
         private int KernelSize;
         public int kX, kY;
         public double[,] KernelMatrix;
+        public int Order = -2;
         public int multiplier = 1;
         public string name;
         public int OutofBoundValue;

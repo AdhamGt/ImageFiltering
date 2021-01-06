@@ -10,12 +10,19 @@ namespace ImageFilters
     public class ImageProcessor
     {
         private List<Filter> predefinedFilters = new List<Filter>();
-        public static double[,] laplacianedge = new double[3, 3] { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } };
-        public static double[,] sharpen = new double[3, 3] { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };
+        public static double[,] laplacianedge = new double[3, 3] { { 0, -1, 0 }, { -1, 4, -1 }, { 0, -1, 0 } };
+        public static double[,] laplacianedgediagonal = new double[3, 3] { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } };
+        public static double[,] laplaciansharpen = new double[3, 3] { { 0, -1, 0 }, { -1, 5, -1 }, { 0, -1, 0 } };
+        public static double[,] laplaciansharpendiagonal = new double[3, 3] { { -1, -1, -1 }, { -1, 9, -1 }, { -1, -1, -1 } };
+        public static double[,] previtHorizontal = { { 1, 1, 1 }, { 0, 0, 0 }, { -1, -1, -1 } };
+        public static double[,] previtVertical = { { 1, 0, -1 }, { 1, 0, -1 }, { 1, 0, -1 }};
         public static double[,] gaussianBlur = { { 0.0625, 0.125, 0.0625 }, { 0.125, 0.25, 0.125 }, { 0.0625, 0.125, 0.0625 } };
         public static double[,] sobelHorizontal = new double[3, 3] { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
         public static double[,] sobelVertical = new double[3, 3] { { 1, 0, -1 }, { 2, 0, -2 }, { 1, 0, -1 } };
-
+        public static double[,] RobertCrossHorizontal = new double[2, 2] { { 1, 0 }, { 0, -1 } };
+        public static double[,] RobertCrossVertical = new double[2, 2] { { 0, 1 }, { -1, 0 } };
+        public static double[,] MeanFilter = { { 0.1111f, 0.1111f, 0.1111f }, { 0.1111f, 0.1111f, 0.1111f }, { 0.1111f, 0.1111f, 0.1111f } };
+       
         static int[,] applySaltAndPepper(int[,] mat, double[,] kernel)
         {
             for (int r = 0; r < mat.GetLength(0); r++)
@@ -24,11 +31,11 @@ namespace ImageFilters
                 {
                     if (kernel[r, c] >= 240)
                     {
-                        mat[r, c] = 255;
+                        mat[r, c] = (int)kernel[r, c];
                     }
                     else if (kernel[r, c] <= 15)
                     {
-                        mat[r, c] = 0;
+                        mat[r, c] = (int)kernel[r, c];
                     }
                 }
             }
@@ -42,7 +49,7 @@ namespace ImageFilters
             {
                 return applySaltAndPepper(Mat, f.KernelMatrix);
             }
-            
+
             int width = Mat.GetLength(0);
             int height = Mat.GetLength(1);
 
@@ -66,21 +73,21 @@ namespace ImageFilters
             return Mat;
         }
 
-        public static double[,] PadImage(int [,] Mat)
+        public static double[,] PadImage(int[,] Mat)
         {
             double[,] Matpad = new double[Mat.GetLength(0) + 4, Mat.GetLength(1) + 4];
-            for (int i = 0; i < Matpad.GetLength(0) ; i++)
+            for (int i = 0; i < Matpad.GetLength(0); i++)
             {
-                for (int j = 0; j < Matpad.GetLength(1) ; j++)
+                for (int j = 0; j < Matpad.GetLength(1); j++)
                 {
                     Matpad[i, j] = 0;
                 }
             }
-            for (int i = 1; i < Mat.GetLength(0)+1; i++)
+            for (int i = 1; i < Mat.GetLength(0) + 1; i++)
             {
                 for (int j = 1; j < Mat.GetLength(1) + 1; j++)
                 {
-                    Matpad[i, j] = Mat[i-1, j-1];
+                    Matpad[i, j] = Mat[i - 1, j - 1];
                 }
 
             }
@@ -95,18 +102,18 @@ namespace ImageFilters
             {
                 for (int j = 0; j < Matpad.GetLength(1); j++)
                 {
-                    Matpad[i, j] = Mat[j,i];
+                    Matpad[i, j] = Mat[j, i];
                 }
             }
-           
+
             return Matpad;
         }
 
-        public static int[,] BiCubicInterpolation(int[,]Mat,double ratio)
+        public static int[,] BiCubicInterpolation(int[,] Mat, double ratio)
         {
             int rn = (int)Math.Floor((double)(Mat.GetLength(0) * ratio));
             int cn = (int)Math.Floor((double)(Mat.GetLength(1) * ratio));
-      
+
             int[,] MatImage = new int[rn, cn];
             double[,] matpad = PadImage(Mat);
 
@@ -167,7 +174,7 @@ namespace ImageFilters
                     }
                 }
             }
-    
+
             return MatImage;
         }
 
@@ -175,7 +182,7 @@ namespace ImageFilters
         {
             if (matrix1.GetLength(1) == matrix2.GetLength(0))
             {
-                double[,] resultMatrix = new double [matrix1.GetLength(0), matrix2.GetLength(1)];
+                double[,] resultMatrix = new double[matrix1.GetLength(0), matrix2.GetLength(1)];
 
                 for (int r = 0; r < resultMatrix.GetLength(0); r++)
                 {
@@ -208,7 +215,7 @@ namespace ImageFilters
                 {
                     int x = (int)Math.Floor(((double)(image.Width) * (double)i) / (double)size.Width);
                     int y = (int)Math.Floor(((double)(image.Height) * (double)j) / (double)size.Height);
-                
+
                     enlargedImage.SetPixel(i, j, image.GetPixel(x, y));
                 }
             }
@@ -295,7 +302,7 @@ namespace ImageFilters
         public static Color interpolatePixel(Color f11, Color f21, Color f12, Color f22, double x, double y, double x1, double x2, double y1, double y2)
         {
             // interpolate X
-    
+
             double r1;
             double g1;
             double b1;
@@ -326,7 +333,7 @@ namespace ImageFilters
             }
 
             //RangeColors(ref r1, ref b1, ref g1);
-           // RangeColors(ref r2, ref b2, ref g2);
+            // RangeColors(ref r2, ref b2, ref g2);
             // interplolate Y
             double dy1;
             double dy2;
@@ -336,18 +343,18 @@ namespace ImageFilters
 
             if (y1 == y2)
             {
-                
+
                 rf = (int)(r1);
                 gf = (int)(g1);
                 bf = (int)(b1);
             }
             else
             {
-              dy1 = (y2 - y) / (y2 - y1);
+                dy1 = (y2 - y) / (y2 - y1);
                 dy2 = (y - y1) / (y2 - y1);
                 if (x1 != x2)
                 {
-           
+
                     rf = (int)((dy1 * r1) + (dy2 * r2));
                     gf = (int)((dy1 * g1) + (dy2 * g2));
                     bf = (int)((dy1 * b1) + (dy2 * b2));
@@ -364,57 +371,209 @@ namespace ImageFilters
 
             return Color.FromArgb((int)rf, (int)gf, (int)bf);
         }
-
-        static int ComputeMatrix(Filter f, int[,] Mat, int ip, int jp)
-         {
+        
+        static int ComputeHarmonic(Filter f , int[,] Mat , int ip , int jp )
+        {
             double Total = 0;
-            double tr = 0   , tg = 0, tb = 0;
+            double tr = 0, tg = 0, tb = 0;
             int i2 = 0, j2 = 0;
             int width = Mat.GetLength(0);
             int height = Mat.GetLength(1);
-            if(f.kY % 2 == 0 )
+            double SecondTotal = 0;
+            int[] L = new int[9];
+            int evenodd = 1;
+            if (f.kY % 2 == 0)
             {
-                ip--;
+                evenodd = 0;
             }
             if (f.kY % 2 == 0)
             {
-                jp--;
+                evenodd = 0;
             }
-            for (int i = ip - (f.kX / 2); i < ip + (f.kX / 2) + 1; i++, i2++)
+            for (int i = ip - (f.kX / 2); i < ip + (f.kX / 2) + evenodd; i++, i2++)
             {
                 j2 = 0;
 
-                for (int j = jp - (f.kY / 2); j < jp + (f.kY / 2) + 1; j++, j2++)
+                for (int j = jp - (f.kY / 2); j < jp + (f.kY / 2) + evenodd; j++, j2++)
                 {
+
                     if (i < 0 || i >= width || j < 0 || j >= height)
                     {
                         Total += f.OutofBoundValue * f.KernelMatrix[i2, j2];
                     }
                     else
                     {
-                        Total += Mat[i, j] * f.KernelMatrix[i2, j2];
+                        double val = Mat[i, j]*Mat[i,j] * f.KernelMatrix[i2, j2];
+                        double val2 = Math.Pow( Mat[i, j],2)  * f.KernelMatrix[i2, j2];
+                        Total += val;
+                        SecondTotal += val2;
+
                     }
                 }
             }
-
-            double Total2 = 0;
-         
+            if (Total != 0)
+            {
+                Total = SecondTotal / Total;
+            }
+          
+                if (Total < 0)
+            {
+                Total = 0;
+            }
             if (Total > 255)
             {
                 Total = 255;
             }
-            if ( Total < 0)
-            {
-                Total = 0;
-            }
+
 
             return (int)Total;
         }
+        static int ComputeMatrix(Filter f, int[,] Mat, int ip, int jp)
+        {
+            double Total = 0;
+            double tr = 0, tg = 0, tb = 0;
+            int i2 = 0, j2 = 0;
+            int order = f.Order;
+            int width = Mat.GetLength(0);
+            double SecondTotal = 0;
+            int height = Mat.GetLength(1);
+            int[] L = new int[9];
+            int evenodd = 1;
+            if (f.kY % 2 == 0)
+            {
+                evenodd = 0;
+            }
+            if (f.kY % 2 == 0)
+            {
+                evenodd = 0;
+            }
+            if (!f.name.Contains("order"))
+            {
+                for (int i = ip - (f.kX / 2); i < ip + (f.kX / 2) + evenodd; i++, i2++)
+                {
+                    j2 = 0;
 
+                    for (int j = jp - (f.kY / 2); j < jp + (f.kY / 2) + evenodd; j++, j2++)
+                    {
+
+                        if (f.name != "harmonic")
+                        {
+                            if (i < 0 || i >= width || j < 0 || j >= height)
+                            {
+                                Total += f.OutofBoundValue * f.KernelMatrix[i2, j2];
+                            }
+                            else
+                            {
+                                double val = Mat[i, j] * f.KernelMatrix[i2, j2];
+
+                                Total += val;
+                            }
+                        }
+                        else
+                        {
+                            if (i < 0 || i >= width || j < 0 || j >= height)
+                            {
+                                  double val = Math.Pow(f.OutofBoundValue, order - 1) * f.KernelMatrix[i2, j2];
+                                double val2 = Math.Pow(f.OutofBoundValue, order) * f.KernelMatrix[i2, j2];
+                                Total += val;
+                                SecondTotal += val2;
+                            }
+                            else
+                            {
+                                double val = Math.Pow(Mat[i, j] ,order-1) * f.KernelMatrix[i2, j2];
+                                double val2 = Math.Pow(Mat[i, j], order) * f.KernelMatrix[i2, j2];
+                                Total += val;
+                                SecondTotal += val2;
+
+                            }
+                        }
+                    }
+                }
+                if(f.name == "harmonic")
+                {
+                    if(Total != 0 )
+                    {
+                        Total = SecondTotal / Total;
+                    }
+                }
+            }
+            else
+            {
+                int k = 0;
+                for (int i = ip - (f.kX / 2); i < ip + (f.kX / 2) + evenodd; i++, i2++)
+
+
+                {
+                    for (int j = jp - (f.kY / 2); j < jp + (f.kY / 2) + evenodd; j++, j2++, k++)
+                    {
+                        if (i < 0 || i >= width || j < 0 || j >= height)
+                        {
+                            L[k] = 0;
+                        }
+                        else
+                        {
+                            L[k] = Mat[i, j];
+                        }
+                       }
+                }
+                Sorted(ref L);
+
+                    if (f.name.Contains("minimum"))
+                    {
+                    Total = L[0];
+                    }
+                    else if (f.name.Contains("maximum"))
+                    {
+                    Total = L[L.GetLength(0)-1];
+                }
+                    else if (f.name.Contains("median"))
+                    {
+                    Total = L[(L.GetLength(0) - 1) / 2];
+                    }
+                
+            }
+            double Total2 = 0;
+            if (f.name.Contains("Sobel") || f.name.Contains("RobertCross"))
+            {
+
+                if (Total < 0)
+                {
+                    Total *= -1;
+                }
+            }
+            if (Total < 0)
+            {
+                Total = 0;
+            }
+            if (Total > 255)
+            {
+                Total = 255;
+            }
+
+
+            return (int)Total;
+
+        }
+       static void Sorted(ref int[] L)
+        {
+            for(int  i = 0; i < L.Count(); i++)
+            {
+                for (int k = 1; k < L.Count(); k++)
+                {
+                    if(L[k] < L[k-1])
+                    {
+                        int tmp = L[k];
+                        L[k] = L[k - 1];
+                        L[k - 1] = tmp;
+                    }
+                }
+            }
+            
+        }
         public static void CreateMatrixfromImage(Bitmap img, ref int[,] r, ref int[,] g, ref int[,] b)
         {
-            r= new int[img.Width, img.Height];
-           g = new int[img.Width, img.Height];
+            r = new int[img.Width, img.Height];
+            g = new int[img.Width, img.Height];
             b = new int[img.Width, img.Height];
             for (int i = 0; i < img.Width; i++)
             {
@@ -426,7 +585,7 @@ namespace ImageFilters
                 }
 
             }
-        
+
         }
 
         public static Bitmap CreateImageFromMatrix(int[,] r, int[,] g, int[,] b)
@@ -436,7 +595,7 @@ namespace ImageFilters
             {
                 for (int j = 0; j < img.Height; j++)
                 {
-                    img.SetPixel(i, j, Color.FromArgb(r[i, j], g[i, j],b[i, j]));
+                    img.SetPixel(i, j, Color.FromArgb(r[i, j], g[i, j], b[i, j]));
                 }
 
             }
@@ -445,10 +604,10 @@ namespace ImageFilters
 
         public static int[,,] CreateMatrixfromImage(Bitmap img)
         {
-            int[,,] ImgMat = new int[img.Width, img.Height, 3]; 
-            for(int i = 0; i < img.Width; i++)
+            int[,,] ImgMat = new int[img.Width, img.Height, 3];
+            for (int i = 0; i < img.Width; i++)
             {
-                for(int j = 0; j < img.Height; j++)
+                for (int j = 0; j < img.Height; j++)
                 {
                     ImgMat[i, j, 0] = img.GetPixel(i, j).R;
                     ImgMat[i, j, 1] = img.GetPixel(i, j).G;
@@ -459,14 +618,14 @@ namespace ImageFilters
             return ImgMat;
         }
 
-        public static Bitmap CreateImageFromMatrix(int[,,] ImgMat )
+        public static Bitmap CreateImageFromMatrix(int[,,] ImgMat)
         {
             Bitmap img = new Bitmap(ImgMat.GetLength(0), ImgMat.GetLength(1));
             for (int i = 0; i < img.Width; i++)
             {
                 for (int j = 0; j < img.Height; j++)
                 {
-                    img.SetPixel(i, j, Color.FromArgb(ImgMat[i, j, 0], ImgMat[i, j, 1], ImgMat[i, j, 2])); 
+                    img.SetPixel(i, j, Color.FromArgb(ImgMat[i, j, 0], ImgMat[i, j, 1], ImgMat[i, j, 2]));
                 }
 
             }
@@ -487,7 +646,7 @@ namespace ImageFilters
 
             return temp;
         }
-
+      
         public static void CopyMat(ref int[,] Mat, ref int[,] MatOrigin)
         {
             Mat = new int[MatOrigin.GetLength(0), MatOrigin.GetLength(1)];
