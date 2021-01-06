@@ -16,8 +16,12 @@ namespace ImageFilters
         Filter Harmonic;
         Filter edge;
         Filter blur,blur2;
+        Filter UnsharpennoDiag;
         Filter sobelh;
         Filter sobelv;
+        Filter Emboss;
+        Filter Pewitt;
+        Filter Pewitt2;
         Filter saltAndPepper;
         Filter Median;
         bool equalize = false;
@@ -42,12 +46,16 @@ namespace ImageFilters
         {
             InitializeComponent();
             interpolationPanel.Hide();
-            sharpen = new Filter(ImageProcessor.laplaciansharpendiagonal, "Laplace Diagonal Sharpening");
-            edge = new Filter(ImageProcessor.laplacianedgediagonal, "Laplace Diagonal Edge");
+            sharpen = new Filter(ImageProcessor.laplaciansharpendiagonal, "Laplace Sharpening +D");
+            edge = new Filter(ImageProcessor.laplacianedgediagonal, "Laplace Edge + D");
             blur2 = new Filter(ImageProcessor.gaussianBlur, "Gaussian Blur");
             Median = new Filter(3, 1,"median order");
+            Pewitt = new Filter(ImageProcessor.previtHorizontal, "PewitH");
+            Pewitt2 = new Filter(ImageProcessor.previtVertical, "PewitV");
             Harmonic = new Filter(5,1, "harmonic");
+            Emboss = new Filter(ImageProcessor.Emboss, "Emboss Filter");
             Unsharpen = new Filter(3, 1, "UnSharpen");
+            UnsharpennoDiag = new Filter(ImageProcessor.laplaciansharpen, "Laplace Sharpen");
             Unsharpen2 = new Filter(3, 1, "UnSharpen HighBoost");
             blur = new Filter(5, 0.04f, "Mean Filter");
             sobelh = new Filter(ImageProcessor.sobelHorizontal, "SobelH");
@@ -55,17 +63,27 @@ namespace ImageFilters
             saltAndPepper = new Filter("Salt and Pepper");
             RobertCrossH = new Filter(ImageProcessor.RobertCrossHorizontal,"RobertCrossH");
             RobertCrossV = new Filter(ImageProcessor.RobertCrossVertical, "RobertCrossV");
+    
+   
+      
+    
+       
+    
+          
+            Filters.Add(edge.name, edge);
             Filters.Add("Sobel", sobelh);
-            Filters.Add(blur2.name, blur2);
-            Filters.Add(edge.name,edge);
+            Filters.Add("Pewit", Pewitt);
+            Filters.Add("RobertCross", RobertCrossH);
+            //Filters.Add("Emboss", Emboss);
             Filters.Add(blur.name, blur);
-            Filters.Add("ContraHarmonic Mean",Harmonic);
-            Filters.Add("RoberCross", RobertCrossH);
+            Filters.Add(blur2.name, blur2);
+            Filters.Add("Median Filter", Median);
+            Filters.Add("ContraHarmonic Mean", Harmonic);
             Filters.Add(sharpen.name, sharpen);
+            Filters.Add("Laplace Sharpen", UnsharpennoDiag);
             Filters.Add("UnSharpen", Unsharpen);
             Filters.Add("UnSharpen HighBoost", Unsharpen);
             Filters.Add(saltAndPepper.name, saltAndPepper);
-            Filters.Add("Median Filter", Median);
             PopulateListbox();
         }
 
@@ -109,7 +127,7 @@ namespace ImageFilters
                     Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
                     PreviewImage tmp = new PreviewImage(imgtmp);
                     Bitmap imgtmp2 = ImageProcessor.CopyImage(img.ViewedImage);
-                    PreviewImage tmp2 = new PreviewImage(imgtmp);
+                    PreviewImage tmp2 = new PreviewImage(imgtmp2);
                     tmp.filterImage(blur);
                     tmp2 = tmp2 - tmp;
                     int k = 5;
@@ -122,6 +140,15 @@ namespace ImageFilters
                         img = img + tmp2;
                     }
                         ViewImages();
+                }
+                else if(filterchosen.Contains("Pewit"))
+                {
+                    Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
+                    PreviewImage tmp = new PreviewImage(imgtmp);
+                    img.filterImage(Pewitt);
+                    tmp.filterImage(Pewitt2);
+                    img = img + tmp;
+                    ViewImages();
                 }
                 else
                 {
@@ -388,6 +415,37 @@ namespace ImageFilters
                 }
 
                 ViewImages();
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = openFileDialog1;
+            dialog.Title = "Open Image";
+            dialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap img3 = (Bitmap)Image.FromFile(dialog.FileName);
+                comparedImage = new PreviewImage((Bitmap)img3);
+                if (img3.Width == img.ViewedImage.Width && img3.Height == img.ViewedImage.Height)
+                {
+                    Bitmap imgtmp = ImageProcessor.CopyImage(img3);
+                    PreviewImage tmp = new PreviewImage(imgtmp);
+                    Bitmap imgtmp3 = ImageProcessor.CopyImage(img3);
+                    PreviewImage tmp3 = new PreviewImage(imgtmp3);
+                    Bitmap imgtmp2 = ImageProcessor.CopyImage(img.ViewedImage);
+                    PreviewImage tmp2 = new PreviewImage(imgtmp2);
+                    tmp.filterImage(blur);
+                    tmp2.filterImage(blur);
+                    tmp3 = tmp3 - tmp;
+                    img = tmp3 + tmp2;
+                    ViewImages();
+                }
+
+
+
+
             }
         }
 

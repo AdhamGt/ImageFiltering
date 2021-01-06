@@ -16,6 +16,7 @@ namespace ImageFilters
         public static double[,] laplaciansharpendiagonal = new double[3, 3] { { -1, -1, -1 }, { -1, 9, -1 }, { -1, -1, -1 } };
         public static double[,] previtHorizontal = { { 1, 1, 1 }, { 0, 0, 0 }, { -1, -1, -1 } };
         public static double[,] previtVertical = { { 1, 0, -1 }, { 1, 0, -1 }, { 1, 0, -1 }};
+        public static double[,] Emboss  = { { 0,-1, 0 }, { 0, 0, 0 }, { 0, 1, 0 } };
         public static double[,] gaussianBlur = { { 0.0625, 0.125, 0.0625 }, { 0.125, 0.25, 0.125 }, { 0.0625, 0.125, 0.0625 } };
         public static double[,] sobelHorizontal = new double[3, 3] { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
         public static double[,] sobelVertical = new double[3, 3] { { 1, 0, -1 }, { 2, 0, -2 }, { 1, 0, -1 } };
