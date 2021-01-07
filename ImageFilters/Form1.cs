@@ -98,9 +98,13 @@ namespace ImageFilters
             Filters.Add("UnSharpen", Unsharpen);
             Filters.Add("UnSharpen HighBoost", Unsharpen);
             Filters.Add(saltAndPepper.name, saltAndPepper);
+<<<<<<< Updated upstream
             Filters.Add(log.name, log);
             Filters.Add(squareroot.name, squareroot);
             Filters.Add(nthroot.name, nthroot);
+=======
+            Filters.Add("Cartoon", null);
+>>>>>>> Stashed changes
             //Filters.Add(avgNoiseReduction.name, avgNoiseReduction);
             //Filters.Add(gaussianNoise.name, gaussianNoise);
             PopulateListbox();
@@ -205,6 +209,7 @@ namespace ImageFilters
                     tmp.filterImage(Pewitt2);
                     img = img + tmp;
                 }
+<<<<<<< Updated upstream
                 else if(filterchosen == "Log Operator")
                 {
                     int[,] logMat = ImageProcessor.applyLogarithmicTransformation(img.Mat);
@@ -225,6 +230,32 @@ namespace ImageFilters
                     img.Mat = squarerootMat;
                     img.GetViewedImage();
                     img.previewStages.Add(new PreviewState(img.stages, log, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.CopyMat(), img.isColorised, img.brightness, img.contrast, img.saturation));
+=======
+                else if(filterchosen.Contains("Cartoon"))
+                    {
+                    Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
+                    Bitmap imgtmp2 = ImageProcessor.CopyImage(img.ViewedImage);
+                 
+                    PreviewImage tmp = new PreviewImage(imgtmp);
+
+                    PreviewImage tmp2 = new PreviewImage(imgtmp2);
+                    for (int i = 0; i < 2; i++)
+                    {
+                        tmp.filterImage(Median);
+                        tmp2.filterImage(Median);
+                    }
+
+                    tmp.filterImage(sobelh);
+
+                   tmp2.filterImage(sobelv);
+                    tmp = tmp + tmp2;
+                    for (int i = 0; i < 6; i++)
+                    {
+                        img.filterImage(blur);
+                    }
+                    img = img - tmp;
+                    ViewImages();
+>>>>>>> Stashed changes
                 }
                 else
                 {
@@ -293,17 +324,6 @@ namespace ImageFilters
                 if (filterchosen != "")
                 {
                     label1.Text = filterchosen;
-
-                    if (filterchosen == "Nth-root Operator")
-                    {
-                        powerLabel.Show();
-                        powerTrackBar.Show();
-                    }
-                    else
-                    {
-                        powerLabel.Hide();
-                        powerTrackBar.Hide();
-                    }
                 }
             }
         }
@@ -363,6 +383,835 @@ namespace ImageFilters
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<<<<<<< Updated upstream
+                if (filterchosen != "")
+                {
+                    label1.Text = filterchosen;
+
+                    if (filterchosen == "Nth-root Operator")
+                    {
+                        powerLabel.Show();
+                        powerTrackBar.Show();
+                    }
+                    else
+                    {
+                        powerLabel.Hide();
+                        powerTrackBar.Hide();
+                    }
+                }
+            }
+        }
+=======
+>>>>>>> Stashed changes
+
+
+
+
+
+
+
+
+
+
 
         }
 
@@ -516,6 +1365,29 @@ namespace ImageFilters
 
         private void button2_Click(object sender, EventArgs e)
         {
+          
+        }
+        
+        private void fourierButton_Click(object sender, EventArgs e)
+        {
+            img.applyFFT();
+            ViewImages();
+        }
+
+        private void revertButton_Click(object sender, EventArgs e)
+        {
+            if(!NoImage)
+            {
+                img.revertState();
+                img.UpdateImage(isColorised);
+                img2.UpdateImage(isColorised);
+                ViewImages();
+                updateTrackBars();
+            }
+        }
+
+        private void VisaulEffect_Click(object sender, EventArgs e)
+        {
             OpenFileDialog dialog = openFileDialog1;
             dialog.Title = "Open Image";
             dialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
@@ -532,14 +1404,25 @@ namespace ImageFilters
                     PreviewImage tmp3 = new PreviewImage(imgtmp3);
                     Bitmap imgtmp2 = ImageProcessor.CopyImage(img.ViewedImage);
                     PreviewImage tmp2 = new PreviewImage(imgtmp2);
-                    tmp.filterImage(blur);
-                    tmp2.filterImage(blur);
-                    tmp3 = tmp3 - tmp;
-                    img = tmp3 + tmp2;
+                    tmp.filterImage(Median);
+                    tmp3.filterImage(Median);
+                    tmp.filterImage(Median);
+                    tmp3.filterImage(Median);
+                    tmp.filterImage(Median);
+                    tmp3.filterImage(Median);
+                    tmp.filterImage(Pewitt);
+                    tmp3.filterImage(Pewitt2);
+
+                    tmp2.filterImage(Median);
+                    tmp2.filterImage(Median);
+                    tmp2.filterImage(Median);
+                    tmp2.filterImage(Median);
+                    img = tmp + tmp2;
                     ViewImages();
                 }
             }
         }
+<<<<<<< Updated upstream
         
         private void fourierButton_Click(object sender, EventArgs e)
         {
@@ -563,6 +1446,8 @@ namespace ImageFilters
                 updateTrackBars();
             }
         }
+=======
+>>>>>>> Stashed changes
 
         private void saturationTrackBar_Scroll(object sender, EventArgs e)
         {
