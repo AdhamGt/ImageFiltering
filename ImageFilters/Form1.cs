@@ -51,7 +51,7 @@ namespace ImageFilters
         bool NoImage = true;
         Filter Unsharpen;
         double power = 0;
-        double[] powers = new double[8] { 0.1f, 0.2f, 0.4f,0.5f,1, 2.5f, 5, 10 };
+        double[] powers = new double[8] { 0.1f, 0.2f, 0.4f, 0.5f, 1, 2.5f, 5, 10 };
 
         public Form1()
         {
@@ -115,6 +115,7 @@ namespace ImageFilters
             fourierButton.Hide();
             powerLabel.Hide();
             powerTrackBar.Hide();
+            powerValLabel.Hide();
         }
 
         void PopulateListbox()
@@ -324,11 +325,13 @@ namespace ImageFilters
                     {
                         powerLabel.Show();
                         powerTrackBar.Show();
+                        powerValLabel.Show();
                     }
                     else
                     {
                         powerLabel.Hide();
                         powerTrackBar.Hide();
+                        powerValLabel.Hide();
                     }
                 }
             }
@@ -464,6 +467,7 @@ namespace ImageFilters
         private void interpolationTrackBar_Scroll(object sender, EventArgs e)
         {
             enlargmentscale = interpolationTrackBar.Value + 1;
+            multiplierLabel.Text = "x" + enlargmentscale;
         }
 
         private void filtersLabel_Click(object sender, EventArgs e)
@@ -576,6 +580,7 @@ namespace ImageFilters
         private void powerTrackBar_Scroll(object sender, EventArgs e)
         {
             power = powers[powerTrackBar.Value];
+            powerValLabel.Text = (float)power + "";
         }
 
         private void revertButton_Click(object sender, EventArgs e)
