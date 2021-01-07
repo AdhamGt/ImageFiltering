@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ImageFilters
 {
@@ -83,11 +84,35 @@ namespace ImageFilters
             return radian * 180 / Math.PI;
         }
 
-        static int[,] applyLogarithmicTransformation(double[,] mat)
+        public static int[,] applyNthRootOperator(int[,] mat, double power)
         {
             int[,] resultMat = new int[mat.GetLength(0), mat.GetLength(1)];
-            double magnitude = Math.Sqrt(Math.Pow(mat.GetLength(0), 2) + Math.Pow(mat.GetLength(1), 2));
-            double constant = 255 / Math.Log(1 + Math.Abs(magnitude));
+            double constant = 255 / Math.Pow(255, power);
+
+            for (int r = 0; r < mat.GetLength(0); r++)
+            {
+                for (int c = 0; c < mat.GetLength(1); c++)
+                {
+                    resultMat[r, c] = (int)(constant * (Math.Pow(mat[r, c], power)));
+
+                    if (resultMat[r, c] < 0)
+                    {
+                        resultMat[r, c] = 0;
+                    }
+                    if (resultMat[r, c] > 255)
+                    {
+                        resultMat[r, c] = 255;
+                    }
+                }
+            }
+
+            return resultMat;
+        }
+
+        public static int[,] applyLogarithmicTransformation(int[,] mat)
+        {
+            int[,] resultMat = new int[mat.GetLength(0), mat.GetLength(1)];
+            double constant = 255 / Math.Log(256);
 
             for (int r = 0; r < mat.GetLength(0); r++)
             {
@@ -610,7 +635,6 @@ namespace ImageFilters
                     }
                 }
             }
-
         }
 
         public static void CreateMatrixfromImage(Bitmap img, ref int[,] r, ref int[,] g, ref int[,] b)
@@ -741,29 +765,29 @@ namespace ImageFilters
             int max = Math.Max(r, g);
             max = Math.Max(max, b);
             int difference = max - min;
-            double s = 0, h = 0;
+            double s = 0, h = 0, v = max * 100;
 
             if (max != 0)
             {
-                s = difference / max;
+                s = (double)difference / (double)max * 100;
             }
             if (difference != 0)
             {
                 if (r == max)
                 {
-                    h = 60 * (((g - b) / difference) % 6);
+                    h = ((60 * ((g - b) / difference)) + 360) % 360;
                 }
                 else if (g == max)
                 {
-                    h = 60 * (((b - r) / difference) + 2);
+                    h = ((60 * ((b - r) / difference)) + 120) % 360;
                 }
                 else
                 {
-                    h = 60 * (((r - g) / difference) + 4);
+                    h = ((60 * ((r - g) / difference)) + 240) % 360;
                 }
             }
-
-            return new double[3] { h, s, max };
+            
+            return new double[3] { h, s, v };
         }
 
         public static Color HSVToRGB(double[] hsv)
@@ -774,57 +798,63 @@ namespace ImageFilters
             double h = hsv[0];
             double s = hsv[1];
             double v = hsv[2];
+            h /= 60;
+            s /= 100;
+            v /= 100;
+            double m = 0;
 
-            if (s == 0)
+            if (s <= 0)
             {
                 r = v;
                 g = v;
                 b = v;
             }
+            else
+            {
+                double c = v * s;
+                double x = c * (1 - Math.Abs((h % 2) - 1));
+                m = v - c;
+                //double p = v * (1 - s);
 
-            double c = v * s;
-            double x = c * (1 - Math.Abs((h / 60) % (2 - 1)));
-            double m = v - c;
-
-            if (h >= 0 && h < 60)
-            {
-                r = c;
-                g = x;
-                b = 0;
-            }
-            if (h >= 60 && h < 120)
-            {
-                r = x;
-                g = c;
-                b = 0;
-            }
-            if (h >= 120 && h < 180)
-            {
-                r = 0;
-                g = c;
-                b = x;
-            }
-            if (h >= 180 && h < 240)
-            {
-                r = 0;
-                g = x;
-                b = c;
-            }
-            if (h >= 240 && h < 300)
-            {
-                r = x;
-                g = 0;
-                b = c;
-            }
-            if (h >= 300 && h < 360)
-            {
-                r = c;
-                g = 0;
-                b = x;
+                if (h >= 0 && h <= 1)
+                {
+                    r = c;
+                    g = x;
+                    b = 0;
+                }
+                if (h > 1 && h <= 2)
+                {
+                    r = x;
+                    g = c;
+                    b = 0;
+                }
+                if (h > 2 && h <= 3)
+                {
+                    r = 0;
+                    g = c;
+                    b = x;
+                }
+                if (h > 3 && h <= 4)
+                {
+                    r = 0;
+                    g = x;
+                    b = c;
+                }
+                if (h > 4 && h <= 5)
+                {
+                    r = x;
+                    g = 0;
+                    b = c;
+                }
+                if (h > 5 && h <= 6)
+                {
+                    r = c;
+                    g = 0;
+                    b = x;
+                }
             }
 
-            return Color.FromArgb((int)((r + m) * 255), (int)((g + m) * 255), (int)((b + m) * 255));
-
+            return Color.FromArgb((int)(r + m), (int)(g + m), (int)(b + m));
         }
     }
  }

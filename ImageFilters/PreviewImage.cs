@@ -261,7 +261,7 @@ namespace ImageFilters
             return ColorisedImage;
         }
 
-        int[,] CopyMat()
+        public int[,] CopyMat()
         {
             int[,] MatOrigin = new int[OriginalImage.Width, OriginalImage.Height];
 

@@ -66,6 +66,8 @@ namespace ImageFilters
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.button1 = new System.Windows.Forms.Button();
             this.revertButton = new System.Windows.Forms.Button();
+            this.powerTrackBar = new System.Windows.Forms.TrackBar();
+            this.powerLabel = new System.Windows.Forms.Label();
             this.filtersPanel.SuspendLayout();
             this.interpolationPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.interpolationTrackBar)).BeginInit();
@@ -74,6 +76,7 @@ namespace ImageFilters
             ((System.ComponentModel.ISupportInitialize)(this.saturationTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.contrastTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.powerTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // filtersListBox
@@ -87,7 +90,7 @@ namespace ImageFilters
             // 
             // applyFilterButton
             // 
-            this.applyFilterButton.Location = new System.Drawing.Point(154, 58);
+            this.applyFilterButton.Location = new System.Drawing.Point(160, 58);
             this.applyFilterButton.Name = "applyFilterButton";
             this.applyFilterButton.Size = new System.Drawing.Size(118, 23);
             this.applyFilterButton.TabIndex = 4;
@@ -107,6 +110,8 @@ namespace ImageFilters
             // 
             // filtersPanel
             // 
+            this.filtersPanel.Controls.Add(this.powerLabel);
+            this.filtersPanel.Controls.Add(this.powerTrackBar);
             this.filtersPanel.Controls.Add(this.label1);
             this.filtersPanel.Controls.Add(this.applyFilterButton);
             this.filtersPanel.Controls.Add(this.filtersListBox);
@@ -149,9 +154,9 @@ namespace ImageFilters
             this.label.AutoSize = true;
             this.label.Location = new System.Drawing.Point(13, 47);
             this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(110, 13);
+            this.label.Size = new System.Drawing.Size(54, 13);
             this.label.TabIndex = 8;
-            this.label.Text = "Histogram and Fourier";
+            this.label.Text = "Histogram";
             this.label.Click += new System.EventHandler(this.histogramLabel_Click);
             // 
             // editingLabel
@@ -431,6 +436,24 @@ namespace ImageFilters
             this.revertButton.UseVisualStyleBackColor = true;
             this.revertButton.Click += new System.EventHandler(this.revertButton_Click);
             // 
+            // powerTrackBar
+            // 
+            this.powerTrackBar.Location = new System.Drawing.Point(160, 127);
+            this.powerTrackBar.Maximum = 6;
+            this.powerTrackBar.Name = "powerTrackBar";
+            this.powerTrackBar.Size = new System.Drawing.Size(118, 45);
+            this.powerTrackBar.TabIndex = 9;
+            this.powerTrackBar.Scroll += new System.EventHandler(this.powerTrackBar_Scroll);
+            // 
+            // powerLabel
+            // 
+            this.powerLabel.AutoSize = true;
+            this.powerLabel.Location = new System.Drawing.Point(193, 98);
+            this.powerLabel.Name = "powerLabel";
+            this.powerLabel.Size = new System.Drawing.Size(37, 13);
+            this.powerLabel.TabIndex = 10;
+            this.powerLabel.Text = "Power";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -445,10 +468,10 @@ namespace ImageFilters
             this.Controls.Add(this.editingLabel);
             this.Controls.Add(this.label);
             this.Controls.Add(this.filtersLabel);
-            this.Controls.Add(this.histogramPanel);
-            this.Controls.Add(this.imageEditingPanel);
             this.Controls.Add(this.filtersPanel);
             this.Controls.Add(this.interpolationPanel);
+            this.Controls.Add(this.histogramPanel);
+            this.Controls.Add(this.imageEditingPanel);
             this.Name = "Form1";
             this.Text = "Image Processing";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -463,6 +486,7 @@ namespace ImageFilters
             ((System.ComponentModel.ISupportInitialize)(this.saturationTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.contrastTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.powerTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -505,6 +529,8 @@ namespace ImageFilters
         private Button button1;
         private Button revertButton;
         private Button fourierButton;
+        private Label powerLabel;
+        private TrackBar powerTrackBar;
     }
 }
 

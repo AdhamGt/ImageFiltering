@@ -26,6 +26,10 @@ namespace ImageFilters
         Filter Median;
         Filter gaussianNoise;
         Filter avgNoiseReduction;
+        Filter log;
+        Filter squareroot, nthroot;
+        Filter min;
+        Filter max;
         bool equalize = false;
         int interpolationMode = 0;
         double enlargmentscale = 2f;
@@ -44,6 +48,8 @@ namespace ImageFilters
         int saturation = 0;
         bool NoImage = true;
         Filter Unsharpen;
+        double power = 0;
+        double[] powers = new double[7] { 0.1f, 0.2f, 0.4f, 1, 2.5f, 5, 10 };
 
         public Form1()
         {
@@ -58,6 +64,8 @@ namespace ImageFilters
             Harmonic = new Filter(5,1, "harmonic");
             Emboss = new Filter(ImageProcessor.Emboss, "Emboss Filter");
             Median = new Filter(3, 1, "median order");
+            min = new Filter(3, 1, "minimum order");
+            max = new Filter(3, 1, "maximum order");
             Harmonic = new Filter(5, 1, "harmonic");
             Unsharpen = new Filter(3, 1, "UnSharpen");
             UnsharpennoDiag = new Filter(ImageProcessor.laplaciansharpen, "Laplace Sharpen");
@@ -68,6 +76,9 @@ namespace ImageFilters
             saltAndPepper = new Filter("Salt and Pepper");
             RobertCrossH = new Filter(ImageProcessor.RobertCrossHorizontal, "RobertCrossH");
             RobertCrossV = new Filter(ImageProcessor.RobertCrossVertical, "RobertCrossV");
+            log = new Filter("Log Operator");
+            squareroot = new Filter("Square-root Operator");
+            nthroot = new Filter("Nth-root Operator");
             //gaussianNoise = new Filter("Gaussian Noise");
             //avgNoiseReduction = new Filter("Average Noise Reduction");
 
@@ -78,6 +89,8 @@ namespace ImageFilters
             Filters.Add(blur.name, blur);
             Filters.Add(blur2.name, blur2);
             Filters.Add("Median Filter", Median);
+            Filters.Add("Minimum Filter", min);
+            Filters.Add("Maximum Filter", max);
             Filters.Add("ContraHarmonic Mean", Harmonic);
             Filters.Add("Robert Cross", RobertCrossH);
             Filters.Add(sharpen.name, sharpen);
@@ -85,12 +98,17 @@ namespace ImageFilters
             Filters.Add("UnSharpen", Unsharpen);
             Filters.Add("UnSharpen HighBoost", Unsharpen);
             Filters.Add(saltAndPepper.name, saltAndPepper);
+            Filters.Add(log.name, log);
+            Filters.Add(squareroot.name, squareroot);
+            Filters.Add(nthroot.name, nthroot);
             //Filters.Add(avgNoiseReduction.name, avgNoiseReduction);
             //Filters.Add(gaussianNoise.name, gaussianNoise);
             PopulateListbox();
 
 
             fourierButton.Hide();
+            powerLabel.Hide();
+            powerTrackBar.Hide();
         }
 
         void PopulateListbox()
@@ -103,7 +121,6 @@ namespace ImageFilters
 
         private void applyFilterButton_Click(object sender, EventArgs e)
         {
-
             //pictureBox1.Image = nw.returnGraytoImage();
 
             if (filterchosen != "" && !NoImage)
@@ -188,6 +205,27 @@ namespace ImageFilters
                     tmp.filterImage(Pewitt2);
                     img = img + tmp;
                 }
+                else if(filterchosen == "Log Operator")
+                {
+                    int[,] logMat = ImageProcessor.applyLogarithmicTransformation(img.Mat);
+                    img.Mat = logMat;
+                    img.GetViewedImage();
+                    img.previewStages.Add(new PreviewState(img.stages, log, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.CopyMat(), img.isColorised, img.brightness, img.contrast, img.saturation));
+                }
+                else if (filterchosen == "Square-root Operator")
+                {
+                    int[,] squarerootMat = ImageProcessor.applyNthRootOperator(img.Mat, 0.5f);
+                    img.Mat = squarerootMat;
+                    img.GetViewedImage();
+                    img.previewStages.Add(new PreviewState(img.stages, log, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.CopyMat(), img.isColorised, img.brightness, img.contrast, img.saturation));
+                }
+                else if (filterchosen == "Nth-root Operator")
+                {
+                    int[,] squarerootMat = ImageProcessor.applyNthRootOperator(img.Mat, power);
+                    img.Mat = squarerootMat;
+                    img.GetViewedImage();
+                    img.previewStages.Add(new PreviewState(img.stages, log, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.CopyMat(), img.isColorised, img.brightness, img.contrast, img.saturation));
+                }
                 else
                 {
                     if (filterchosen == "Salt and Pepper")
@@ -255,6 +293,17 @@ namespace ImageFilters
                 if (filterchosen != "")
                 {
                     label1.Text = filterchosen;
+
+                    if (filterchosen == "Nth-root Operator")
+                    {
+                        powerLabel.Show();
+                        powerTrackBar.Show();
+                    }
+                    else
+                    {
+                        powerLabel.Hide();
+                        powerTrackBar.Hide();
+                    }
                 }
             }
         }
@@ -496,6 +545,11 @@ namespace ImageFilters
         {
             img.applyFFT();
             ViewImages();
+        }
+
+        private void powerTrackBar_Scroll(object sender, EventArgs e)
+        {
+            power = powers[powerTrackBar.Value];
         }
 
         private void revertButton_Click(object sender, EventArgs e)
