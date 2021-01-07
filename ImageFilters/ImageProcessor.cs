@@ -757,19 +757,19 @@ namespace ImageFilters
 
         public static double[] RGBToHSV(Color c)
         {
-            int r = c.R / 255;
-            int g = c.G / 255;
-            int b = c.B / 255;
-            int min = Math.Min(r, g);
+            double r = (double)c.R / 255.0f;
+            double g = (double)c.G / 255.0f;
+            double b = (double)c.B / 255.0f;
+            double min = Math.Min(r, g);
             min = Math.Min(min, b);
-            int max = Math.Max(r, g);
+            double max = Math.Max(r, g);
             max = Math.Max(max, b);
-            int difference = max - min;
+            double difference = max - min;
             double s = 0, h = 0, v = max * 100;
 
             if (max != 0)
             {
-                s = (double)difference / (double)max * 100;
+                s = difference / max * 100;
             }
             if (difference != 0)
             {
@@ -798,7 +798,6 @@ namespace ImageFilters
             double h = hsv[0];
             double s = hsv[1];
             double v = hsv[2];
-            h /= 60;
             s /= 100;
             v /= 100;
             double m = 0;
@@ -812,41 +811,40 @@ namespace ImageFilters
             else
             {
                 double c = v * s;
-                double x = c * (1 - Math.Abs((h % 2) - 1));
+                double x = c * (1 - Math.Abs(((h / 60) % 2) - 1));
                 m = v - c;
-                //double p = v * (1 - s);
 
-                if (h >= 0 && h <= 1)
+                if (h >= 0 && h < 60)
                 {
                     r = c;
                     g = x;
                     b = 0;
                 }
-                if (h > 1 && h <= 2)
+                if (h >= 60 && h < 120)
                 {
                     r = x;
                     g = c;
                     b = 0;
                 }
-                if (h > 2 && h <= 3)
+                if (h >= 120 && h < 180)
                 {
                     r = 0;
                     g = c;
                     b = x;
                 }
-                if (h > 3 && h <= 4)
+                if (h >= 180 && h < 240)
                 {
                     r = 0;
                     g = x;
                     b = c;
                 }
-                if (h > 4 && h <= 5)
+                if (h >= 240 && h < 300)
                 {
                     r = x;
                     g = 0;
                     b = c;
                 }
-                if (h > 5 && h <= 6)
+                if (h >= 300 && h < 360)
                 {
                     r = c;
                     g = 0;
@@ -854,7 +852,12 @@ namespace ImageFilters
                 }
             }
 
-            return Color.FromArgb((int)(r + m), (int)(g + m), (int)(b + m));
+            r = (r + m) * 255;
+            g = (g + m) * 255;
+            b = (b + m) * 255;
+            RangeColors(ref r, ref g, ref b);
+
+            return Color.FromArgb((int)r, (int)g, (int)b);
         }
     }
  }

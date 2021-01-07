@@ -489,7 +489,6 @@ namespace ImageFilters
         {
             this.saturation = saturation;
             Bitmap saturatedImage = ImageProcessor.CopyImage(ColorisedImage);
-            double factor = saturation / 100;
 
             for (int r = 0; r < saturatedImage.Width; r++)
             {
@@ -500,7 +499,7 @@ namespace ImageFilters
                     int blue = saturatedImage.GetPixel(r, c).B;
 
                     double[] hsv = ImageProcessor.RGBToHSV(Color.FromArgb(red, green, blue));
-                    hsv[1] = factor;
+                    hsv[1] += Math.Min(hsv[1], hsv[1] + saturation);
                     Color color = ImageProcessor.HSVToRGB(hsv);
                     saturatedImage.SetPixel(r, c, color);
                 }
