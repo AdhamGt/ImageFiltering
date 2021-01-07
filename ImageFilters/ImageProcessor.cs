@@ -117,12 +117,10 @@ namespace ImageFilters
             {
                 for (int c = 0; c < mat.GetLength(1); c++)
                 {
-                    if (kernel[r, c] >= 240)
                     if (kernel[r, c] >= 255 - ratio)
                     {
                         mat[r, c] = (int)kernel[r, c];
                     }
-                    else if (kernel[r, c] <= 15)
                     else if (kernel[r, c] <= 0 + ratio)
                     {
                         mat[r, c] = (int)kernel[r, c];
@@ -470,28 +468,6 @@ namespace ImageFilters
 
             return Color.FromArgb((int)rf, (int)gf, (int)bf);
         }
-        
-        static int ComputeHarmonic(Filter f , int[,] Mat , int ip , int jp )
-        {
-            double Total = 0;
-            double tr = 0, tg = 0, tb = 0;
-            int i2 = 0, j2 = 0;
-            int width = Mat.GetLength(0);
-            int height = Mat.GetLength(1);
-            double SecondTotal = 0;
-            int[] L = new int[9];
-            int evenodd = 1;
-            if (f.kY % 2 == 0)
-            {
-                evenodd = 0;
-            }
-            if (f.kY % 2 == 0)
-                for (int j = jp - (f.kY / 2); j < jp + (f.kY / 2) + evenodd; j++, j2++)
-
-                    {
-            if (Total != 0)
-            }
-            }
 
         static int ComputeMatrix(Filter f, int[,] Mat, int ip, int jp)
         {
@@ -583,7 +559,6 @@ namespace ImageFilters
 
                 Sorted(ref L);
 
-                    if (f.name.Contains("minimum"))
                 if (f.name.Contains("minimum"))
                 {
                     Total = L[0];
@@ -601,7 +576,7 @@ namespace ImageFilters
 
             double Total2 = 0;
 
-            if (f.name.Contains("Sobel") || f.name.Contains("RobertCross"))
+            if (f.name.Contains("Sobel") || f.name.Contains("Robert Cross"))
             {
 
                 if (Total < 0)
