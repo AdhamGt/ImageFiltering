@@ -34,6 +34,7 @@ namespace ImageFilters
         //    for (int r = 0; r < mat.GetLength(0); r++)
         //    {
         //        for (int c = 0; c < mat.GetLength(1); c++)
+        //        {
         //            double theta1 = (2 * Math.PI / mat.GetLength(0)) * u * r;
         //            double theta2 = (2 * Math.PI / mat.GetLength(1)) * v * c;
 
@@ -75,10 +76,12 @@ namespace ImageFilters
         public static double calcRadian(double theta)
         {
             return theta * Math.PI / 180;
+        }
 
         public static double calcTheta(double radian)
         {
             return radian * 180 / Math.PI;
+        }
 
         static int[,] applyLogarithmicTransformation(double[,] mat)
         {
@@ -87,6 +90,7 @@ namespace ImageFilters
             double constant = 255 / Math.Log(1 + Math.Abs(magnitude));
 
             for (int r = 0; r < mat.GetLength(0); r++)
+            {
                 for (int c = 0; c < mat.GetLength(1); c++)
                 {
                     resultMat[r, c] = (int)(constant * Math.Log(1 + Math.Abs(mat[r, c])));
@@ -114,10 +118,12 @@ namespace ImageFilters
                 for (int c = 0; c < mat.GetLength(1); c++)
                 {
                     if (kernel[r, c] >= 240)
+                    if (kernel[r, c] >= 255 - ratio)
                     {
                         mat[r, c] = (int)kernel[r, c];
                     }
                     else if (kernel[r, c] <= 15)
+                    else if (kernel[r, c] <= 0 + ratio)
                     {
                         mat[r, c] = (int)kernel[r, c];
                     }
@@ -151,6 +157,14 @@ namespace ImageFilters
                 for (int j = 0; j < height; j++)
                 {
                     Mat[i, j] = ComputeMatrix(f, mat2, i, j);
+                    if (f.name == "GaussianNoise")
+                    {
+                        Mat[i, j] += (int)f.KernelMatrix[i, j];
+                    }
+                    else
+                    {
+                        Mat[i, j] = ComputeMatrix(f, mat2, i, j);
+                    }
                 }
             }
 
@@ -182,6 +196,7 @@ namespace ImageFilters
         public static int[,] imgRevered(int[,] Mat)
         {
             int[,] Matpad = new int[Mat.GetLength(1), Mat.GetLength(0)];
+
             for (int i = 0; i < Matpad.GetLength(0); i++)
             {
                 for (int j = 0; j < Matpad.GetLength(1); j++)

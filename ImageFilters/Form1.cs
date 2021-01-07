@@ -144,7 +144,9 @@ namespace ImageFilters
                         img = img + tmp2;
                     }
                 }
+                else if (filterchosen == "Average Noise Reduction")
                 {
+                    List<PreviewImage> noisyImages = new List<PreviewImage>();
 
                     ///fill list
 
@@ -153,6 +155,8 @@ namespace ImageFilters
                     for (int r = 0; r < img.ViewedImage.Width; r++)
                     {
                         for (int c = 0; c < img.ViewedImage.Height; c++)
+                        {
+                            int redTotal = 0, greenTotal = 0, blueTotal = 0;
 
                             for (int i = 0; i < noisyImages.Count; i++)
                             {
@@ -160,6 +164,7 @@ namespace ImageFilters
                                 redTotal += color.R;
                                 greenTotal += color.G;
                                 blueTotal += color.B;
+                            }
 
                             redTotal /= noisyImages.Count;
                             greenTotal /= noisyImages.Count;
@@ -310,6 +315,7 @@ namespace ImageFilters
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
         }
 
         private void histogramButton_Click(object sender, EventArgs e)
@@ -489,11 +495,13 @@ namespace ImageFilters
 
         private void fourierButton_Click(object sender, EventArgs e)
         {
+            img.applyFFT();
             ViewImages();
         }
 
         private void revertButton_Click(object sender, EventArgs e)
         {
+            if(!NoImage)
             {
                 img.revertState();
                 img.UpdateImage(isColorised);
