@@ -34,6 +34,8 @@ namespace ImageFilters
             this.applyFilterButton = new System.Windows.Forms.Button();
             this.grayScaleButton = new System.Windows.Forms.Button();
             this.filtersPanel = new System.Windows.Forms.Panel();
+            this.powerLabel = new System.Windows.Forms.Label();
+            this.powerTrackBar = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.undoButton = new System.Windows.Forms.Button();
             this.filtersLabel = new System.Windows.Forms.Label();
@@ -66,9 +68,8 @@ namespace ImageFilters
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.button1 = new System.Windows.Forms.Button();
             this.revertButton = new System.Windows.Forms.Button();
-            this.powerTrackBar = new System.Windows.Forms.TrackBar();
-            this.powerLabel = new System.Windows.Forms.Label();
             this.filtersPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.powerTrackBar)).BeginInit();
             this.interpolationPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.interpolationTrackBar)).BeginInit();
             this.histogramPanel.SuspendLayout();
@@ -76,7 +77,6 @@ namespace ImageFilters
             ((System.ComponentModel.ISupportInitialize)(this.saturationTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.contrastTrackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.powerTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // filtersListBox
@@ -119,6 +119,24 @@ namespace ImageFilters
             this.filtersPanel.Name = "filtersPanel";
             this.filtersPanel.Size = new System.Drawing.Size(284, 355);
             this.filtersPanel.TabIndex = 6;
+            // 
+            // powerLabel
+            // 
+            this.powerLabel.AutoSize = true;
+            this.powerLabel.Location = new System.Drawing.Point(193, 98);
+            this.powerLabel.Name = "powerLabel";
+            this.powerLabel.Size = new System.Drawing.Size(37, 13);
+            this.powerLabel.TabIndex = 10;
+            this.powerLabel.Text = "Power";
+            // 
+            // powerTrackBar
+            // 
+            this.powerTrackBar.Location = new System.Drawing.Point(160, 127);
+            this.powerTrackBar.Maximum = 7;
+            this.powerTrackBar.Name = "powerTrackBar";
+            this.powerTrackBar.Size = new System.Drawing.Size(118, 45);
+            this.powerTrackBar.TabIndex = 9;
+            this.powerTrackBar.Scroll += new System.EventHandler(this.powerTrackBar_Scroll);
             // 
             // label1
             // 
@@ -436,24 +454,6 @@ namespace ImageFilters
             this.revertButton.UseVisualStyleBackColor = true;
             this.revertButton.Click += new System.EventHandler(this.revertButton_Click);
             // 
-            // powerTrackBar
-            // 
-            this.powerTrackBar.Location = new System.Drawing.Point(160, 127);
-            this.powerTrackBar.Maximum = 6;
-            this.powerTrackBar.Name = "powerTrackBar";
-            this.powerTrackBar.Size = new System.Drawing.Size(118, 45);
-            this.powerTrackBar.TabIndex = 9;
-            this.powerTrackBar.Scroll += new System.EventHandler(this.powerTrackBar_Scroll);
-            // 
-            // powerLabel
-            // 
-            this.powerLabel.AutoSize = true;
-            this.powerLabel.Location = new System.Drawing.Point(193, 98);
-            this.powerLabel.Name = "powerLabel";
-            this.powerLabel.Size = new System.Drawing.Size(37, 13);
-            this.powerLabel.TabIndex = 10;
-            this.powerLabel.Text = "Power";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -477,6 +477,7 @@ namespace ImageFilters
             this.Load += new System.EventHandler(this.Form1_Load);
             this.filtersPanel.ResumeLayout(false);
             this.filtersPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.powerTrackBar)).EndInit();
             this.interpolationPanel.ResumeLayout(false);
             this.interpolationPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.interpolationTrackBar)).EndInit();
@@ -486,7 +487,6 @@ namespace ImageFilters
             ((System.ComponentModel.ISupportInitialize)(this.saturationTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.contrastTrackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.powerTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

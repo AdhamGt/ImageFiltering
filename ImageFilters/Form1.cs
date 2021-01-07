@@ -51,7 +51,7 @@ namespace ImageFilters
         bool NoImage = true;
         Filter Unsharpen;
         double power = 0;
-        double[] powers = new double[7] { 0.1f, 0.2f, 0.4f, 1, 2.5f, 5, 10 };
+        double[] powers = new double[8] { 0.1f, 0.2f, 0.4f,0.5f,1, 2.5f, 5, 10 };
 
         public Form1()
         {
@@ -88,8 +88,9 @@ namespace ImageFilters
 
             Filters.Add(edge.name, edge);
             Filters.Add(edge4s.name, edge4s);
-            Filters.Add("Sobel", sobelh);
-            Filters.Add("Pewit", Pewitt);
+            Filters.Add("Sobel Operator", sobelh);
+            Filters.Add("Pewit Operator", Pewitt);
+            Filters.Add("Robert Cross Operator", RobertCrossH);
             //Filters.Add("Emboss", Emboss);
             Filters.Add(blur.name, blur);
             Filters.Add(blur2.name, blur2);
@@ -97,7 +98,6 @@ namespace ImageFilters
             Filters.Add("Minimum Filter", min);
             Filters.Add("Maximum Filter", max);
             Filters.Add("ContraHarmonic Mean", Harmonic);
-            Filters.Add("Robert Cross", RobertCrossH);
             Filters.Add(sharpen.name, sharpen);
             Filters.Add("Laplace Sharpen", UnsharpennoDiag);
             Filters.Add("UnSharpen", Unsharpen);
@@ -131,7 +131,7 @@ namespace ImageFilters
 
             if (filterchosen != "" && !NoImage)
             {
-                if (filterchosen == "Sobel")
+                if (filterchosen.Contains("Sobel"))
                 {
                     Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
                     PreviewImage tmp = new PreviewImage(imgtmp);
@@ -141,7 +141,7 @@ namespace ImageFilters
                     img = img + tmp;
 
                 }
-                else if (filterchosen == "Robert Cross")
+                else if (filterchosen.Contains("Robert Cross"))
                 {
                     Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
                     PreviewImage tmp = new PreviewImage(imgtmp);
@@ -218,13 +218,7 @@ namespace ImageFilters
                     img.GetViewedImage();
                     img.previewStages.Add(new PreviewState(img.stages, log, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.CopyMat(), img.isColorised, img.brightness, img.contrast, img.saturation));
                 }
-                else if (filterchosen == "Square-root Operator")
-                {
-                    int[,] squarerootMat = ImageProcessor.applyNthRootOperator(img.Mat, 0.5f);
-                    img.Mat = squarerootMat;
-                    img.GetViewedImage();
-                    img.previewStages.Add(new PreviewState(img.stages, log, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.CopyMat(), img.isColorised, img.brightness, img.contrast, img.saturation));
-                }
+              
                 else if (filterchosen == "Nth-root Operator")
                 {
                     int[,] squarerootMat = ImageProcessor.applyNthRootOperator(img.Mat, power);
