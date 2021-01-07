@@ -123,7 +123,6 @@ namespace ImageFilters
                     img.filterImage(RobertCrossH);
                     tmp.filterImage(RobertCrossV);
                     img = img + tmp;
-                    ViewImages();
                 }
                 else if (filterchosen.Contains("UnSharpen"))
                 {
@@ -134,7 +133,6 @@ namespace ImageFilters
                     tmp.filterImage(blur);
                     tmp2 = tmp2 - tmp;
                     int k = 5;
-                    if(!filterchosen.Contains("HighBoost"))
                     if (!filterchosen.Contains("HighBoost"))
                     {
                         k = 1;
@@ -187,7 +185,6 @@ namespace ImageFilters
                     img.filterImage(Pewitt);
                     tmp.filterImage(Pewitt2);
                     img = img + tmp;
-                    ViewImages();
                 }
                 else
                 {
