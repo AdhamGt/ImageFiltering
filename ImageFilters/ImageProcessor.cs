@@ -155,7 +155,8 @@ namespace ImageFilters
                 for (int j = 0; j < height; j++)
                 {
                     Mat[i, j] = ComputeMatrix(f, mat2, i, j);
-                    if (f.name == "GaussianNoise")
+
+                    if (f.name == "Gaussian Noise")
                     {
                         Mat[i, j] += (int)f.KernelMatrix[i, j];
                     }
@@ -578,7 +579,6 @@ namespace ImageFilters
 
             if (f.name.Contains("Sobel") || f.name.Contains("Robert Cross"))
             {
-
                 if (Total < 0)
                 {
                     Total *= -1;

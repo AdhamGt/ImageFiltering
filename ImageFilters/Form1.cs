@@ -57,6 +57,8 @@ namespace ImageFilters
             Pewitt2 = new Filter(ImageProcessor.previtVertical, "PewitV");
             Harmonic = new Filter(5,1, "harmonic");
             Emboss = new Filter(ImageProcessor.Emboss, "Emboss Filter");
+            Median = new Filter(3, 1, "median order");
+            Harmonic = new Filter(5, 1, "harmonic");
             Unsharpen = new Filter(3, 1, "UnSharpen");
             UnsharpennoDiag = new Filter(ImageProcessor.laplaciansharpen, "Laplace Sharpen");
             Unsharpen2 = new Filter(3, 1, "UnSharpen HighBoost");
@@ -72,12 +74,12 @@ namespace ImageFilters
             Filters.Add(edge.name, edge);
             Filters.Add("Sobel", sobelh);
             Filters.Add("Pewit", Pewitt);
-            Filters.Add("Robert Cross", RobertCrossH);
             //Filters.Add("Emboss", Emboss);
             Filters.Add(blur.name, blur);
             Filters.Add(blur2.name, blur2);
             Filters.Add("Median Filter", Median);
             Filters.Add("ContraHarmonic Mean", Harmonic);
+            Filters.Add("Robert Cross", RobertCrossH);
             Filters.Add(sharpen.name, sharpen);
             Filters.Add("Laplace Sharpen", UnsharpennoDiag);
             Filters.Add("UnSharpen", Unsharpen);
@@ -489,7 +491,7 @@ namespace ImageFilters
                 }
             }
         }
-
+        
         private void fourierButton_Click(object sender, EventArgs e)
         {
             img.applyFFT();
