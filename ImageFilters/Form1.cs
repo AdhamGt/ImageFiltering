@@ -15,8 +15,8 @@ namespace ImageFilters
         Filter sharpen;
         Filter Harmonic;
         Filter edge;
-        Filter blur,blur2;
         Filter UnsharpennoDiag;
+        Filter blur, blur2;
         Filter sobelh;
         Filter sobelv;
         Filter Emboss;
@@ -24,6 +24,8 @@ namespace ImageFilters
         Filter Pewitt2;
         Filter saltAndPepper;
         Filter Median;
+        Filter gaussianNoise;
+        Filter avgNoiseReduction;
         bool equalize = false;
         int interpolationMode = 0;
         double enlargmentscale = 2f;
@@ -42,6 +44,7 @@ namespace ImageFilters
         int saturation = 0;
         bool NoImage = true;
         Filter Unsharpen;
+
         public Form1()
         {
             InitializeComponent();
@@ -61,19 +64,15 @@ namespace ImageFilters
             sobelh = new Filter(ImageProcessor.sobelHorizontal, "SobelH");
             sobelv = new Filter(ImageProcessor.sobelVertical, "SobelV");
             saltAndPepper = new Filter("Salt and Pepper");
-            RobertCrossH = new Filter(ImageProcessor.RobertCrossHorizontal,"RobertCrossH");
+            RobertCrossH = new Filter(ImageProcessor.RobertCrossHorizontal, "RobertCrossH");
             RobertCrossV = new Filter(ImageProcessor.RobertCrossVertical, "RobertCrossV");
-    
-   
-      
-    
-       
-    
-          
+            //gaussianNoise = new Filter("Gaussian Noise");
+            //avgNoiseReduction = new Filter("Average Noise Reduction");
+
             Filters.Add(edge.name, edge);
             Filters.Add("Sobel", sobelh);
             Filters.Add("Pewit", Pewitt);
-            Filters.Add("RobertCross", RobertCrossH);
+            Filters.Add("Robert Cross", RobertCrossH);
             //Filters.Add("Emboss", Emboss);
             Filters.Add(blur.name, blur);
             Filters.Add(blur2.name, blur2);
@@ -84,7 +83,12 @@ namespace ImageFilters
             Filters.Add("UnSharpen", Unsharpen);
             Filters.Add("UnSharpen HighBoost", Unsharpen);
             Filters.Add(saltAndPepper.name, saltAndPepper);
+            //Filters.Add(avgNoiseReduction.name, avgNoiseReduction);
+            //Filters.Add(gaussianNoise.name, gaussianNoise);
             PopulateListbox();
+
+
+            fourierButton.Hide();
         }
 
         void PopulateListbox()
@@ -97,10 +101,10 @@ namespace ImageFilters
 
         private void applyFilterButton_Click(object sender, EventArgs e)
         {
-        
+
             //pictureBox1.Image = nw.returnGraytoImage();
-         
-            if (filterchosen != "" && !NoImage )
+
+            if (filterchosen != "" && !NoImage)
             {
                 if (filterchosen == "Sobel")
                 {
@@ -110,10 +114,9 @@ namespace ImageFilters
                     img.filterImage(sobelh);
                     tmp.filterImage(sobelv);
                     img = img + tmp;
-                    ViewImages();
 
                 }
-                else if (filterchosen == "RobertCross")
+                else if (filterchosen == "Robert Cross")
                 {
                     Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
                     PreviewImage tmp = new PreviewImage(imgtmp);
@@ -122,7 +125,7 @@ namespace ImageFilters
                     img = img + tmp;
                     ViewImages();
                 }
-                else if (filterchosen.Contains ("UnSharpen"))
+                else if (filterchosen.Contains("UnSharpen"))
                 {
                     Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
                     PreviewImage tmp = new PreviewImage(imgtmp);
@@ -132,6 +135,7 @@ namespace ImageFilters
                     tmp2 = tmp2 - tmp;
                     int k = 5;
                     if(!filterchosen.Contains("HighBoost"))
+                    if (!filterchosen.Contains("HighBoost"))
                     {
                         k = 1;
                     }
@@ -139,7 +143,37 @@ namespace ImageFilters
                     {
                         img = img + tmp2;
                     }
-                        ViewImages();
+                }
+                {
+
+                    ///fill list
+
+                    Bitmap newImage = ImageProcessor.CopyImage(img.ViewedImage);
+
+                    for (int r = 0; r < img.ViewedImage.Width; r++)
+                    {
+                        for (int c = 0; c < img.ViewedImage.Height; c++)
+
+                            for (int i = 0; i < noisyImages.Count; i++)
+                            {
+                                Color color = noisyImages[i].ViewedImage.GetPixel(r, c);
+                                redTotal += color.R;
+                                greenTotal += color.G;
+                                blueTotal += color.B;
+
+                            redTotal /= noisyImages.Count;
+                            greenTotal /= noisyImages.Count;
+                            blueTotal /= noisyImages.Count;
+
+                            newImage.SetPixel(r, c, Color.FromArgb(redTotal, greenTotal, blueTotal));
+                        }
+                    }
+
+                    PreviewImage newPrev = new PreviewImage(newImage, img.isColorised);
+                    img.ViewedImage = newPrev.ViewedImage;
+                    img.Mat = newPrev.Mat;
+                    img.GetViewedImage();
+                    img.previewStages.Add(new PreviewState(img.stages, avgNoiseReduction, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.MatOrigin, img.isColorised, img.brightness, img.contrast, img.saturation));
                 }
                 else if(filterchosen.Contains("Pewit"))
                 {
@@ -152,10 +186,20 @@ namespace ImageFilters
                 }
                 else
                 {
+                    if (filterchosen == "Salt and Pepper")
+                    {
+                        saltAndPepper.randomUpdateFilter(img.ViewedImage.Width, img.ViewedImage.Height, 0, 256, false);
+                    }
+                    if (filterchosen == "Gaussian Noise")
+                    {
+                        gaussianNoise.randomUpdateFilter(img.ViewedImage.Width, img.ViewedImage.Height, 0, (0.1f * 0.5f), true);
+                    }
+
                     img.filterImage(Filters[filterchosen]);
-                    ViewImages();
                 }
-               }
+
+                ViewImages();
+            }
         }
 
         void ViewImages()
@@ -259,7 +303,6 @@ namespace ImageFilters
                 di2 = new DisplayImage(img2.ViewedImage, new Point((Width + Location.X), Location.Y), "Main Image");
                 di = new DisplayImage(img.ViewedImage, new Point(Width + Location.X, Location.Y + di2.Height), "Filtered Image");
                 NoImage = false;
-                saltAndPepper.updateFilter(img.ViewedImage.Width, img.ViewedImage.Height, 0, 256);
 
                 updateTrackBars();
             }
@@ -267,7 +310,6 @@ namespace ImageFilters
 
         private void Form1_Load(object sender, EventArgs e)
         {
-           
         }
 
         private void histogramButton_Click(object sender, EventArgs e)
@@ -442,10 +484,22 @@ namespace ImageFilters
                     img = tmp3 + tmp2;
                     ViewImages();
                 }
+            }
+        }
 
+        private void fourierButton_Click(object sender, EventArgs e)
+        {
+            ViewImages();
+        }
 
-
-
+        private void revertButton_Click(object sender, EventArgs e)
+        {
+            {
+                img.revertState();
+                img.UpdateImage(isColorised);
+                img2.UpdateImage(isColorised);
+                ViewImages();
+                updateTrackBars();
             }
         }
 
@@ -465,18 +519,14 @@ namespace ImageFilters
             {
                 Bitmap img3 = (Bitmap)Image.FromFile(dialog.FileName);
                 comparedImage = new PreviewImage((Bitmap)img3);
-                if( img3.Width == img.ViewedImage.Width  && img3.Height == img.ViewedImage.Height)
+                if (img3.Width == img.ViewedImage.Width && img3.Height == img.ViewedImage.Height)
                 {
                     img.Difference = true;
-                   img = img - comparedImage;
+                    img = img - comparedImage;
                     img.RangeDifference();
                     img.Difference = false;
                     ViewImages();
                 }
-
-
-
-
             }
         }
     }

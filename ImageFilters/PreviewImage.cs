@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace ImageFilters
 {
-    public class PreviewImage 
+    public class PreviewImage
     {
         public int stages;
         public Bitmap OriginalImage;
         public bool Difference = false;
         public bool isColorised = true;
         public int[,] Mat;
-        private int[,] MatOrigin;
+        public int[,] MatOrigin;
         public Bitmap ViewedImage;
         public Bitmap GrayscaleImage;
         public Bitmap ColorisedImage;
@@ -23,11 +23,24 @@ namespace ImageFilters
         public Bitmap equalizedImage;
         public int contrast = 0, brightness = 0, saturation = 0;
 
+        void copyState(int index)
+        {
+            OriginalImage = previewStages[index].OriginalImage;
+            ConvertToGrayscale();
+            ViewedImage = previewStages[index].ResultImage;
+            ImageProcessor.CopyMat(ref Mat, ref previewStages[index].Mat);
+            isColorised = previewStages[index].isColorised;
+            GrayscaleImage = previewStages[index].GrayImage;
+            ColorisedImage = previewStages[index].ColorisedImage;
+            brightness = previewStages[index].brightness;
+            contrast = previewStages[index].contrast;
+        }
+
         public void SetOriginalImage(Bitmap img)
         {
             OriginalImage = img;
             ViewedImage = img;
-            
+
             ConvertToGrayscale();
             GetViewedImage();
             previewStages.Add(new PreviewState(stages, null, OriginalImage, OriginalImage, OriginalImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast, saturation));
@@ -35,7 +48,7 @@ namespace ImageFilters
 
         public static PreviewImage operator +(PreviewImage a, PreviewImage b)
         {
-            for(int i = 0; i < a.ViewedImage.Width; i++)
+            for (int i = 0; i < a.ViewedImage.Width; i++)
             {
                 for (int j = 0; j < a.ViewedImage.Height; j++)
                 {
@@ -43,19 +56,19 @@ namespace ImageFilters
 
                     if (a.Mat[i, j] < 0)
                     {
-                       a.Mat[i, j] = 0;
+                        a.Mat[i, j] = 0;
                     }
                     if (a.Mat[i, j] > 255)
                     {
-                       a.Mat[i, j] = 255;
+                        a.Mat[i, j] = 255;
                     }
                 }
             }
             a.returntoColor();
             a.GetViewedImage();
-            
-      a.previewStages.Add(new PreviewState(a.stages, null, a.OriginalImage, a.OriginalImage, a.OriginalImage, a.GrayscaleImage, a.CopyMat(), a.isColorised, a.brightness, a.contrast, a.saturation));
-      
+
+            a.previewStages.Add(new PreviewState(a.stages, null, a.OriginalImage, a.OriginalImage, a.OriginalImage, a.GrayscaleImage, a.CopyMat(), a.isColorised, a.brightness, a.contrast, a.saturation));
+
             return a;
         }
 
@@ -93,13 +106,14 @@ namespace ImageFilters
 
             return a;
         }
-       public void RangeDifference()
+
+        public void RangeDifference()
         {
             for (int i = 0; i < Mat.GetLength(0); i++)
             {
                 for (int j = 0; j < Mat.GetLength(1); j++)
                 {
-                   if(Mat[i,j] != 0 )
+                    if (Mat[i, j] != 0)
                     {
                         Mat[i, j] = 255;
                     }
@@ -108,6 +122,7 @@ namespace ImageFilters
             isColorised = false;
             GetViewedImage();
         }
+
         public Bitmap ApplyBicubic(double ratio)
         {
             Bitmap bmp;
@@ -127,8 +142,8 @@ namespace ImageFilters
             }
             else
             {
-               Mat = ImageProcessor.BiCubicInterpolation(Mat, ratio);
-             bmp = returnGraytoImage(Mat);
+                Mat = ImageProcessor.BiCubicInterpolation(Mat, ratio);
+                bmp = returnGraytoImage(Mat);
                 SetOriginalImage(bmp);
             }
             return bmp;
@@ -157,17 +172,20 @@ namespace ImageFilters
         {
             if (previewStages.Count > 1)
             {
-                OriginalImage = previewStages[previewStages.Count - 2].OriginalImage;
-                ConvertToGrayscale();
-                ViewedImage = previewStages[previewStages.Count - 2].ResultImage;
-                ImageProcessor.CopyMat(ref Mat, ref previewStages[previewStages.Count - 2].Mat);
-                isColorised = previewStages[previewStages.Count - 2].isColorised;
-                GrayscaleImage = previewStages[previewStages.Count - 2].GrayImage;
-                ColorisedImage = previewStages[previewStages.Count - 2].ColorisedImage;
-                brightness = previewStages[previewStages.Count - 2].brightness;
-                contrast = previewStages[previewStages.Count - 2].contrast;
+                copyState(previewStages.Count - 2);
                 previewStages.Remove(previewStages[previewStages.Count - 1]);
                 stages--;
+            }
+        }
+
+        public void revertState()
+        {
+            if (previewStages.Count > 1)
+            {
+                copyState(0);
+                PreviewState firstState = previewStages[0];
+                previewStages = new List<PreviewState>();
+                previewStages.Add(firstState);
             }
         }
 
@@ -340,7 +358,7 @@ namespace ImageFilters
 
         public void GetViewedImage()
         {
-            if(isColorised)
+            if (isColorised)
             {
                 returntoColor();
                 ViewedImage = ColorisedImage;
@@ -407,7 +425,7 @@ namespace ImageFilters
                     contrastedImage.SetPixel(r, c, Color.FromArgb(contrastedImage.GetPixel(r, c).A, (int)red, (int)green, (int)blue));
                 }
             }
-                
+
             PreviewImage contrastedColoredImage = new PreviewImage(contrastedImage, true);
             PreviewImage contrastedGreyImage = new PreviewImage(contrastedImage, false);
 
@@ -534,21 +552,22 @@ namespace ImageFilters
             return equalizedImage;
         }
 
+        public void applyFFT()
+        {
+            //Mat = ImageProcessor.calculateFFT(Mat);
+
+            GetViewedImage();
+            previewStages.Add(new PreviewState(stages, null, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast, saturation));
+        }
+
         public void filterImage(Filter f)
         {
             stages++;
-            
 
+            Mat = ImageProcessor.ApplyFilter(Mat, f);
 
-                Mat = ImageProcessor.ApplyFilter(Mat, f);
-            if (f.name == "harmonic")
-            {
-           //     f.Order *= -1;
-             //   Mat = ImageProcessor.ApplyFilter(Mat, f);
-            }
-          
             GetViewedImage();
-            previewStages.Add(new PreviewState(stages, f, OriginalImage ,ViewedImage,ColorisedImage,GrayscaleImage, CopyMat(), isColorised, brightness, contrast, saturation));
+            previewStages.Add(new PreviewState(stages, f, OriginalImage, ViewedImage, ColorisedImage, GrayscaleImage, CopyMat(), isColorised, brightness, contrast, saturation));
         }
     }
 }

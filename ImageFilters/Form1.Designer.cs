@@ -37,7 +37,7 @@ namespace ImageFilters
             this.label1 = new System.Windows.Forms.Label();
             this.undoButton = new System.Windows.Forms.Button();
             this.filtersLabel = new System.Windows.Forms.Label();
-            this.histogramLabel = new System.Windows.Forms.Label();
+            this.label = new System.Windows.Forms.Label();
             this.editingLabel = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.interpolationLabel = new System.Windows.Forms.Label();
@@ -50,6 +50,7 @@ namespace ImageFilters
             this.interpolationButton = new System.Windows.Forms.Button();
             this.histogramButton = new System.Windows.Forms.Button();
             this.histogramPanel = new System.Windows.Forms.Panel();
+            this.fourierButton = new System.Windows.Forms.Button();
             this.imageEditingPanel = new System.Windows.Forms.Panel();
             this.saturationValue = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -64,6 +65,7 @@ namespace ImageFilters
             this.colorInvertingButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.button1 = new System.Windows.Forms.Button();
+            this.revertButton = new System.Windows.Forms.Button();
             this.filtersPanel.SuspendLayout();
             this.interpolationPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.interpolationTrackBar)).BeginInit();
@@ -135,27 +137,27 @@ namespace ImageFilters
             // filtersLabel
             // 
             this.filtersLabel.AutoSize = true;
-            this.filtersLabel.Location = new System.Drawing.Point(25, 43);
+            this.filtersLabel.Location = new System.Drawing.Point(13, 17);
             this.filtersLabel.Name = "filtersLabel";
             this.filtersLabel.Size = new System.Drawing.Size(34, 13);
             this.filtersLabel.TabIndex = 7;
             this.filtersLabel.Text = "Filters";
             this.filtersLabel.Click += new System.EventHandler(this.filtersLabel_Click);
             // 
-            // histogramLabel
+            // label
             // 
-            this.histogramLabel.AutoSize = true;
-            this.histogramLabel.Location = new System.Drawing.Point(25, 75);
-            this.histogramLabel.Name = "histogramLabel";
-            this.histogramLabel.Size = new System.Drawing.Size(54, 13);
-            this.histogramLabel.TabIndex = 8;
-            this.histogramLabel.Text = "Histogram";
-            this.histogramLabel.Click += new System.EventHandler(this.histogramLabel_Click);
+            this.label.AutoSize = true;
+            this.label.Location = new System.Drawing.Point(13, 47);
+            this.label.Name = "label";
+            this.label.Size = new System.Drawing.Size(110, 13);
+            this.label.TabIndex = 8;
+            this.label.Text = "Histogram and Fourier";
+            this.label.Click += new System.EventHandler(this.histogramLabel_Click);
             // 
             // editingLabel
             // 
             this.editingLabel.AutoSize = true;
-            this.editingLabel.Location = new System.Drawing.Point(25, 105);
+            this.editingLabel.Location = new System.Drawing.Point(13, 75);
             this.editingLabel.Name = "editingLabel";
             this.editingLabel.Size = new System.Drawing.Size(39, 13);
             this.editingLabel.TabIndex = 9;
@@ -164,7 +166,7 @@ namespace ImageFilters
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(16, 223);
+            this.button3.Location = new System.Drawing.Point(16, 224);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(139, 29);
             this.button3.TabIndex = 10;
@@ -175,11 +177,11 @@ namespace ImageFilters
             // interpolationLabel
             // 
             this.interpolationLabel.AutoSize = true;
-            this.interpolationLabel.Location = new System.Drawing.Point(25, 134);
+            this.interpolationLabel.Location = new System.Drawing.Point(13, 103);
             this.interpolationLabel.Name = "interpolationLabel";
-            this.interpolationLabel.Size = new System.Drawing.Size(65, 13);
+            this.interpolationLabel.Size = new System.Drawing.Size(47, 13);
             this.interpolationLabel.TabIndex = 11;
-            this.interpolationLabel.Text = "Interpolation";
+            this.interpolationLabel.Text = "Resizing";
             this.interpolationLabel.Click += new System.EventHandler(this.interpolationLabel_Click);
             // 
             // interpolationPanel
@@ -266,11 +268,22 @@ namespace ImageFilters
             // 
             // histogramPanel
             // 
+            this.histogramPanel.Controls.Add(this.fourierButton);
             this.histogramPanel.Controls.Add(this.histogramButton);
             this.histogramPanel.Location = new System.Drawing.Point(183, 7);
             this.histogramPanel.Name = "histogramPanel";
             this.histogramPanel.Size = new System.Drawing.Size(284, 374);
             this.histogramPanel.TabIndex = 13;
+            // 
+            // fourierButton
+            // 
+            this.fourierButton.Location = new System.Drawing.Point(87, 108);
+            this.fourierButton.Name = "fourierButton";
+            this.fourierButton.Size = new System.Drawing.Size(112, 23);
+            this.fourierButton.TabIndex = 13;
+            this.fourierButton.Text = "Apply Fourier";
+            this.fourierButton.UseVisualStyleBackColor = true;
+            this.fourierButton.Click += new System.EventHandler(this.fourierButton_Click);
             // 
             // imageEditingPanel
             // 
@@ -400,7 +413,7 @@ namespace ImageFilters
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(16, 301);
+            this.button1.Location = new System.Drawing.Point(16, 310);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(139, 29);
             this.button1.TabIndex = 15;
@@ -408,23 +421,34 @@ namespace ImageFilters
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // revertButton
+            // 
+            this.revertButton.Location = new System.Drawing.Point(16, 352);
+            this.revertButton.Name = "revertButton";
+            this.revertButton.Size = new System.Drawing.Size(139, 29);
+            this.revertButton.TabIndex = 16;
+            this.revertButton.Text = "Revert";
+            this.revertButton.UseVisualStyleBackColor = true;
+            this.revertButton.Click += new System.EventHandler(this.revertButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(483, 392);
+            this.Controls.Add(this.revertButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.grayScaleButton);
             this.Controls.Add(this.undoButton);
             this.Controls.Add(this.interpolationLabel);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.editingLabel);
-            this.Controls.Add(this.histogramLabel);
+            this.Controls.Add(this.label);
             this.Controls.Add(this.filtersLabel);
-            this.Controls.Add(this.filtersPanel);
-            this.Controls.Add(this.interpolationPanel);
             this.Controls.Add(this.histogramPanel);
             this.Controls.Add(this.imageEditingPanel);
+            this.Controls.Add(this.filtersPanel);
+            this.Controls.Add(this.interpolationPanel);
             this.Name = "Form1";
             this.Text = "Image Processing";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -451,7 +475,7 @@ namespace ImageFilters
         private System.Windows.Forms.Panel filtersPanel;
         private System.Windows.Forms.Label label1;
         private Label filtersLabel;
-        private Label histogramLabel;
+        private Label label;
         private Label editingLabel;
         private Button undoButton;
         private Button button3;
@@ -479,6 +503,8 @@ namespace ImageFilters
         private Label label3;
         private TrackBar saturationTrackBar;
         private Button button1;
+        private Button revertButton;
+        private Button fourierButton;
     }
 }
 

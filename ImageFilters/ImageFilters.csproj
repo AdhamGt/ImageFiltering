@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComplexNumber.cs" />
     <Compile Include="DisplayImage.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -67,7 +67,7 @@ namespace ImageFilters
             OutofBoundValue = 0;
         }
 
-        public void updateFilter(int rowsCount, int columnsCount, int minVal, int maxVal)
+        public void randomUpdateFilter(int rowsCount, int columnsCount, double minVal, double maxVal, bool isGaussianBased)
         {
             kX = rowsCount;
             kY = columnsCount;
@@ -78,7 +78,25 @@ namespace ImageFilters
             {
                 for (int c = 0; c < KernelMatrix.GetLength(1); c++)
                 {
-                    KernelMatrix[r, c] = random.Next(0, 256);
+                    if(!isGaussianBased)
+                    {
+                        KernelMatrix[r, c] = random.Next(0, 256);
+                    }
+                    else
+                    {
+                        double square = 1;
+                        double v1 = 1;
+
+                        while (square >= 1 || square <= 0)
+                        {
+                            v1 = 2 * random.NextDouble() - 1;
+                            double v2 = 2 * random.NextDouble() - 1;
+                            square = v1 * v1 + v2 * v2;
+                        }
+
+                        double normalStandard = Math.Sqrt(-2 * Math.Log(square) / square);
+                        KernelMatrix[r, c] = v1 * normalStandard * maxVal + minVal;
+                    }
                 }
             }
         }
