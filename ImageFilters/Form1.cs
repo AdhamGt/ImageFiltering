@@ -39,7 +39,7 @@ namespace ImageFilters
         PreviewImage img;
         string filterchosen = "";
         PreviewImage img2;
-        Dictionary<string, Filter> Filters = new Dictionary<string, ImageFilters.Filter>();
+        Dictionary<string, Filter> Filters = new Dictionary<string, Filter>();
         DisplayImage di;
         DisplayImage di2;
         Filter cartoon;
@@ -57,22 +57,20 @@ namespace ImageFilters
         {
             InitializeComponent();
             interpolationPanel.Hide();
-            sharpen = new Filter(ImageProcessor.laplaciansharpendiagonal, "Laplace Sharpening +D");
-            edge4s = new Filter(ImageProcessor.laplacianedge, "Laplace Edge");
-            edge = new Filter(ImageProcessor.laplacianedgediagonal, "Laplace Edge + D");
+            sharpen = new Filter(ImageProcessor.laplaciansharpendiagonal, "Laplacian Sharpening +D");
+            edge4s = new Filter(ImageProcessor.laplacianedge, "Laplacian Edge");
+            edge = new Filter(ImageProcessor.laplacianedgediagonal, "Laplacian Edge + D");
             blur2 = new Filter(ImageProcessor.gaussianBlur, "Gaussian Blur");
             Median = new Filter(3, 1, "median order");
-            Pewitt = new Filter(ImageProcessor.previtHorizontal, "PewitH");
-            Pewitt2 = new Filter(ImageProcessor.previtVertical, "PewitV");
+            Pewitt = new Filter(ImageProcessor.previtHorizontal, "PrewittH");
+            Pewitt2 = new Filter(ImageProcessor.previtVertical, "PrewittV");
             Harmonic = new Filter(5, 1, "harmonic");
             Emboss = new Filter(ImageProcessor.Emboss, "Emboss Filter");
-            Median = new Filter(3, 1, "median order");
             min = new Filter(3, 1, "minimum order");
             max = new Filter(3, 1, "maximum order");
-            Harmonic = new Filter(5, 1, "harmonic");
             Unsharpen = new Filter(3, 1, "UnSharpen");
             cartoon = new Filter(3, 1, "Cartoon");
-            UnsharpennoDiag = new Filter(ImageProcessor.laplaciansharpen, "Laplace Sharpen");
+            UnsharpennoDiag = new Filter(ImageProcessor.laplaciansharpen, "Laplacian Sharpening");
             Unsharpen2 = new Filter(3, 1, "UnSharpen HighBoost");
             blur = new Filter(5, 0.04f, "Mean Filter");
             sobelh = new Filter(ImageProcessor.sobelHorizontal, "SobelH");
@@ -89,7 +87,7 @@ namespace ImageFilters
             Filters.Add(edge.name, edge);
             Filters.Add(edge4s.name, edge4s);
             Filters.Add("Sobel Operator", sobelh);
-            Filters.Add("Pewit Operator", Pewitt);
+            Filters.Add("Prewitt Operator", Pewitt);
             Filters.Add("Robert Cross Operator", RobertCrossH);
             //Filters.Add("Emboss", Emboss);
             Filters.Add(blur.name, blur);
@@ -99,7 +97,7 @@ namespace ImageFilters
             Filters.Add("Maximum Filter", max);
             Filters.Add("ContraHarmonic Mean", Harmonic);
             Filters.Add(sharpen.name, sharpen);
-            Filters.Add("Laplace Sharpen", UnsharpennoDiag);
+            Filters.Add("Laplacian Sharpening", UnsharpennoDiag);
             Filters.Add("UnSharpen", Unsharpen);
             Filters.Add("UnSharpen HighBoost", Unsharpen);
             Filters.Add(saltAndPepper.name, saltAndPepper);
@@ -204,7 +202,7 @@ namespace ImageFilters
                     img.GetViewedImage();
                     img.previewStages.Add(new PreviewState(img.stages, avgNoiseReduction, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.MatOrigin, img.isColorised, img.brightness, img.contrast, img.saturation));
                 }
-                else if (filterchosen.Contains("Pewit"))
+                else if (filterchosen.Contains("Prewitt"))
                 {
                     Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
                     PreviewImage tmp = new PreviewImage(imgtmp);
