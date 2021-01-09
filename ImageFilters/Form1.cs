@@ -115,9 +115,7 @@ namespace ImageFilters
 
 
             fourierButton.Hide();
-            powerLabel.Hide();
-            powerTrackBar.Hide();
-            powerValLabel.Hide();
+          
             trackBar1.Hide();
             label4.Hide();
             label2.Hide();
@@ -218,21 +216,9 @@ namespace ImageFilters
                     tmp.filterImage(Pewitt2);
                     img = img + tmp;
                 }
-                else if (filterchosen == "Log Operator")
-                {
-                    int[,] logMat = ImageProcessor.applyLogarithmicTransformation(img.Mat);
-                    img.Mat = logMat;
-                    img.GetViewedImage();
-                    img.previewStages.Add(new PreviewState(img.stages, log, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.CopyMat(), img.isColorised, img.brightness, img.contrast, img.saturation));
-                }
+             
               
-                else if (filterchosen == "Nth-Power Operator")
-                {
-                    int[,] squarerootMat = ImageProcessor.applyNthRootOperator(img.Mat, power);
-                    img.Mat = squarerootMat;
-                    img.GetViewedImage();
-                    img.previewStages.Add(new PreviewState(img.stages, log, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.CopyMat(), img.isColorised, img.brightness, img.contrast, img.saturation));
-                }
+              
                 else if (filterchosen.Contains("Cartoon"))
                 {
                     Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
@@ -327,18 +313,7 @@ namespace ImageFilters
                 {
                     label1.Text = filterchosen;
 
-                    if (filterchosen == "Nth-Power Operator")
-                    {
-                        powerLabel.Show();
-                        powerTrackBar.Show();
-                        powerValLabel.Show();
-                    }
-                    else
-                    {
-                        powerLabel.Hide();
-                        powerTrackBar.Hide();
-                        powerValLabel.Hide();
-                    }
+                 
                     if (filterchosen == "ContraHarmonic Mean")
                     {
                         trackBar1.Show();
@@ -632,6 +607,32 @@ namespace ImageFilters
             Form1 current = this;
           customkernel  = new Form2(current);
             customkernel.Show();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+           
+                int[,] squarerootMat = ImageProcessor.applyNthRootOperator(img.Mat, power);
+                img.Mat = squarerootMat;
+                img.GetViewedImage();
+                img.previewStages.Add(new PreviewState(img.stages, log, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.CopyMat(), img.isColorised, img.brightness, img.contrast, img.saturation));
+            ViewImages();
+        }
+
+        private void powerTrackBar_Scroll_1(object sender, EventArgs e)
+        {
+            power = powers[powerTrackBar.Value];
+            powerValLabel.Text = (float)power + "";
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            
+                int[,] logMat = ImageProcessor.applyLogarithmicTransformation(img.Mat);
+                img.Mat = logMat;
+                img.GetViewedImage();
+                img.previewStages.Add(new PreviewState(img.stages, log, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.CopyMat(), img.isColorised, img.brightness, img.contrast, img.saturation));
+            ViewImages();   
         }
 
         private void revertButton_Click(object sender, EventArgs e)
