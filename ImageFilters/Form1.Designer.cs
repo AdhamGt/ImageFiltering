@@ -34,6 +34,7 @@ namespace ImageFilters
             this.applyFilterButton = new System.Windows.Forms.Button();
             this.grayScaleButton = new System.Windows.Forms.Button();
             this.filtersPanel = new System.Windows.Forms.Panel();
+            this.powerValLabel = new System.Windows.Forms.Label();
             this.powerLabel = new System.Windows.Forms.Label();
             this.powerTrackBar = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
@@ -44,6 +45,7 @@ namespace ImageFilters
             this.button3 = new System.Windows.Forms.Button();
             this.interpolationLabel = new System.Windows.Forms.Label();
             this.interpolationPanel = new System.Windows.Forms.Panel();
+            this.multiplierLabel = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.interpolationTrackBar = new System.Windows.Forms.TrackBar();
             this.bicubicLabel = new System.Windows.Forms.Label();
@@ -68,8 +70,6 @@ namespace ImageFilters
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.button1 = new System.Windows.Forms.Button();
             this.revertButton = new System.Windows.Forms.Button();
-            this.powerValLabel = new System.Windows.Forms.Label();
-            this.multiplierLabel = new System.Windows.Forms.Label();
             this.filtersPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.powerTrackBar)).BeginInit();
             this.interpolationPanel.SuspendLayout();
@@ -122,6 +122,15 @@ namespace ImageFilters
             this.filtersPanel.Name = "filtersPanel";
             this.filtersPanel.Size = new System.Drawing.Size(284, 355);
             this.filtersPanel.TabIndex = 6;
+            // 
+            // powerValLabel
+            // 
+            this.powerValLabel.AutoSize = true;
+            this.powerValLabel.Location = new System.Drawing.Point(255, 108);
+            this.powerValLabel.Name = "powerValLabel";
+            this.powerValLabel.Size = new System.Drawing.Size(13, 13);
+            this.powerValLabel.TabIndex = 11;
+            this.powerValLabel.Text = "0";
             // 
             // powerLabel
             // 
@@ -183,11 +192,11 @@ namespace ImageFilters
             // editingLabel
             // 
             this.editingLabel.AutoSize = true;
-            this.editingLabel.Location = new System.Drawing.Point(13, 75);
+            this.editingLabel.Location = new System.Drawing.Point(12, 115);
             this.editingLabel.Name = "editingLabel";
-            this.editingLabel.Size = new System.Drawing.Size(39, 13);
+            this.editingLabel.Size = new System.Drawing.Size(86, 13);
             this.editingLabel.TabIndex = 9;
-            this.editingLabel.Text = "Editing";
+            this.editingLabel.Text = "Color Adjustment";
             this.editingLabel.Click += new System.EventHandler(this.editingLabel_Click);
             // 
             // button3
@@ -203,7 +212,7 @@ namespace ImageFilters
             // interpolationLabel
             // 
             this.interpolationLabel.AutoSize = true;
-            this.interpolationLabel.Location = new System.Drawing.Point(13, 103);
+            this.interpolationLabel.Location = new System.Drawing.Point(13, 80);
             this.interpolationLabel.Name = "interpolationLabel";
             this.interpolationLabel.Size = new System.Drawing.Size(47, 13);
             this.interpolationLabel.TabIndex = 11;
@@ -223,6 +232,15 @@ namespace ImageFilters
             this.interpolationPanel.Name = "interpolationPanel";
             this.interpolationPanel.Size = new System.Drawing.Size(290, 351);
             this.interpolationPanel.TabIndex = 10;
+            // 
+            // multiplierLabel
+            // 
+            this.multiplierLabel.AutoSize = true;
+            this.multiplierLabel.Location = new System.Drawing.Point(226, 130);
+            this.multiplierLabel.Name = "multiplierLabel";
+            this.multiplierLabel.Size = new System.Drawing.Size(18, 13);
+            this.multiplierLabel.TabIndex = 13;
+            this.multiplierLabel.Text = "x1";
             // 
             // label9
             // 
@@ -457,24 +475,6 @@ namespace ImageFilters
             this.revertButton.Text = "Revert";
             this.revertButton.UseVisualStyleBackColor = true;
             this.revertButton.Click += new System.EventHandler(this.revertButton_Click);
-            // 
-            // powerValLabel
-            // 
-            this.powerValLabel.AutoSize = true;
-            this.powerValLabel.Location = new System.Drawing.Point(255, 108);
-            this.powerValLabel.Name = "powerValLabel";
-            this.powerValLabel.Size = new System.Drawing.Size(13, 13);
-            this.powerValLabel.TabIndex = 11;
-            this.powerValLabel.Text = "0";
-            // 
-            // multiplierLabel
-            // 
-            this.multiplierLabel.AutoSize = true;
-            this.multiplierLabel.Location = new System.Drawing.Point(226, 130);
-            this.multiplierLabel.Name = "multiplierLabel";
-            this.multiplierLabel.Size = new System.Drawing.Size(18, 13);
-            this.multiplierLabel.TabIndex = 13;
-            this.multiplierLabel.Text = "x1";
             // 
             // Form1
             // 

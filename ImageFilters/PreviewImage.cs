@@ -71,8 +71,7 @@ namespace ImageFilters
 
             return a;
         }
-
-        public static PreviewImage operator -(PreviewImage a, PreviewImage b)
+          public static PreviewImage operator -(PreviewImage a, PreviewImage b)
         {
             for (int i = 0; i < a.ViewedImage.Width; i++)
             {

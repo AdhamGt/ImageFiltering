@@ -17,7 +17,7 @@ namespace ImageFilters
         public static double[,] laplaciansharpendiagonal = new double[3, 3] { { -1, -1, -1 }, { -1, 9, -1 }, { -1, -1, -1 } };
         public static double[,] previtHorizontal = { { 1, 1, 1 }, { 0, 0, 0 }, { -1, -1, -1 } };
         public static double[,] previtVertical = { { 1, 0, -1 }, { 1, 0, -1 }, { 1, 0, -1 }};
-        public static double[,] Emboss  = { { 0,-1, 0 }, { 0, 0, 0 }, { 0, 1, 0 } };
+        public static double[,] Emboss  = { { -2,-1, 0 }, { -1, 1, 1 }, { 0, 1, 2 } };
         public static double[,] gaussianBlur = { { 0.0625, 0.125, 0.0625 }, { 0.125, 0.25, 0.125 }, { 0.0625, 0.125, 0.0625 } };
         public static double[,] sobelHorizontal = new double[3, 3] { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
         public static double[,] sobelVertical = new double[3, 3] { { 1, 0, -1 }, { 2, 0, -2 }, { 1, 0, -1 } };
@@ -69,11 +69,42 @@ namespace ImageFilters
         //    {
         //        for (int c = 0; c < cLen; c++)
         //        {
-                    
+
         //        }
         //    }
         //}
+        //public static ComplexMatrix fftshift(ComplexMatrix cm)
+        //{
 
+        //    int m = cm.getRow();
+        //    int n = cm.getColoum();
+        //    ComplexMatrix result = new ComplexMatrix(m, n);
+        //    int m2 = m / 2;
+        //    int n2 = n / 2;
+        //    int i, j, tmp;
+        //    for (i = 0; i < m; i++)
+        //    {
+        //        tmp = (i + m2) % m;
+        //        for (j = 0; j < n; j++)
+        //        {
+        //            result.setvalue(tmp, j, cm.getElement(i, j));
+        //        }
+        //    }
+
+        //    cm = result;
+        //    result = new ComplexMatrix(m, n);
+
+        //    for (j = 0; j < n; j++)
+        //    {
+        //        tmp = (j + n2) % n;
+        //        for (i = 0; i < m; i++)
+        //        {
+        //            result.setvalue(i, tmp, cm.getElement(i, j));
+        //        }
+        //    }
+
+        //    return result;
+        //}
         public static double calcRadian(double theta)
         {
             return theta * Math.PI / 180;
@@ -83,7 +114,30 @@ namespace ImageFilters
         {
             return radian * 180 / Math.PI;
         }
-
+        public static double[,] GenerateLOGKernel(double Variance, int kernelsize)
+        {
+            double[,] Kernel = new double[kernelsize, kernelsize];
+            for (int x = 0; x < kernelsize; x++)
+            {
+                for (int y = 0; y < kernelsize; y++)
+                {
+                    Kernel[x, y] = -1 * (1 / (Math.PI * Math.Pow(Variance, 4))  ) * (1 - ((x * x) + (y * y) / (2 * Variance * Variance))) * Math.Pow(Math.E, (-1 * ((x * x) + (y * y)) / (2 * Variance * Variance )));
+                }
+            }
+            return Kernel;
+        }
+        public static double[,] GenerateGKernel(double Variance, int kernelsize)
+        {
+            double[,] Kernel = new double[kernelsize, kernelsize];
+            for (int x = 0; x < kernelsize; x++)
+            {
+                for (int y = 0; y < kernelsize; y++)
+                {
+                    Kernel[x, y] = (1 / (2*Math.PI * Math.Pow(Variance, 2) ) * (1 - ((x * x) + (y * y) / (2 * Variance * Variance)))) * Math.Pow(Math.E, ( ((x * x) + (y * y)) / (2 * Variance * Variance)));
+                }
+            }
+            return Kernel;
+        }
         public static int[,] applyNthRootOperator(int[,] mat, double power)
         {
             int[,] resultMat = new int[mat.GetLength(0), mat.GetLength(1)];
@@ -371,22 +425,7 @@ namespace ImageFilters
                     Color c22 = image.GetPixel(x2, y2);
                     enlargedImage.SetPixel(i, j, interpolatePixel(c11, c21, c12, c22, gx, gy, x1, x2, y1, y2));
 
-                    double x = ((double)(image.Width - 1) * (double)i) / (double)size.Width;
-                    double y = ((double)(image.Height - 1) * (double)j) / (double)size.Height;
-
-                    if (x2 == x1 && y2 == y1)
-                    {
-                        enlargedImage.SetPixel(i, j, image.GetPixel((int)x, (int)y));
-                    }
-                    if (y2 >= image.Height)
-                    {
-                        y2 = image.Height - 1;
-                    }
-                    if (x2 >= image.Width)
-                    {
-                        x2 = image.Width - 1;
-                    }
-
+                
 
                 }
             }

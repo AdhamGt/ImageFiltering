@@ -89,7 +89,7 @@ namespace ImageFilters
             Filters.Add("Sobel Operator", sobelh);
             Filters.Add("Prewitt Operator", Pewitt);
             Filters.Add("Robert Cross Operator", RobertCrossH);
-            //Filters.Add("Emboss", Emboss);
+            Filters.Add("Emboss", Emboss);
             Filters.Add(blur.name, blur);
             Filters.Add(blur2.name, blur2);
             Filters.Add("Median Filter", Median);
@@ -102,8 +102,8 @@ namespace ImageFilters
             Filters.Add("UnSharpen HighBoost", Unsharpen);
             Filters.Add(saltAndPepper.name, saltAndPepper);
             Filters.Add(log.name, log);
-            Filters.Add(squareroot.name, squareroot);
-            Filters.Add(nthroot.name, nthroot);
+
+          //  Filters.Add("Nth - Power Operator", nthroot);
             Filters.Add("Cartoon",cartoon);
             //Filters.Add(avgNoiseReduction.name, avgNoiseReduction);
             //Filters.Add(gaussianNoise.name, gaussianNoise);
@@ -118,6 +118,7 @@ namespace ImageFilters
 
         void PopulateListbox()
         {
+            filtersListBox.Items.Clear();
             foreach (string filter in Filters.Keys)
             {
                 filtersListBox.Items.Add(filter);
@@ -218,7 +219,7 @@ namespace ImageFilters
                     img.previewStages.Add(new PreviewState(img.stages, log, img.OriginalImage, img.ViewedImage, img.ColorisedImage, img.GrayscaleImage, img.CopyMat(), img.isColorised, img.brightness, img.contrast, img.saturation));
                 }
               
-                else if (filterchosen == "Nth-root Operator")
+                else if (filterchosen == "Nth-Power Operator")
                 {
                     int[,] squarerootMat = ImageProcessor.applyNthRootOperator(img.Mat, power);
                     img.Mat = squarerootMat;
@@ -319,7 +320,7 @@ namespace ImageFilters
                 {
                     label1.Text = filterchosen;
 
-                    if (filterchosen == "Nth-root Operator")
+                    if (filterchosen == "Nth - Power Operator")
                     {
                         powerLabel.Show();
                         powerTrackBar.Show();
@@ -390,7 +391,7 @@ namespace ImageFilters
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+     
         }
 
         private void histogramButton_Click(object sender, EventArgs e)
@@ -470,6 +471,10 @@ namespace ImageFilters
 
         private void filtersLabel_Click(object sender, EventArgs e)
         {
+            filtersLabel.ForeColor = Color.Red;
+             label.ForeColor = Color.Black;
+            interpolationLabel.ForeColor = Color.Black;
+            editingLabel.ForeColor = Color.Black;
             filtersPanel.Show();
             interpolationPanel.Hide();
             histogramPanel.Hide();
@@ -478,6 +483,10 @@ namespace ImageFilters
 
         private void histogramLabel_Click(object sender, EventArgs e)
         {
+            filtersLabel.ForeColor = Color.Black;
+            label.ForeColor = Color.Red;
+            interpolationLabel.ForeColor = Color.Black;
+            editingLabel.ForeColor = Color.Black;
             filtersPanel.Hide();
             interpolationPanel.Hide();
             histogramPanel.Show();
@@ -486,6 +495,10 @@ namespace ImageFilters
 
         private void editingLabel_Click(object sender, EventArgs e)
         {
+            filtersLabel.ForeColor = Color.Black;
+            label.ForeColor = Color.Black;
+            interpolationLabel.ForeColor = Color.Black;
+            editingLabel.ForeColor = Color.Red;
             filtersPanel.Hide();
             interpolationPanel.Hide();
             histogramPanel.Hide();
@@ -494,6 +507,10 @@ namespace ImageFilters
 
         private void interpolationLabel_Click(object sender, EventArgs e)
         {
+            filtersLabel.ForeColor = Color.Black;
+            label.ForeColor = Color.Black;
+            interpolationLabel.ForeColor = Color.Red;
+            editingLabel.ForeColor = Color.Black;
             filtersPanel.Hide();
             interpolationPanel.Show();
             histogramPanel.Hide();
