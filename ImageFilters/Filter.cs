@@ -12,7 +12,7 @@ namespace ImageFilters
         public int kX, kY;
         public double[,] KernelMatrix;
         public int Order = -2;
-        public int multiplier = 1;
+        public double multiplier = 1;
         public string name;
         public int OutofBoundValue;
 
@@ -30,12 +30,13 @@ namespace ImageFilters
             this.name = name;
         }
 
-        public Filter(double[,] matrix, int val, string name)
+        public Filter(double[,] matrix, double val, string name)
         {
             KernelMatrix = matrix;
+        
             kX = matrix.GetLength(0);
             kY = matrix.GetLength(1);
-
+            KernelSize = kX;
             for (int i = 0; i < KernelSize; i++)
             {
                 for (int j = 0; j < KernelSize; j++)

@@ -28,3 +28,4 @@ Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\obj\D
 Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.csproj.CoreCompileInputs.cache
 Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.exe
 Z:\HD_Backup\Personal_Work\Uni\7\CS426\Project\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.pdb
+C:\Users\Adham\Documents\Visual Studio 2015\Projects\ImageFilters\ImageFiltering\ImageFilters\obj\Debug\ImageFilters.Form2.resources

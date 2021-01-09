@@ -233,7 +233,7 @@ namespace ImageFilters
             {
                 for (int j = 0; j < height; j++)
                 {
-                    Mat[i, j] = ComputeMatrix(f, mat2, i, j);
+        
 
                     if (f.name == "Gaussian Noise")
                     {
@@ -641,7 +641,7 @@ namespace ImageFilters
 
             double Total2 = 0;
 
-            if (f.name.Contains("Sobel") || f.name.Contains("Robert Cross"))
+            if (f.name.Contains("Sobel") || f.name.Contains("Robert Cross")|| f.name.Contains("Edge"))
             {
                 if (Total < 0)
                 {

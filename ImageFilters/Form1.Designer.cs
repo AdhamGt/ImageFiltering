@@ -34,6 +34,9 @@ namespace ImageFilters
             this.applyFilterButton = new System.Windows.Forms.Button();
             this.grayScaleButton = new System.Windows.Forms.Button();
             this.filtersPanel = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.powerValLabel = new System.Windows.Forms.Label();
             this.powerLabel = new System.Windows.Forms.Label();
             this.powerTrackBar = new System.Windows.Forms.TrackBar();
@@ -70,7 +73,9 @@ namespace ImageFilters
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.button1 = new System.Windows.Forms.Button();
             this.revertButton = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.filtersPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.powerTrackBar)).BeginInit();
             this.interpolationPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.interpolationTrackBar)).BeginInit();
@@ -112,6 +117,10 @@ namespace ImageFilters
             // 
             // filtersPanel
             // 
+            this.filtersPanel.Controls.Add(this.button2);
+            this.filtersPanel.Controls.Add(this.label2);
+            this.filtersPanel.Controls.Add(this.label4);
+            this.filtersPanel.Controls.Add(this.trackBar1);
             this.filtersPanel.Controls.Add(this.powerValLabel);
             this.filtersPanel.Controls.Add(this.powerLabel);
             this.filtersPanel.Controls.Add(this.powerTrackBar);
@@ -122,6 +131,34 @@ namespace ImageFilters
             this.filtersPanel.Name = "filtersPanel";
             this.filtersPanel.Size = new System.Drawing.Size(284, 355);
             this.filtersPanel.TabIndex = 6;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(255, 185);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(13, 13);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "0";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(165, 185);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(15, 13);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "Q";
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(160, 219);
+            this.trackBar1.Maximum = 2;
+            this.trackBar1.Minimum = -2;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(118, 45);
+            this.trackBar1.TabIndex = 12;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // powerValLabel
             // 
@@ -161,7 +198,7 @@ namespace ImageFilters
             // 
             // undoButton
             // 
-            this.undoButton.Location = new System.Drawing.Point(16, 183);
+            this.undoButton.Location = new System.Drawing.Point(16, 189);
             this.undoButton.Name = "undoButton";
             this.undoButton.Size = new System.Drawing.Size(139, 26);
             this.undoButton.TabIndex = 9;
@@ -476,6 +513,16 @@ namespace ImageFilters
             this.revertButton.UseVisualStyleBackColor = true;
             this.revertButton.Click += new System.EventHandler(this.revertButton_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(164, 287);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(108, 26);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "CustomKernel";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -490,15 +537,16 @@ namespace ImageFilters
             this.Controls.Add(this.editingLabel);
             this.Controls.Add(this.label);
             this.Controls.Add(this.filtersLabel);
+            this.Controls.Add(this.filtersPanel);
             this.Controls.Add(this.interpolationPanel);
             this.Controls.Add(this.histogramPanel);
             this.Controls.Add(this.imageEditingPanel);
-            this.Controls.Add(this.filtersPanel);
             this.Name = "Form1";
             this.Text = "Image Processing";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.filtersPanel.ResumeLayout(false);
             this.filtersPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.powerTrackBar)).EndInit();
             this.interpolationPanel.ResumeLayout(false);
             this.interpolationPanel.PerformLayout();
@@ -555,6 +603,10 @@ namespace ImageFilters
         private TrackBar powerTrackBar;
         private Label powerValLabel;
         private Label multiplierLabel;
+        private Label label2;
+        private Label label4;
+        private TrackBar trackBar1;
+        private Button button2;
     }
 }
 

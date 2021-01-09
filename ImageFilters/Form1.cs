@@ -31,6 +31,7 @@ namespace ImageFilters
         Filter squareroot, nthroot;
         Filter min;
         Filter max;
+        Filter blur3;
         bool equalize = false;
         int interpolationMode = 0;
         double enlargmentscale = 2f;
@@ -39,9 +40,10 @@ namespace ImageFilters
         PreviewImage img;
         string filterchosen = "";
         PreviewImage img2;
-        Dictionary<string, Filter> Filters = new Dictionary<string, Filter>();
+        public Dictionary<string, Filter> Filters = new Dictionary<string, Filter>();
         DisplayImage di;
         DisplayImage di2;
+        Form2 customkernel;
         Filter cartoon;
         Filter Unsharpen2;
         Filter RobertCrossV, RobertCrossH;
@@ -52,7 +54,7 @@ namespace ImageFilters
         Filter Unsharpen;
         double power = 0;
         double[] powers = new double[8] { 0.1f, 0.2f, 0.4f, 0.5f, 1, 2.5f, 5, 10 };
-
+        double[] Qs = new double[5] {-2f, -1f, 0f, 1f, 2f };
         public Form1()
         {
             InitializeComponent();
@@ -72,7 +74,8 @@ namespace ImageFilters
             cartoon = new Filter(3, 1, "Cartoon");
             UnsharpennoDiag = new Filter(ImageProcessor.laplaciansharpen, "Laplacian Sharpening");
             Unsharpen2 = new Filter(3, 1, "UnSharpen HighBoost");
-            blur = new Filter(5, 0.04f, "Mean Filter");
+            blur = new Filter(5, 0.04f, "Mean Filter (5x5)");
+            blur3 = new Filter(3, 0.1111f, "Mean Filter (3x3)");
             sobelh = new Filter(ImageProcessor.sobelHorizontal, "SobelH");
             sobelv = new Filter(ImageProcessor.sobelVertical, "SobelV");
             saltAndPepper = new Filter("Salt and Pepper");
@@ -80,10 +83,10 @@ namespace ImageFilters
             RobertCrossV = new Filter(ImageProcessor.RobertCrossVertical, "RobertCrossV");
             log = new Filter("Log Operator");
             squareroot = new Filter("Square-root Operator");
-            nthroot = new Filter("Nth-root Operator");
+            nthroot = new Filter("Nth-Power Operator");
             //gaussianNoise = new Filter("Gaussian Noise");
             //avgNoiseReduction = new Filter("Average Noise Reduction");
-
+      
             Filters.Add(edge.name, edge);
             Filters.Add(edge4s.name, edge4s);
             Filters.Add("Sobel Operator", sobelh);
@@ -95,6 +98,7 @@ namespace ImageFilters
             Filters.Add("Median Filter", Median);
             Filters.Add("Minimum Filter", min);
             Filters.Add("Maximum Filter", max);
+            Filters.Add(blur3.name, blur3);
             Filters.Add("ContraHarmonic Mean", Harmonic);
             Filters.Add(sharpen.name, sharpen);
             Filters.Add("Laplacian Sharpening", UnsharpennoDiag);
@@ -103,7 +107,7 @@ namespace ImageFilters
             Filters.Add(saltAndPepper.name, saltAndPepper);
             Filters.Add(log.name, log);
 
-          //  Filters.Add("Nth - Power Operator", nthroot);
+           Filters.Add("Nth-Power Operator", nthroot);
             Filters.Add("Cartoon",cartoon);
             //Filters.Add(avgNoiseReduction.name, avgNoiseReduction);
             //Filters.Add(gaussianNoise.name, gaussianNoise);
@@ -114,9 +118,12 @@ namespace ImageFilters
             powerLabel.Hide();
             powerTrackBar.Hide();
             powerValLabel.Hide();
+            trackBar1.Hide();
+            label4.Hide();
+            label2.Hide();
         }
 
-        void PopulateListbox()
+       public void PopulateListbox()
         {
             filtersListBox.Items.Clear();
             foreach (string filter in Filters.Keys)
@@ -136,9 +143,9 @@ namespace ImageFilters
                     Bitmap imgtmp = ImageProcessor.CopyImage(img.ViewedImage);
                     PreviewImage tmp = new PreviewImage(imgtmp);
 
-                    img.filterImage(sobelh);
-                    tmp.filterImage(sobelv);
-                    img = img + tmp;
+                    img.filterImage(sobelv);
+               //     tmp.filterImage(sobelh);
+                 //  img = img + tmp;
 
                 }
                 else if (filterchosen.Contains("Robert Cross"))
@@ -320,7 +327,7 @@ namespace ImageFilters
                 {
                     label1.Text = filterchosen;
 
-                    if (filterchosen == "Nth - Power Operator")
+                    if (filterchosen == "Nth-Power Operator")
                     {
                         powerLabel.Show();
                         powerTrackBar.Show();
@@ -331,6 +338,18 @@ namespace ImageFilters
                         powerLabel.Hide();
                         powerTrackBar.Hide();
                         powerValLabel.Hide();
+                    }
+                    if (filterchosen == "ContraHarmonic Mean")
+                    {
+                        trackBar1.Show();
+                        label4.Show();
+                        label2.Show();
+                    }
+                    else
+                    {
+                        trackBar1.Hide();
+                       label4.Hide();
+                        label2.Hide();
                     }
                 }
             }
@@ -391,7 +410,7 @@ namespace ImageFilters
 
         private void Form1_Load(object sender, EventArgs e)
         {
-     
+           
         }
 
         private void histogramButton_Click(object sender, EventArgs e)
@@ -596,6 +615,23 @@ namespace ImageFilters
         {
             power = powers[powerTrackBar.Value];
             powerValLabel.Text = (float)power + "";
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            Harmonic.Order = trackBar1.Value;
+          label2.Text = (float)Harmonic.Order + "";
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            if(customkernel != null)
+            {
+                customkernel.Dispose();
+            }
+            Form1 current = this;
+          customkernel  = new Form2(current);
+            customkernel.Show();
         }
 
         private void revertButton_Click(object sender, EventArgs e)
