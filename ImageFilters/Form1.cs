@@ -84,8 +84,6 @@ namespace ImageFilters
             log = new Filter("Log Operator");
             squareroot = new Filter("Square-root Operator");
             nthroot = new Filter("Nth-Power Operator");
-            //gaussianNoise = new Filter("Gaussian Noise");
-            //avgNoiseReduction = new Filter("Average Noise Reduction");
       
             Filters.Add(edge.name, edge);
             Filters.Add(edge4s.name, edge4s);
@@ -105,17 +103,15 @@ namespace ImageFilters
             Filters.Add("UnSharpen", Unsharpen);
             Filters.Add("UnSharpen HighBoost", Unsharpen);
             Filters.Add(saltAndPepper.name, saltAndPepper);
-            Filters.Add(log.name, log);
 
-           Filters.Add("Nth-Power Operator", nthroot);
+
             Filters.Add("Cartoon",cartoon);
-            //Filters.Add(avgNoiseReduction.name, avgNoiseReduction);
-            //Filters.Add(gaussianNoise.name, gaussianNoise);
+
             PopulateListbox();
 
 
             fourierButton.Hide();
-          
+            filtersLabel.ForeColor = Color.Red;
             trackBar1.Hide();
             label4.Hide();
             label2.Hide();

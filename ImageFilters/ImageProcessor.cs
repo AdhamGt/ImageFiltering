@@ -257,6 +257,7 @@ namespace ImageFilters
                 for (int j = 0; j < Matpad.GetLength(1); j++)
                 {
                     Matpad[i, j] = 0;
+                  
                 }
             }
             for (int i = 1; i < Mat.GetLength(0) + 1; i++)
@@ -264,6 +265,24 @@ namespace ImageFilters
                 for (int j = 1; j < Mat.GetLength(1) + 1; j++)
                 {
                     Matpad[i, j] = Mat[i - 1, j - 1];
+                    if(i == 0)
+                    {
+                       Matpad[i-1,j] = Mat[i - 1, j - 1];
+                    }
+                    if( j ==0 )
+                    {
+                        Matpad[i , j-1] = Mat[i - 1, j - 1];
+                    }
+                    if (j == Mat.GetLength(1))
+                    {
+                        Matpad[i, j+1] = Mat[i - 1, j - 1];
+                        Matpad[i, j + 2] = Mat[i - 1, j - 1];
+                    }
+                    if (i == Mat.GetLength(0))
+                    {
+                        Matpad[i+1, j] = Mat[i - 1, j - 1];
+                       Matpad[i+2,j] = Mat[i - 1, j - 1];
+                    }
                 }
 
             }
